@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gds-migrator"
+version = "0.1.0"
+description = "Migrate hierarchical GDSII layouts from one process technology to another while preserving cell abutments."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115",
+    "gdstk>=0.9.42",
+    "numpy>=1.24",
+    "python-multipart>=0.0.9",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8.0",
+]
+simplex = [
+    "scipy>=1.11",
+]
+
+[project.scripts]
+gds-migrate = "gds_migrator.cli:main"
+gds-migrator-web = "gds_migrator.web.app:run"
+
+[tool.setuptools.package-data]
+"gds_migrator.web" = ["static/*"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

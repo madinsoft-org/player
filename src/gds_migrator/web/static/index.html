@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GDS Layout Migrator</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">GDSII DESIGN-RULE MIGRATION</p>
+        <h1>Layout workbench</h1>
+      </div>
+      <div id="project-summary" class="project-summary" hidden></div>
+    </header>
+
+    <main>
+      <section id="upload-panel" class="upload-panel">
+        <div class="intro">
+          <p class="eyebrow">START A PROJECT</p>
+          <h2>Inspect and migrate a layout</h2>
+          <p>Load a GDSII layout and target technology rules. GF180 simplified rules require their KLayout layer-properties file.</p>
+        </div>
+        <form id="upload-form">
+          <label>GDSII layout <input name="layout" type="file" accept=".gds,.gdsii" required></label>
+          <label>Technology rules (JSON) <input name="technology" type="file" accept=".json" required></label>
+          <label>Layer properties (.lyp or JSON, optional) <input name="layers" type="file" accept=".lyp,.json"></label>
+          <button type="submit">Load project</button>
+        </form>
+        <p id="status" role="status" class="status"></p>
+      </section>
+
+      <section id="workspace" hidden>
+        <div class="toolbar">
+          <label>Cell <select id="cell-select"></select></label>
+          <button id="reset-view-button" type="button" class="secondary">Reset view</button>
+          <button id="migrate-button" type="button">Run migration</button>
+          <a id="download-link" class="button secondary" hidden>Download migrated GDS</a>
+          <button id="new-project-button" type="button" class="secondary">New project</button>
+        </div>
+        <div class="technology-strip" id="technology-strip"></div>
+        <div class="workspace-grid">
+          <aside class="sidebar">
+            <div class="panel-heading">
+              <h2>Layers</h2>
+              <button id="layers-all" type="button" class="text-button">All on</button>
+            </div>
+            <div id="layer-list" class="layer-list"></div>
+            <div class="panel-heading constraints-heading">
+              <h2>Constraints</h2>
+              <span id="constraint-count" class="count"></span>
+            </div>
+            <p class="hint">Select an edge to inspect its axis, shapes and required distance. Exclusions apply to this project session only.</p>
+            <div id="constraint-list" class="constraint-list"></div>
+            <div id="edge-details" class="edge-details">Select a constraint to see its details.</div>
+            <button id="toggle-edge-button" type="button" disabled>Exclude constraint</button>
+          </aside>
+
+          <div class="views">
+            <section class="layout-panel">
+              <div class="panel-heading">
+                <div><h2>Before</h2><span id="before-caption" class="caption"></span></div>
+                <span class="legend"><i class="legend-x"></i> X <i class="legend-y"></i> Y constraints</span>
+              </div>
+              <svg id="before-view" class="layout-view" role="img" aria-label="Layout before migration"></svg>
+            </section>
+            <section class="layout-panel">
+              <div class="panel-heading">
+                <div><h2>After</h2><span id="after-caption" class="caption"></span></div>
+              </div>
+              <svg id="after-view" class="layout-view" role="img" aria-label="Layout after migration"></svg>
+            </section>
+          </div>
+        </div>
+        <p id="workspace-status" role="status" class="status"></p>
+      </section>
+    </main>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

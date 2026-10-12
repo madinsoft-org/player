@@ -1,0 +1,3254 @@
+{
+    "schema_version": 1,
+    "technology": "gf180",
+    "source": "gf180mcuA\\libs.tech\\magic\\gf180mcuA.tech",
+    "sha256": "f5753fec7a60e057eb767f966a33cfd6b85348aa7e309295ce63b0661f83d40a",
+    "units": {
+        "distance": "drc_unit",
+        "area": "drc_unit^2"
+    },
+    "styles": {
+        "drc": {
+            "variants": [
+                "fast",
+                "full",
+                "routing"
+            ],
+            "scalefactor": [
+                50.0
+            ]
+        },
+        "empty": {
+            "variants": [
+                "*"
+            ],
+            "scalefactor": [
+                50.0
+            ]
+        }
+    },
+    "single_layer": {
+        "allnwell": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 860.0
+                },
+                "options": [],
+                "variants": [
+                    "fast",
+                    "full"
+                ],
+                "style": "drc",
+                "line": 2503,
+                "reference": "NW.1a"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 600.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "fast",
+                    "full"
+                ],
+                "style": "drc",
+                "line": 2504,
+                "reference": "NW.2a"
+            }
+        ],
+        "rnw": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 2000.0
+                },
+                "options": [],
+                "variants": [
+                    "fast",
+                    "full"
+                ],
+                "style": "drc",
+                "line": 2507,
+                "reference": "NW.1b"
+            }
+        ],
+        "dnwell": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 1700.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2517,
+                "reference": "DN.1"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 2500.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2518,
+                "reference": "DN.2a"
+            }
+        ],
+        "alldifflv": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 220.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2556,
+                "reference": "DF.1a"
+            },
+            {
+                "op": "area",
+                "values": {
+                    "min_area": 202500.0,
+                    "min_edge": 220.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2558,
+                "reference": "DF.9"
+            }
+        ],
+        "alldiffmv": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 300.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2557,
+                "reference": "DF.1a"
+            },
+            {
+                "op": "area",
+                "values": {
+                    "min_area": 202500.0,
+                    "min_edge": 300.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2559,
+                "reference": "DF.9"
+            }
+        ],
+        "alldifflv,nvar,pvar": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 280.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2560,
+                "reference": "DF.3a"
+            }
+        ],
+        "alldiffmv,mvnvar,mvpvar": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 360.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2562,
+                "reference": "DF.3a"
+            }
+        ],
+        "allpoly": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 180.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2641,
+                "reference": "PL.1"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2643,
+                "reference": "PL.3a"
+            }
+        ],
+        "fillpoly": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 5600.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2642,
+                "reference": "DPF.1"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 1100.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2647,
+                "reference": "DPF.2b"
+            }
+        ],
+        "allpolysblkres": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 400.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2673,
+                "reference": "PRES/LRES.2"
+            }
+        ],
+        "allactiveres": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 400.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2681,
+                "reference": "NDRES.2"
+            }
+        ],
+        "(ndc,nsc,pdc,psc,ndic,pdic,pc)/m1": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 230.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2693,
+                "reference": "CO.1 + 2 * CO.6"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2695,
+                "reference": "CO.2a - 2 * CO.6"
+            }
+        ],
+        "(mvndc,mvnsc,mvpdc,mvpsc,mvndic,mvnndic,mvpdic)/m1": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 230.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2714,
+                "reference": "CO.1 + 2 * CO.6"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2716,
+                "reference": "CO.2a - 2 * CO.6"
+            }
+        ],
+        "allndiffcont": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2747,
+                "reference": "CO.2a - 2 * CO.6"
+            }
+        ],
+        "allpdiffcont": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2749,
+                "reference": "CO.2a - 2 * CO.6"
+            }
+        ],
+        "pc": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2751,
+                "reference": "CO.2a - 2 * CO.6"
+            }
+        ],
+        "*m1,rm1": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 230.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2768,
+                "reference": "M1.1"
+            }
+        ],
+        "allm1,obsm1": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 230.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2769,
+                "reference": "M1.2a"
+            },
+            {
+                "op": "area",
+                "values": {
+                    "min_area": 144400.0,
+                    "min_edge": 230.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2770,
+                "reference": "M1.3"
+            }
+        ],
+        "v1/m1": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 260.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2782,
+                "reference": "V1.1"
+            }
+        ],
+        "v1": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 260.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2783,
+                "reference": "V1.2a"
+            }
+        ],
+        "*m2,rm2": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 280.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2796,
+                "reference": "M2.1"
+            }
+        ],
+        "allm2,obsm2": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 280.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2797,
+                "reference": "M2.2a"
+            },
+            {
+                "op": "area",
+                "values": {
+                    "min_area": 144400.0,
+                    "min_edge": 280.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2798,
+                "reference": "M2.3"
+            }
+        ],
+        "v2/m2": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 280.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2810,
+                "reference": "V2.1 + 2 * V2.3"
+            }
+        ],
+        "v2": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 240.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2811,
+                "reference": "V2.2a - 2 * V2.3"
+            }
+        ],
+        "*m3,rm3": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 1800.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2822,
+                "reference": "MT30.1"
+            }
+        ],
+        "allm3,obsm3": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 1800.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2823,
+                "reference": "MT30.2"
+            }
+        ],
+        "mvnnfet": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 400.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2848,
+                "reference": "DF.2c"
+            }
+        ],
+        "pfet,pcap": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 300.0
+                },
+                "options": [
+                    "angles"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2854,
+                "reference": "PL.7"
+            }
+        ],
+        "nfet,ncap": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 300.0
+                },
+                "options": [
+                    "angles"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2855,
+                "reference": "PL.7"
+            }
+        ],
+        "hvpfet,mvpfet,mvpcap": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 700.0
+                },
+                "options": [
+                    "angles"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2864,
+                "reference": "PL.7"
+            }
+        ],
+        "hvnfet,mvnfet,mvncap": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 700.0
+                },
+                "options": [
+                    "angles"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2865,
+                "reference": "PL.7"
+            }
+        ],
+        "rpp": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 800.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2883,
+                "reference": "PRES.1"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 400.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2885,
+                "reference": "PRES.2"
+            }
+        ],
+        "rnp": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 800.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2884,
+                "reference": "LRES.1"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 400.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2886,
+                "reference": "LRES.2"
+            }
+        ],
+        "hires,mvhires": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 1000.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2894,
+                "reference": "HRES.3"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 400.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2895,
+                "reference": "HRES.2"
+            }
+        ],
+        "rdn": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 300.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2913,
+                "reference": "DF.1b"
+            }
+        ],
+        "rdp": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 300.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2914,
+                "reference": "DF.1b"
+            }
+        ],
+        "nvar,mvnvar": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 1000.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2926,
+                "reference": "DF.1c"
+            }
+        ],
+        "pvar,mvpvar": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 1000.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2935,
+                "reference": "DF.1c"
+            }
+        ],
+        "*mimcap": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 5000.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2942,
+                "reference": "MIMTM.8a"
+            },
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 600.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2943,
+                "reference": "MIMTM.6"
+            }
+        ],
+        "mimcc": [
+            {
+                "op": "spacing",
+                "values": {
+                    "distance": 480.0
+                },
+                "options": [
+                    "touching_ok"
+                ],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2948,
+                "reference": "MIMTM.9 - 2 * VT.3"
+            }
+        ],
+        "mimcapc/m3": [
+            {
+                "op": "width",
+                "values": {
+                    "distance": 280.0
+                },
+                "options": [],
+                "variants": [
+                    "*"
+                ],
+                "style": "drc",
+                "line": 2958,
+                "reference": "VT.1+VT.3"
+            }
+        ]
+    },
+    "between_layers": [
+        {
+            "layers": [
+                "rnw",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 1400.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "fast",
+                        "full"
+                    ],
+                    "style": "drc",
+                    "line": 2506,
+                    "reference": "NW.2b"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "pwell",
+                "dnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 2500.0
+                    },
+                    "options": [
+                        "absence_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2520,
+                    "reference": "LPW.3"
+                },
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 1500.0
+                    },
+                    "options": [
+                        "surround_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2549,
+                    "reference": "LPW.11"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "nwell",
+                "dnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 500.0
+                    },
+                    "options": [
+                        "absence_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2523,
+                    "reference": "NW.5"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "dnwell",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 3100.0
+                    },
+                    "options": [
+                        "surround_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2546,
+                    "reference": "NW.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvpdiff,mvpvar,*srammvpdiff",
+                "*mvnsd"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 360.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2564,
+                    "reference": "DF.3a"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvndiff,mvnvar,*srammvndiff",
+                "*mvpsd"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 360.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2566,
+                    "reference": "DF.3a"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvpdiff,mvpvar,*srammvpdiff",
+                "*nsd"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 480.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2569,
+                    "reference": "DV.6 + DV.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvndiff,mvnvar,*srammvndiff",
+                "*psd"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 480.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2571,
+                    "reference": "DV.6 + DV.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "(*ndiff,*ndiode,nfet,nnfet,ncap)/a",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 430.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2574,
+                    "reference": "DF.8"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "(*mvndiff,*mvndiode,hvnfet,mvnfet,mvncap,mvnnfet)/a",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 600.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2576,
+                    "reference": "DF.8"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*srammvndiff,srammvnfet",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 450.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2578,
+                    "reference": "S.DF.8_MV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*sramndiff,sramnfet",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 400.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2580,
+                    "reference": "S.DF.16_LV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*psd",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 120.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2582,
+                    "reference": "DF.5"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvpsd",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 160.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2584,
+                    "reference": "DF.5"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*nsd",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 120.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2588,
+                    "reference": "DF.4a"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvnsd",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 160.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2590,
+                    "reference": "DF.4a"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*pdiff,*pdiode,pfet,pcap",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 430.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2592,
+                    "reference": "DF.7"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvpdiff,*mvpdiode,hvpfet,mvpfet,mvpcap",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 600.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2594,
+                    "reference": "DF.7"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "srammvpfet",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 450.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2596,
+                    "reference": "S.DF.7_MV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "srampfet",
+                "allnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 400.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2598,
+                    "reference": "S.DF.4c_LV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*nsd",
+                "dnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 620.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2600,
+                    "reference": "DF.4b"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvnsd",
+                "dnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 660.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2602,
+                    "reference": "DF.4b"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*pdiff,*pdiode,pfet,pcap",
+                "dnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 930.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2604,
+                    "reference": "DF.4e"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mvpdiff,*mvpdiode,hvpfet,mvpfet,mvpcap",
+                "dnwell"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 1100.0
+                    },
+                    "options": [
+                        "absence_okay"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2606,
+                    "reference": "DF.4e"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*nndiode,*mvnndiode",
+                "*psd,*mvpsd"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 610.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2634,
+                    "reference": "NAT.5 + NAT.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpoly",
+                "fillpoly"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 5000.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2644,
+                    "reference": "DPF.5"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpolynonfet",
+                "alldifflvnonfet"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 100.0
+                    },
+                    "options": [
+                        "corner_ok",
+                        "allfets"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2648,
+                    "reference": "PL.5a"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpolynonfet",
+                "*mvndif,*mvnsd,*mvndiode,mvndiffres,*mvnndiode,*ldndiff,*mvpdif,*mvpsd,*mvpdiode,mvpdiffres,*ldpdiff"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 300.0
+                    },
+                    "options": [
+                        "corner_ok",
+                        "allfets"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2651,
+                    "reference": "PL.5a"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpolynonfet",
+                "*srammvndiff"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 120.0
+                    },
+                    "options": [
+                        "corner_ok",
+                        "allfets"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2654,
+                    "reference": "S.PL.5a_MV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpolysblkres",
+                "allpolynonres"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 600.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2676,
+                    "reference": "PRES/LRES.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpolysblkres",
+                "allactive,allactiveres"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 600.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2678,
+                    "reference": "PRES/LRES.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allactiveres",
+                "allactive"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 440.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2684,
+                    "reference": "NDRES.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allactiveres",
+                "allpoly"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 430.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2686,
+                    "reference": "NDRES.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "(ndc,nsc,pdc,psc,ndic,pdic,pc)/m1",
+                "*m1"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 55.0,
+                        "distance2": 35.0
+                    },
+                    "options": [
+                        "directional"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2698,
+                    "reference": "CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "ndc/a",
+                "*ndiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2700,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "nsc/a",
+                "*nsd"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2702,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "pdc/a",
+                "*pdiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2704,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "psc/a",
+                "*psd"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2706,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "ndic/a",
+                "*ndiode"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2708,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "pdic/a",
+                "*pdiode"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2710,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "pc/a",
+                "*poly"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2712,
+                    "reference": "CO.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "(mvndc,mvnsc,mvpdc,mvpsc,mvndic,mvnndic,mvpdic)/m1",
+                "*m1"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 55.0,
+                        "distance2": 35.0
+                    },
+                    "options": [
+                        "directional"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2719,
+                    "reference": "CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvndc/a",
+                "*mvndiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2721,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvnsc/a",
+                "*mvnsd"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2723,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvpdc/a",
+                "*mvpdiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2725,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvpsc/a",
+                "*mvpsd"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2727,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvndic/a",
+                "*mvndiode"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2729,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvnndic/a",
+                "*mvnndiode"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2731,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mvpdic/a",
+                "*mvpdiode"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 65.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2733,
+                    "reference": "CO.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "srammvndc",
+                "*srammvndiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 35.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2736,
+                    "reference": "S.CO.4_MV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "srammvpdc/a",
+                "*srammvpdiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 35.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2738,
+                    "reference": "S.CO.4_MV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "sramndc",
+                "*sramndiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 35.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2740,
+                    "reference": "S.CO.3_LV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "srampdc/a",
+                "*srampdiff"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 35.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2742,
+                    "reference": "S.CO.3_LV"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpdiffcont",
+                "allndiffcont"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 240.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2745,
+                    "reference": "CO.2a - 2 * CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "pc",
+                "alldiff"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 165.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2752,
+                    "reference": "CO.8 - 2 * CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "allpdiffcont,allndiffcont",
+                "allpoly"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 145.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2754,
+                    "reference": "CO.7 - 2 * CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "v1/m1",
+                "*m1"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 60.0,
+                        "distance2": 40.0
+                    },
+                    "options": [
+                        "directional"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2784,
+                    "reference": "V1.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "v1/m2",
+                "*m2"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 10.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2786,
+                    "reference": "V1.4"
+                },
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 60.0,
+                        "distance2": 40.0
+                    },
+                    "options": [
+                        "directional"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2788,
+                    "reference": "V1.4i"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "v2/m2",
+                "*m2"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 50.0,
+                        "distance2": 30.0
+                    },
+                    "options": [
+                        "directional"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2812,
+                    "reference": "V2.3i - V2.3"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "v2/m3",
+                "*m3"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 110.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2826,
+                    "reference": "MT30.5 - V2.4"
+                },
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 240.0
+                    },
+                    "options": [
+                        "directional"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2828,
+                    "reference": "MT30.6 - V2.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "rpp",
+                "pc"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 215.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2888,
+                    "reference": "PRES.7 - CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "rnp",
+                "pc"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 215.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2889,
+                    "reference": "LRES.7 - CO.6"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "mimcc",
+                "mimcap"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 390.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2945,
+                    "reference": "MIMTM.4-VT.4"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "pad",
+                "*mimcap"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 50.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2947,
+                    "reference": "MIM1M.X"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "via1",
+                "*mimcap"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 50.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2950,
+                    "reference": "MIMTM.10"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mimcap",
+                "*m2,rm2"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 1200.0
+                    },
+                    "options": [
+                        "touching_ok"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2952,
+                    "reference": "MIMTM.1"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mimcap",
+                "via2/m3"
+            ],
+            "rules": [
+                {
+                    "op": "spacing",
+                    "values": {
+                        "distance": 390.0
+                    },
+                    "options": [
+                        "touching_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2954,
+                    "reference": "MIMTM.5-VT.X"
+                }
+            ]
+        },
+        {
+            "layers": [
+                "*mimcap",
+                "m2"
+            ],
+            "rules": [
+                {
+                    "op": "surround",
+                    "values": {
+                        "distance": 600.0
+                    },
+                    "options": [
+                        "absence_illegal"
+                    ],
+                    "variants": [
+                        "*"
+                    ],
+                    "style": "drc",
+                    "line": 2956,
+                    "reference": "MIMTM.3"
+                }
+            ]
+        }
+    ],
+    "extracted_count": 126,
+    "omitted_commands": {
+        "angles": 1,
+        "cifarea": 2,
+        "cifmaxwidth": 14,
+        "cifspacing": 3,
+        "cifwidth": 2,
+        "edge4way": 3,
+        "exact_overlap": 6,
+        "extend": 12,
+        "overhang": 12,
+        "widespacing": 2
+    },
+    "limitations": [
+        "Layer keys are exact Magic type expressions, not GDS layer numbers.",
+        "Layer expressions are not expanded into independent pairwise rules.",
+        "Pair order is preserved: surround requires layers[1] around layers[0].",
+        "All declared variants are retained; '*' denotes all style variants.",
+        "Distances are raw DRC units, not nanometers. Divide by scale/reducer to obtain internal Magic units; physical units depend on cifoutput.",
+        "Only width, spacing, surround and area are extracted. Other checks are counted in omitted_commands, not silently treated as covered.",
+        "Rule messages are omitted for compactness; references and source lines are retained. This file is not an executable DRC deck."
+    ],
+    "name": "gf180",
+    "grid": 5,
+    "min_width": {
+        "21": 860,
+        "12": 1700,
+        "34": 230,
+        "36": 280,
+        "42": 1800
+    },
+    "min_spacing": [
+        {
+            "layers": [
+                12,
+                12
+            ],
+            "value": 2500
+        },
+        {
+            "layers": [
+                21,
+                21
+            ],
+            "value": 600
+        },
+        {
+            "layers": [
+                34,
+                34
+            ],
+            "value": 230
+        },
+        {
+            "layers": [
+                36,
+                36
+            ],
+            "value": 280
+        },
+        {
+            "layers": [
+                42,
+                42
+            ],
+            "value": 1800
+        }
+    ],
+    "conversion": {
+        "units": "nm",
+        "selected_style": "drc",
+        "selected_variant": "full",
+        "output_style": "gdsii",
+        "output_scale_nm": 50.0,
+        "applied_count": 10,
+        "records": [
+            {
+                "line": 2503,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2504,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2506,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2507,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2517,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2518,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2520,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2523,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2546,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2549,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2556,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2557,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2558,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2559,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2560,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2562,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2564,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2566,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2569,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2571,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2574,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2576,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2578,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2580,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2582,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2584,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2588,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2590,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2592,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2594,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2596,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2598,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2600,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2602,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2604,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2606,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2634,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2641,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2642,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2643,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2644,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2647,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2648,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2651,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2654,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2673,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2676,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2678,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2681,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2684,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2686,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2693,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2695,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2698,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2700,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2702,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2704,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2706,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2708,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2710,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2712,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2714,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2716,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2719,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2721,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2723,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2725,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2727,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2729,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2731,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2733,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2736,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2738,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2740,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2742,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2745,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2747,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2749,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2751,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2752,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2754,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2768,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2769,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2770,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2782,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2783,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2784,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2786,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2788,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2796,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2797,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2798,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2810,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2811,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2812,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2822,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2823,
+                "applied": true,
+                "reason": "Reviewed ordinary drawing-layer projection in nanometers"
+            },
+            {
+                "line": 2826,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2828,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2848,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2854,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2855,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2864,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2865,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2883,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2884,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2885,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2886,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2888,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2889,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2894,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2895,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2913,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2914,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2926,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2935,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2942,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2943,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2945,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2947,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2948,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2950,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2952,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2954,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2956,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            },
+            {
+                "line": 2958,
+                "applied": false,
+                "reason": "No reviewed unconditional drawing-layer projection"
+            }
+        ],
+        "drawing_layers": [
+            {
+                "cif_layer": "DNWELL",
+                "gds_layer": 12,
+                "datatype": 0
+            },
+            {
+                "cif_layer": "NWELL",
+                "gds_layer": 21,
+                "datatype": 0
+            },
+            {
+                "cif_layer": "MET1",
+                "gds_layer": 34,
+                "datatype": 0
+            },
+            {
+                "cif_layer": "MET2",
+                "gds_layer": 36,
+                "datatype": 0
+            },
+            {
+                "cif_layer": "MET3",
+                "gds_layer": 42,
+                "datatype": 0
+            }
+        ],
+        "limitations": [
+            "Only reviewed ordinary well and metal baselines are applied.",
+            "Union expressions are projected to the ordinary drawing mask; fill/obstruction interactions and conditional checks are not applied.",
+            "TechnologyRules ignores datatypes and all metadata. Use these constraints only for the listed drawing masks, not all purposes.",
+            "Masks with shared GDS layer numbers are excluded rather than merged.",
+            "No distinct-layer spacing is applied without a reviewed projection.",
+            "Physical distances are rounded up to whole nanometers; Magic runtime internal-grid rounding is not simulated.",
+            "This partial configuration does not certify full DRC compliance."
+        ]
+    }
+}

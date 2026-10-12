@@ -1,0 +1,2467 @@
+{
+  "technology": "gf180",
+  "unit": "um",
+  "authority": "CSV manual; KLayout and Magic links are references, not merged values.",
+  "semantics": {
+    "width": "Same physical layer; see measurement for length or square-side dimensions.",
+    "spacing": "Distance between selected edges; maximum tap distances retain maximum bounds.",
+    "overlap": "Layer1 overlaps or extends beyond layer2, following manual terminology.",
+    "enclosure": "Layer1 encloses layer2; MSLOT.5 is an internal edge margin, not external spacing.",
+    "selectors": "NCOMP, PCOMP, gate, device and boundary qualifiers remain in descriptions and context.",
+    "applicability": "Process options and guidelines are retained, not simultaneously applicable."
+  },
+  "derived_layers": {
+    "ncomp": "comp AND nplus",
+    "pcomp": "comp AND pplus",
+    "gate": "poly2 AND comp",
+    "n_channel_gate": "poly2 AND comp AND nplus",
+    "p_channel_gate": "poly2 AND comp AND pplus",
+    "unsalicided_poly2": "poly2 AND sab",
+    "unsalicided_comp": "comp AND sab"
+  },
+  "known_source_corrections": [
+    "Pplus table says 'PP = Nplus Implant'; PP rules use pplus.",
+    "MSLOT.9 has no CSV ID; recovered from the matching KLayout rule.",
+    "MCELL is mapped to mcell_feol_mk as in KLayout."
+  ],
+  "rule_count": 1062,
+  "source_row_count": 738,
+  "represented_row_count": 506,
+  "excluded_row_count": 232,
+  "layers": {
+    "pass_mk": {
+      "layer": 2,
+      "datatype": 222
+    },
+    "fail_mk": {
+      "layer": 3,
+      "datatype": 222
+    },
+    "polygon_mk": {
+      "layer": 4,
+      "datatype": 222
+    },
+    "violation_mk": {
+      "layer": 6,
+      "datatype": 222
+    },
+    "rule_txt_mk": {
+      "layer": 11,
+      "datatype": 222
+    },
+    "case_txt_mk": {
+      "layer": 13,
+      "datatype": 222
+    },
+    "comp": {
+      "layer": 22,
+      "datatype": 0
+    },
+    "isosub": {
+      "layer": 23,
+      "datatype": 5
+    },
+    "dnwell": {
+      "layer": 12,
+      "datatype": 0
+    },
+    "nwell": {
+      "layer": 21,
+      "datatype": 0
+    },
+    "lvpwell": {
+      "layer": 204,
+      "datatype": 0
+    },
+    "dualgate": {
+      "layer": 55,
+      "datatype": 0
+    },
+    "poly2": {
+      "layer": 30,
+      "datatype": 0
+    },
+    "nplus": {
+      "layer": 32,
+      "datatype": 0
+    },
+    "pplus": {
+      "layer": 31,
+      "datatype": 0
+    },
+    "sab": {
+      "layer": 49,
+      "datatype": 0
+    },
+    "esd": {
+      "layer": 24,
+      "datatype": 0
+    },
+    "contact": {
+      "layer": 33,
+      "datatype": 0
+    },
+    "metal1": {
+      "layer": 34,
+      "datatype": 0
+    },
+    "via1": {
+      "layer": 35,
+      "datatype": 0
+    },
+    "metal2": {
+      "layer": 36,
+      "datatype": 0
+    },
+    "via2": {
+      "layer": 38,
+      "datatype": 0
+    },
+    "metal3": {
+      "layer": 42,
+      "datatype": 0
+    },
+    "via3": {
+      "layer": 40,
+      "datatype": 0
+    },
+    "metal4": {
+      "layer": 46,
+      "datatype": 0
+    },
+    "via4": {
+      "layer": 41,
+      "datatype": 0
+    },
+    "metal5": {
+      "layer": 81,
+      "datatype": 0
+    },
+    "via5": {
+      "layer": 82,
+      "datatype": 0
+    },
+    "metaltop": {
+      "layer": 53,
+      "datatype": 0
+    },
+    "pad": {
+      "layer": 37,
+      "datatype": 0
+    },
+    "resistor": {
+      "layer": 62,
+      "datatype": 0
+    },
+    "fhres": {
+      "layer": 227,
+      "datatype": 0
+    },
+    "fusetop": {
+      "layer": 75,
+      "datatype": 0
+    },
+    "fusewindow_d": {
+      "layer": 96,
+      "datatype": 1
+    },
+    "polyfuse": {
+      "layer": 220,
+      "datatype": 0
+    },
+    "mvsd": {
+      "layer": 210,
+      "datatype": 0
+    },
+    "mvpsd": {
+      "layer": 11,
+      "datatype": 39
+    },
+    "nat": {
+      "layer": 5,
+      "datatype": 0
+    },
+    "comp_dummy": {
+      "layer": 22,
+      "datatype": 4
+    },
+    "poly2_dummy": {
+      "layer": 30,
+      "datatype": 4
+    },
+    "metal1_dummy": {
+      "layer": 34,
+      "datatype": 4
+    },
+    "metal2_dummy": {
+      "layer": 36,
+      "datatype": 4
+    },
+    "metal3_dummy": {
+      "layer": 42,
+      "datatype": 4
+    },
+    "metal4_dummy": {
+      "layer": 46,
+      "datatype": 4
+    },
+    "metal5_dummy": {
+      "layer": 81,
+      "datatype": 4
+    },
+    "metaltop_dummy": {
+      "layer": 53,
+      "datatype": 4
+    },
+    "comp_label": {
+      "layer": 22,
+      "datatype": 10
+    },
+    "poly2_label": {
+      "layer": 30,
+      "datatype": 10
+    },
+    "metal1_label": {
+      "layer": 34,
+      "datatype": 10
+    },
+    "metal2_label": {
+      "layer": 36,
+      "datatype": 10
+    },
+    "metal3_label": {
+      "layer": 42,
+      "datatype": 10
+    },
+    "metal4_label": {
+      "layer": 46,
+      "datatype": 10
+    },
+    "metal5_label": {
+      "layer": 81,
+      "datatype": 10
+    },
+    "metaltop_label": {
+      "layer": 53,
+      "datatype": 10
+    },
+    "metal1_slot": {
+      "layer": 34,
+      "datatype": 3
+    },
+    "metal2_slot": {
+      "layer": 36,
+      "datatype": 3
+    },
+    "metal3_slot": {
+      "layer": 42,
+      "datatype": 3
+    },
+    "metal4_slot": {
+      "layer": 46,
+      "datatype": 3
+    },
+    "metal5_slot": {
+      "layer": 81,
+      "datatype": 3
+    },
+    "metaltop_slot": {
+      "layer": 53,
+      "datatype": 3
+    },
+    "ubmpperi": {
+      "layer": 183,
+      "datatype": 0
+    },
+    "ubmparray": {
+      "layer": 184,
+      "datatype": 0
+    },
+    "ubmeplate": {
+      "layer": 185,
+      "datatype": 0
+    },
+    "schottky_diode": {
+      "layer": 241,
+      "datatype": 0
+    },
+    "zener": {
+      "layer": 178,
+      "datatype": 0
+    },
+    "res_mk": {
+      "layer": 110,
+      "datatype": 5
+    },
+    "opc_drc": {
+      "layer": 124,
+      "datatype": 5
+    },
+    "ndmy": {
+      "layer": 111,
+      "datatype": 5
+    },
+    "pmndmy": {
+      "layer": 152,
+      "datatype": 5
+    },
+    "v5_xtor": {
+      "layer": 112,
+      "datatype": 1
+    },
+    "cap_mk": {
+      "layer": 117,
+      "datatype": 5
+    },
+    "mos_cap_mk": {
+      "layer": 166,
+      "datatype": 5
+    },
+    "ind_mk": {
+      "layer": 151,
+      "datatype": 5
+    },
+    "diode_mk": {
+      "layer": 115,
+      "datatype": 5
+    },
+    "drc_bjt": {
+      "layer": 127,
+      "datatype": 5
+    },
+    "lvs_bjt": {
+      "layer": 118,
+      "datatype": 5
+    },
+    "mim_l_mk": {
+      "layer": 117,
+      "datatype": 10
+    },
+    "latchup_mk": {
+      "layer": 137,
+      "datatype": 5
+    },
+    "guard_ring_mk": {
+      "layer": 167,
+      "datatype": 5
+    },
+    "otp_mk": {
+      "layer": 173,
+      "datatype": 5
+    },
+    "mtpmark": {
+      "layer": 122,
+      "datatype": 5
+    },
+    "neo_ee_mk": {
+      "layer": 88,
+      "datatype": 17
+    },
+    "sramcore": {
+      "layer": 108,
+      "datatype": 5
+    },
+    "lvs_rf": {
+      "layer": 100,
+      "datatype": 5
+    },
+    "lvs_drain": {
+      "layer": 100,
+      "datatype": 7
+    },
+    "hvpolyrs": {
+      "layer": 123,
+      "datatype": 5
+    },
+    "lvs_io": {
+      "layer": 119,
+      "datatype": 5
+    },
+    "probe_mk": {
+      "layer": 13,
+      "datatype": 17
+    },
+    "esd_mk": {
+      "layer": 24,
+      "datatype": 5
+    },
+    "lvs_source": {
+      "layer": 100,
+      "datatype": 8
+    },
+    "well_diode_mk": {
+      "layer": 153,
+      "datatype": 51
+    },
+    "ldmos_xtor": {
+      "layer": 226,
+      "datatype": 0
+    },
+    "plfuse": {
+      "layer": 125,
+      "datatype": 5
+    },
+    "efuse_mk": {
+      "layer": 80,
+      "datatype": 5
+    },
+    "mcell_feol_mk": {
+      "layer": 11,
+      "datatype": 17
+    },
+    "ymtp_mk": {
+      "layer": 86,
+      "datatype": 17
+    },
+    "dev_wf_mk": {
+      "layer": 128,
+      "datatype": 17
+    },
+    "metal1_blk": {
+      "layer": 34,
+      "datatype": 5
+    },
+    "metal2_blk": {
+      "layer": 36,
+      "datatype": 5
+    },
+    "metal3_blk": {
+      "layer": 42,
+      "datatype": 5
+    },
+    "metal4_blk": {
+      "layer": 46,
+      "datatype": 5
+    },
+    "metal5_blk": {
+      "layer": 81,
+      "datatype": 5
+    },
+    "metalt_blk": {
+      "layer": 53,
+      "datatype": 5
+    },
+    "pr_bndry": {
+      "layer": 0,
+      "datatype": 0
+    },
+    "vtext": {
+      "layer": 63,
+      "datatype": 63
+    },
+    "mdiode": {
+      "layer": 116,
+      "datatype": 5
+    },
+    "metal1_res": {
+      "layer": 110,
+      "datatype": 11
+    },
+    "metal2_res": {
+      "layer": 110,
+      "datatype": 12
+    },
+    "metal3_res": {
+      "layer": 110,
+      "datatype": 13
+    },
+    "metal4_res": {
+      "layer": 110,
+      "datatype": 14
+    },
+    "metal5_res": {
+      "layer": 110,
+      "datatype": 15
+    },
+    "metal6_res": {
+      "layer": 110,
+      "datatype": 16
+    },
+    "border": {
+      "layer": 63,
+      "datatype": 0
+    }
+  },
+  "excluded": [
+    {
+      "id": "GRID",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\10_Design_Geometry_Rules27.csv",
+      "record": 2,
+      "desc": "The design grid must be an integer multiple of 0.005\u03bcm.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "OFFGRID",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\10_Design_Geometry_Rules27.csv",
+      "record": 3,
+      "desc": "All edge boundaries must be snapped to the grid defined above.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "ACUTE",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\10_Design_Geometry_Rules27.csv",
+      "record": 4,
+      "desc": "All shapes must be orthogonal or on a 45\u00b0 unless otherwise stated.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DN.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\11_DNWELL28.csv",
+      "record": 6,
+      "desc": "Each DNWELL shall be directly surrounded by PCOMP guard ring tied to the P-substrate potential.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Note.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\11_DNWELL28.csv",
+      "record": 7,
+      "desc": "Both 3.3V and 5V/6V transistors are not allowed in the same DNWELL. It is a layout Guide for Customer.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LPW.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\12_LVPWELL29_1.csv",
+      "record": 7,
+      "desc": "If LVPWELL is used as resistor, it must be covered by RES_MK (for LVS purpose). Width of the resistor determined by LVPWELL. Length by COMP-to-COMP space. RES_MK length shall be coinciding with resistor length (Touching COMP each side) and width covering the width of LVPWELL.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LPW.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\12_LVPWELL29_1.csv",
+      "record": 8,
+      "desc": "LVPWELL resistors must be enclosed by DNWELL",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LPW.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\12_LVPWELL29_2.csv",
+      "record": 4,
+      "desc": "LVPWELL cannot overlap with Nwell",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NW.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\13_Nwell31.csv",
+      "record": 10,
+      "desc": "Nwell resistors can only exist outside DNWELL",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NW.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\13_Nwell31.csv",
+      "record": 11,
+      "desc": "If Nwell is used as resistor, it must be covered by RES_MK (for LVS purpose). Width of the resistor determined by Nwell width. Length by COMP to COMP space. RES_MK length shall be coincide with resistor length (Touching COMP each side) and width covering the width of Nwell)\"",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DF.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_1.csv",
+      "record": 20,
+      "desc": "Min. COMP area (um2)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "DF.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_1.csv",
+      "record": 21,
+      "desc": "Min. field area (um2)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "DF.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_1.csv",
+      "record": 23,
+      "desc": "COMP not covered by Nplus or Pplus is forbidden (except those COMP under marking).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DF.15a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_1.csv",
+      "record": 26,
+      "desc": "NCOMP inside DNWELL and Dualgate, but outside LVPWELL i.e. [(NCOMP AND DNWELL AND Dualgate) AND (NOT LVPWELL)] can only be connected to 5V/6V VDD.\"",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DF.15b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_1.csv",
+      "record": 27,
+      "desc": "NCOMP inside DNWELL but outside Dualgate and LVPWELL i.e.[(NCOMP AND DNWELL) AND (NOT Dualgate) AND ( NOT LVPWELL) can only be connected to 3.3V VDD.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DV.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\15_Dualgate40_1.csv",
+      "record": 6,
+      "desc": "Circuits covered by Dualgate layer will have 5V/6V gate oxide for 5V/6V operation.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DV.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\15_Dualgate40_2.csv",
+      "record": 4,
+      "desc": "COMP (except substrate tap) can not be partially overlapped by Dualgate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DV.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\15_Dualgate40_2.csv",
+      "record": 6,
+      "desc": "3.3V and 5V/6V PMOS cannot be sitting inside same NWELL",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "PL.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\16_Poly2_42.csv",
+      "record": 11,
+      "desc": "90 deg bends on the COMP are not allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "PL.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\16_Poly2_42.csv",
+      "record": 13,
+      "desc": "Poly2 coverage over the entire die shall be >= 14% Dummy poly2 lines must be added to meet the minimum poly2 density requirement.",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "PL.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\16_Poly2_42.csv",
+      "record": 14,
+      "desc": "Poly2 inter connect connecting 3.3V and 5V/6V areas (area inside and outside Dualgate) are not allowed. They shall be done though metal lines only.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "PL.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\16_Poly2_42.csv",
+      "record": 15,
+      "desc": "Maximum Poly2 current density",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "PL.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\16_Poly2_42.csv",
+      "record": 16,
+      "desc": "V5_Xtor must enclose 5V device",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NP.8a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\17_Nplus_44.csv",
+      "record": 18,
+      "desc": "Minimum Nplus area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "NP.8b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\17_Nplus_44.csv",
+      "record": 19,
+      "desc": "Minimum area enclosed by Nplus",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "NP.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\17_Nplus_44.csv",
+      "record": 22,
+      "desc": "Butting Nplus and PCOMP is forbidden within 0.43\u03bcm of Nwell edge (for outside DNWELL) and of LVPWELL edge (for inside DNWELL case).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NP.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\17_Nplus_44.csv",
+      "record": 23,
+      "desc": "Overlap with P-channel poly2 gate extension is forbidden within 0.32\u03bcm of P-channel gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "PP.8a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\18_Pplus_48.csv",
+      "record": 18,
+      "desc": "Minimum Pplus area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "PP.8b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\18_Pplus_48.csv",
+      "record": 19,
+      "desc": "Minimum area enclosed by Pplus",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "PP.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\18_Pplus_48.csv",
+      "record": 22,
+      "desc": "Butting Pplus and NCOMP is forbidden within 0.43\u03bcm of Nwell edge (for outside DNWELL) and of LVPWELL edge (for inside DNWELL case).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "PP.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\18_Pplus_48.csv",
+      "record": 23,
+      "desc": "Overlap with N-channel Poly2 gate extension is forbidden within 0.32\u03bcm of N-channel gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SB.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\19_SAB_52.csv",
+      "record": 11,
+      "desc": "Non-salicided contacts are forbidden",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SB.13",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\19_SAB_52.csv",
+      "record": 16,
+      "desc": "Min. area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "SB.16",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\19_SAB_52.csv",
+      "record": 21,
+      "desc": "SAB layer cannot exist on 3.3V and 5V/6V CMOS transistors' Poly and COMP area of the core circuit (Excluding the transistors used for ESD purpose). It can only exist on CMOS transistors marked by LVS_IO, OTP_MK, ESD_MK layers.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "ESD.5a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\20_ESD_Implant_54.csv",
+      "record": 9,
+      "desc": "Minimum ESD area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "ESD.5b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\20_ESD_Implant_54.csv",
+      "record": 10,
+      "desc": "Minimum field area enclosed by ESD implant",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "ESD.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\20_ESD_Implant_54.csv",
+      "record": 12,
+      "desc": "No ESD implant inside PCOMP",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "ESD.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\20_ESD_Implant_54.csv",
+      "record": 15,
+      "desc": "ESD implant layer must be overlapped by Dualgate layer (as ESD implant option is only for 5V/6V devices)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CO.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\21_Contact_56.csv",
+      "record": 13,
+      "desc": "Contact on NCOMP to PCOMP butting edge is forbidden (contact must not straddle butting edge)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CO.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\21_Contact_56.csv",
+      "record": 14,
+      "desc": "Contact on Poly2 gate over COMP is forbidden.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CO.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\21_Contact_56.csv",
+      "record": 15,
+      "desc": "Contact on field oxide is forbidden.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Mn.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\22_Metaln_58.csv",
+      "record": 6,
+      "desc": "Minimum Metaln area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "Mn.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\22_Metaln_58.csv",
+      "record": 7,
+      "desc": "Metaln coverage over the entire die shall be >30% (Refer to section 13.0 for Dummy Metal fill guidelines. Customer needs to ensure enough dummy metal to satisfy Metaln coverage)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "Vn.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\23_Vian_59.csv",
+      "record": 8,
+      "desc": "Vian stack (2) over contact is permitted",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MT.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\24_MetalTop_61.csv",
+      "record": 6,
+      "desc": "MetalTop coverage over the entire die shall be >30% (Refer to section 10.3 for Dummy Metal-fill guidelines. Customer needs to ensure enough dummy metal to satisfy Metaln coverage)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "MT.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\24_MetalTop_61.csv",
+      "record": 7,
+      "desc": "Minimum MetalTop area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "MT30.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\25_Thick_MetalTop_62.csv",
+      "record": 9,
+      "desc": "Thick MetalTop coverage over the entire die shall be >30% (Refer to section 13.0 for Dummy Metal-fill guidelines. Customer needs to Ensure enough dummy metal to satisfy Metaln coverage)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "MT30.8a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\25_Thick_MetalTop_62.csv",
+      "record": 10,
+      "desc": "As via size compare to min thick-metal width is very small. Single top via (e.g Via3 for 4 layer metal process with 3.0um thick top metal option. in other words via connecting to thick metal) At one location cannot exit under the thick (3um thick) metal.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MT30.8b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\25_Thick_MetalTop_62.csv",
+      "record": 11,
+      "desc": "There shall be minimum 2X2 array of vias (top vias) at one location connecting to 3um thick top metal. Note: This rule will not checked for seal ring area (identified by GUARD_RING_MK As the via rules in this area are separately covered under seal ring section)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MC.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\26_Mcell_64.csv",
+      "record": 5,
+      "desc": "Minimum Mcell area",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "MC.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\26_Mcell_64.csv",
+      "record": 6,
+      "desc": "Minimum area enclosed by Mcell",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "ANT.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 3,
+      "desc": "Maximum ratio of Poly2 perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.2(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 4,
+      "desc": "Maximum ratio of Metal1 perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.3(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 5,
+      "desc": "Maximum ratio of Metal2 perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.4(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 6,
+      "desc": "Maximum ratio of Metal3 perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.5(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 7,
+      "desc": "Maximum ratio of Metal4 perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.6(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 8,
+      "desc": "Maximum ratio of Metal5 perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.7(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 9,
+      "desc": "Maximum ratio of MetalTop perimeter area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 10,
+      "desc": "Maximum ratio of contact area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.9(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 11,
+      "desc": "Maximum ratio of Via1 area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.10(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 12,
+      "desc": "Maximum ratio of Via2 area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.11(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 13,
+      "desc": "Maximum ratio of Via3 area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.12(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 14,
+      "desc": "Maximum ratio of Via4 area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.13(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 15,
+      "desc": "Maximum ratio of Via5 area to related gate oxide area",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.14",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 16,
+      "desc": "If MIM is between Metaln and Metal (n+1), Then: Maximum ratio of each of the metal layer (Metal (n+1) to MetalTop) perimeter area to related MIM area (For example, If MIM is between Metal2 and Metal3, then need to check ANT.14 for M3, M4, ... MetalTop to its related MIM)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.15",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv",
+      "record": 17,
+      "desc": "If MIM is between Metaln and Metal (n+1), then: Maximum ratio of each of Via (Vian to most top Via) area to related MIM area (For example, If MIM is between Metal2 and Metal3, then need to check ANT.15 for V2, V3, ... most top Via to its related MIM)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "ANT.16",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\28_ANTENNA2_67.csv",
+      "record": 2,
+      "desc": "If any of the above antenna ratio rules fails then the antenna diodes shall be connected in a reverse bias mode between the metal line failing antenna ratio (connected to gate poly or MIM cap top plate) and the substrate underneath. For DRC check if Metaln or Vian fails antenna ratio then it shall check whether this Metaln or Vian is directly connected to COMP through lower level metals, vias and contacts or not? Case (a): Connection to COMP is not present: Flag error Case (b): Connection to COMP is present: Then: (i) For Thin gate case: (COMP AND Poly2 NOT DUALGATE): Treat Gate area = (thin gate area + MF* (COMP area directly connection that node)) This comp area contained the protection diode and any other drain or source junction connected to this node. MF: stand for multiplying factor, for this case MF=2 (ii) For Thick gate case (COMP AND Poly2 AND DUALGATE) Treat Gate area = (Thick gate area + MF* (COMP area directly connection that node)) This comp area contained the protection diode and any other drain or source junction connected to this node. MF: stand for multiplying factor, for this case MF=15 (iii) For MIM Cap case: Treat MIM area = (FuseTop area + MF* (COMP area directly connection that node))(For MIM option-A process) Treat MIM area = (FuseTop area + MF* (COMP area directly connection that node))(For MIM option-B process) This comp area contained the protection diode and any other drain or source junction connected to this node. MF: stand for multiplying factor, for this case MF=15 And check back the validity of antenna ratios as specified in rules ANT.1 to ANT.15.",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "PAD.21",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\29_BondPad2_70.csv",
+      "record": 22,
+      "desc": "FOR other rules specific to CUP (circuit under pad Case) refer to section 9.3",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 2,
+      "desc": "All FEOL are allowed to be below Pad region (except the items stated in CUP.4).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.1a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 3,
+      "desc": "CUP is not allowed for Wedge-type Wire bond case.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.4(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 6,
+      "desc": "Circuits currently not allowed under bond pad are: \\- Devices sensitive to strain (eg: silicon band-gap references) \\- Matched pair devices like transistors, resistors and capacitors For precision analog application. \\- All RF components",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 7,
+      "desc": "Top vias directly underneath the pad opening",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 9,
+      "desc": "a\\) Guideline: Metals underneath pad shall be in the form of stripes which Should be aligned parallel to the expected current flow during normal operation and ESD condition. Refer Fig.CUP7(a)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 10,
+      "desc": "b\\) Guideline*: If orthogonal current flow is required crosshatched Metal grids with similar line and space may be used. Refer Fig.CUP7(b)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 11,
+      "desc": "c\\) Vias shall be in the form of cluster or arrays (<=3x3). Sea of Via (>3x3 array) is not allowed. Refer Fig.CUP7(c)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 15,
+      "desc": "Top_Via-1 (2) directly underneath the Pad mask",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "CUP.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv",
+      "record": 17,
+      "desc": "1LM, 2LM and 3LM process with CUP.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "TM.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 2,
+      "desc": "Passivation Opening (Pad mask)",
+      "reason": "Symbolic pad dimension A; no scalar distance."
+    },
+    {
+      "id": "TM.2",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 4,
+      "desc": "UBM Opening",
+      "reason": "Symbolic dimension A + 20; no scalar distance."
+    },
+    {
+      "id": "TM.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 6,
+      "desc": "Bump Pad (Top metal in this case)",
+      "reason": "Symbolic dimension A + 32; no scalar distance."
+    },
+    {
+      "id": "TM.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 9,
+      "desc": "Space from centre of Pad to Die Edge (Outer edge of GUARD_RING_MK marking)",
+      "reason": "Centre-to-die-edge distance, not edge spacing."
+    },
+    {
+      "id": "TM.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 10,
+      "desc": "Min allowable bump pitch",
+      "reason": "Pitch formula, not a scalar edge spacing."
+    },
+    {
+      "id": "TM.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 11,
+      "desc": "Pad without UBM layers is not allowed except the Pad under PROBE_MK marking.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "TM.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 12,
+      "desc": "Shape of the Pad shall be at least octagonal (or more closer to circular) except the Pad under PROBE_MK marking.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "TM.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv",
+      "record": 14,
+      "desc": "Partially overlap of top via with passivation opening is not allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "PM.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\32_Probe_pad_79.csv",
+      "record": 4,
+      "desc": "Min probe pad pitch1",
+      "reason": "Centre-to-centre pitch, not edge spacing."
+    },
+    {
+      "id": "PRES.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\33_ANALOG_DEVICE1_80.csv",
+      "record": 9,
+      "desc": "Maximum current density of Poly2 resistor (mA/um)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "LRES.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\33_ANALOG_DEVICE2_82.csv",
+      "record": 9,
+      "desc": "Maximum current density of Poly2 resistor (mA/\uf06dm)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "HRES.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\33_ANALOG_DEVICE3_84.csv",
+      "record": 12,
+      "desc": "Maximum current density of Poly2 resistor (mA/um)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "MIM.8a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv",
+      "record": 9,
+      "desc": "Minimum MIM cap area (defined by FuseTop area)",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "MIM.8b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv",
+      "record": 10,
+      "desc": "Maximum single MIM Cap area (Use multiple MIM caps in parallel connection if bigger capacitors are required)",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "MIM.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv",
+      "record": 12,
+      "desc": "(a) There cannot be any Via1 touching MIM bottom plate Metal2 (b) MIM bottom plate Metal2 can only be connected through the higher Via (Via2).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MIM.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv",
+      "record": 13,
+      "desc": "Bottom plate of multiple MIM caps can be shared (for common nodes) as long as total MIM area with that single common plate does not exceed \u201cMIM.8b\u201d rule.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MIM.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv",
+      "record": 14,
+      "desc": "For MIM need to identify its' length and width, use MIM_L_MK to mark MIM capacitor's length",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Guideline",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv",
+      "record": 15,
+      "desc": "There cannot be any sensitive matching analog circuitry underneath MIM.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MIMTM.8a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv",
+      "record": 9,
+      "desc": "Minimum MIM cap area (defined by FuseTop area)",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "MIMTM.8b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv",
+      "record": 10,
+      "desc": "Maximum single MIM Cap area (Use multiple MIM caps in parallel connection if bigger capacitors are required)",
+      "reason": "Area, not a distance."
+    },
+    {
+      "id": "MIMTM.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv",
+      "record": 12,
+      "desc": "(a) There cannot be any \u201cVian-2\u201d touching MIM bottom plate \u201cMetaln-1\u201d (b) MIM bottom plate \u201cMetaln-1\u201d can only be connected through the higher Via (\u201cVian-1\u201d).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MIMTM.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv",
+      "record": 13,
+      "desc": "Bottom plate of multiple MIM caps can be shared (for common nodes) as long as total MIM area with that single common plate does not exceed \u201cMIMTM.8b\u201d rule.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MIMTM.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv",
+      "record": 14,
+      "desc": "For MIM need to identify its' length and width, use MIM_L_MK to mark MIM capacitor's length",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Guideline",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv",
+      "record": 15,
+      "desc": "There cannot be any sensitive matching analog circuitry underneath MIM.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NAT.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\36_Native_Vt_NMOS_90.csv",
+      "record": 8,
+      "desc": "Two or more COMPs if connected to different potential are not allowed under same NAT layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NAT.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\36_Native_Vt_NMOS_90.csv",
+      "record": 12,
+      "desc": "Nwell,inside \u201cNAT\u201d layer are not allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NAT.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\36_Native_Vt_NMOS_90.csv",
+      "record": 13,
+      "desc": "NCOMP not intersecting to Poly2, is not allowed inside \u201cNAT\u201d layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "NAT.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\36_Native_Vt_NMOS_90.csv",
+      "record": 14,
+      "desc": "Poly2 not intersecting with COMP is not allowed inside \u201cNAT\u201d \\(Poly2 resistor is not allowed inside \u201cNAT\u201d\\)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DE.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\39_Dummy_layers_104.csv",
+      "record": 2,
+      "desc": "Dummy COMP exclude and dummy poly/metal exclude layers shall be drawn only if necessary (for example for certain critical RF circuit area where RF coupling is critical). Other wise in normal analog and digital active circuits, the presence of \u201cdummy COMP\u201d Around it rather maintains the better Ioff performance of the transistors and junctions.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "O.DF.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\41_OTP_MK_Mark_106.csv",
+      "record": 5,
+      "desc": "Min. COMP area (um2)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "O.SB.13",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\41_OTP_MK_Mark_106.csv",
+      "record": 19,
+      "desc": "Min. area of silicide block (um2)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "O.PL.ORT",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\41_OTP_MK_Mark_106.csv",
+      "record": 22,
+      "desc": "Orientation-restricted gates must have the gate width aligned along the X-axis (poly line running horizontally) in reference to wafer notch down",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EF.04b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 6,
+      "desc": "PLFUSE must be rectangular",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EF.04c",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 7,
+      "desc": "Cathode Poly2 must be rectangular",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EF.04d",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 8,
+      "desc": "Anode Poly2 must be rectangular",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EF.15",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 19,
+      "desc": "NO Contact is allowed to touch PLFUSE",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EF.16a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 20,
+      "desc": "Cathode must contain exact number of Contacts at each ends",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "EF.16b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 21,
+      "desc": "Anode must contain exact number of Contacts at each ends",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "EF.18",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv",
+      "record": 23,
+      "desc": "PLFUSE must sit on field oxide (NOT COMP), no cross with any COMP, Nplus, ESD, SAB, Resistor, Metal1, Metal2",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 13,
+      "desc": "ALL LDNMOS shall be covered by Dualgate layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 15,
+      "desc": "Each LDNMOS shall be covered by LDMOS_XTOR (GDS#226) mark layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 20,
+      "desc": "POLY2 rules",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.10f",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 27,
+      "desc": "Poly2 interconnect in HV region (LDMOS_XTOR marked region) not allowed. Also, any Poly2 interconnect with \u201cpoly2 to substrate\u201d potential greater than 6V is not Allowed)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.13",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 30,
+      "desc": "Wide width transistor can be used with multi finger type with following rules:",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.13b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 32,
+      "desc": "Layout shall have alternative source & drain",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.13c",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 33,
+      "desc": "Both sides of the transistor shall be terminated by source",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.13d",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 34,
+      "desc": "Every two poly fingers shall be surrounded by a P-sub guard ring. (Exclude the case when each LDNMOS transistor have full width butting to well tap)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.16",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 38,
+      "desc": "Others unlisted layer like Nplus, Pplus, CONTACT, Metal, VIA, shall follow MV rules listed in section 7.0",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDN.17",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv",
+      "record": 39,
+      "desc": "It is recommended to surround the LDNMOS transistor with non-broken Psub guard ring Guideline to improve the latch up immunity.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 5,
+      "desc": "Each LDPMOS shall be surrounded by non-broken Nplus guard ring inside DNWELL. Nplus guard ring shall be connected to the highest potential. It is better to put wider than minimum guard ring for latch-up prevention if LDNMOS and LDPMOS are adjacent to each other (refer to latch-up guidelines in section 14.5.4).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.3d",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 10,
+      "desc": "The metal connection for the Nplus guard ring recommended to be continuous, The maximum gap between this metal if broken Note: To put maximum number of contact under metal for better manufacturability and reliability",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "MDP.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 11,
+      "desc": "DNWELL covering LDPMOS shall be surrounded by non broken Pplus guard The metal connection for the Pplus guard ring recommended to be continuous, The maximum gap between this metal if broken. Note: To put maximum number of contact under metal for better manufacturability and Reliability",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "MDP.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 14,
+      "desc": "Each LDPMOS shall be covered by Dualgate layer,",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 16,
+      "desc": "Each LDPMOS shall be covered by LDMOS_XTOR (GDS#226) layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 20,
+      "desc": "POLY2 rules",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.9f",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 27,
+      "desc": "Poly2 interconnect is not allowed in LDPMOS region (LDMOS_XTOR marked Region)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.13",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 33,
+      "desc": "Wide width transistor can be used with multi finger with following rules",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.13b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 35,
+      "desc": "Layout shall have alternative source & drain",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.13c",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 36,
+      "desc": "Both sides of the transistor shall be terminated by source",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.14",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 37,
+      "desc": "Others unlisted layer like Nplus, Pplus, Nwell, Contact, Metal, VIA, shall follow MV rules listed in section 7.0",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MDP.17",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv",
+      "record": 41,
+      "desc": "(a) For better latch up immunity, it is necessary to put DNWELL guard ring Check DRC Between \u201cMVPSD Inside DNWELL covered by LDMOS_XTOR\u201d and NCOMP (outside DNWELL and outside Nwell) when spacing between them is less than 40um (b) Layout for DNWELL guard ring shall follow rule DN.1, DN.2a, DN.2b, DN.3, DF.4b, DF.18, and MDP.15. (c) DNWELL guard ring shall have NCOMP tab to be connected to highest Potential. (d) DNWELL guard ring length shall be bigger than the width of \u201cMVPSD inside Check DRC DNWELL\u201d and NCOMP.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Y.DF.4d",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\45_YMTP_MK_Mark_121.csv",
+      "record": 4,
+      "desc": "(Nwell overlap of NCOMP) outside DNWELL (inside YMTP_MK) is allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Y.PL.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\45_YMTP_MK_Mark_121.csv",
+      "record": 12,
+      "desc": "90 deg bends on the COMP are not allowed (except YMTP_MK)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Definitions",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 2,
+      "desc": "Anode COMP = (COMP AND Schottky_diode) NOT Nplus Cathode COMP = (COMP AND Schottky_diode) AND Nplus",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "Definitions",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 3,
+      "desc": "Diode area = Anode area = (COMP AND Schottky_diode) NOT (Nplus OR Pplus)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SK.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 7,
+      "desc": "Schottky diode shall need both cathode and anode a\\) Only Cathode COMP or only Anode COMP under \u201cSchottky_diode\u201d Marking is not allowed B\\) \u201cSchottky_diode\u201d without COMP is not allowed.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SK.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 11,
+      "desc": "Min. Schottky diode outside DNWELL is not allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SK.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 15,
+      "desc": "Poly2 intersect with Schottky_diode mark layer is not allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SK.14",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 16,
+      "desc": "a\\) Two anode COMP area must be separated by cathode COMP in the anode width direction (two anode comp can not exist side by side without having cathode COMP in between). B\\) Cathode COMP length cannot be shorter than that of anode COMP length.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "SK.17",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv",
+      "record": 19,
+      "desc": "Each anode must have cathode on both sides of anode width direction",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.NP.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 11,
+      "desc": "Nplus overlap of unsalicided Poly2 = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.PP.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 12,
+      "desc": "Pplus Implant overlap of unsalicided Poly2 = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.NP.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 13,
+      "desc": "Nplus overlap of unsalicided COMP = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.PP.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 14,
+      "desc": "Pplus Implant overlap of unsalicided COMP = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.NP.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 15,
+      "desc": "Nplus overlap with P-channel poly gate extension is forbidden within 0.32um of P-channel gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.PP.12",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 16,
+      "desc": "Pplus Implant overlap with N-channel poly gate extension is forbidden within 0.32um of N-channel gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.PL.2_LV",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 17,
+      "desc": "Min gate width (Channel length) = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.PL.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 18,
+      "desc": "Poly2 90 degree bends on COMP are not allowed",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.SB.14a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 22,
+      "desc": "Space from unsalicided Nplus Poly2 to unsalicided Pplus Poly2 = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.SB.14b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 23,
+      "desc": "Space from unsalicided Nplus Poly2 to P-channel gate = NA",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.SB.16",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 24,
+      "desc": "SAB layer cannot exist on 3.3V and 5V/6V CMOS transistor's Poly and COMP area of the core ciruit (Excluding the transistors used for ESD purpose). It can only exist on CMOS transistors marked by LVS_IO, OTP_MK, ESD_MK layers.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.LU.4b_LV",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 25,
+      "desc": "Max. Nwell tap space to any point in the boundary of Pcomp inside Nwell = 30 (LV) For Nwell to (Ncomp outside Nwell) space >= 1.0um and < 2.0um",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.LU.4c_LV",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 26,
+      "desc": "Max. Nwell tap space to any point in the boundary of Pcomp inside Nwell = 15 (LV) For Nwell to (Ncomp outside Nwell) space < 1.0um",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "EE.LVESD.1_esd_mk",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv",
+      "record": 27,
+      "desc": "LV MOSFET used for ESD protection should be enclosed by ESD_MK, ESD_MK must enclose well pick-up implant Debug1 : Mosfet with SAB but no LVS_IO, OTP_MK or ESD_MK",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "R.9(1)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\50_GUARD_RING_MK_134.csv",
+      "record": 10,
+      "desc": "All Metal & Vias shall exist in the seal ring area All Vias shall put in a staggered row",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "GR.10(2)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\50_GUARD_RING_MK_134.csv",
+      "record": 11,
+      "desc": "There must be rows of contact in the seal ring area",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "GR.11",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\50_GUARD_RING_MK_134.csv",
+      "record": 12,
+      "desc": "Pad opening on top of GUARD_RING_MK layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DCF.1a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 4,
+      "desc": "All area between active polygons (COMP) (with spacing greater than equal to this rule) must be filled with \u201cDummy COMP\u201d except area marked by NDMY, RES_MK, Pad and IND_MK, as well as the Region define by DCF.6a, 6b, 6c, 6d, 6e. Use rules DCF.1c to DCF.13 to drawn \u201cDummy COMP\u201d",
+      "reason": "Threshold triggering dummy insertion, not a spacing constraint."
+    },
+    {
+      "id": "DCF.1b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 5,
+      "desc": "Minimum global density for active layers (COMP+ Dummy COMP) Local density is governed by DCF.1a , DE.3 and DE.4",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "DCF.1d",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 7,
+      "desc": "Maximum global density for active layers (COMP+ Dummy COMP)",
+      "reason": "Area, density, current or antenna ratio, not a distance."
+    },
+    {
+      "id": "DCF.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 10,
+      "desc": "Stagger both X and Y direction",
+      "reason": "Array staggering offset, not edge spacing."
+    },
+    {
+      "id": "DCF.7a",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 17,
+      "desc": "Space from dummy COMP in prime die including guard ring to the scribe line",
+      "reason": "Scribe-line boundary has no identified mask in these sources."
+    },
+    {
+      "id": "DCF.7b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 18,
+      "desc": "Space from dummy COMP in frame to edge of frame (valid only for scribe lines)",
+      "reason": "Frame boundary has no identified mask in these sources."
+    },
+    {
+      "id": "DCF.7c",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 19,
+      "desc": "Space from dummy COMP in frame to any frame cell except non-ET (valid only for scribe line structures)",
+      "reason": "Frame-cell boundary has no identified mask in these sources."
+    },
+    {
+      "id": "DCF.7d",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 20,
+      "desc": "Space from dummy COMP in SLM Etest patterns or SLM reliability test patterns to the boundary of test patterns (valid only for scribe line Structures)",
+      "reason": "Test-pattern boundary has no identified mask in these sources."
+    },
+    {
+      "id": "DCF.8b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 22,
+      "desc": "There must be at least one row of dummy COMP (or substrate tie) between RES_MK layer and the transistor channel active if RES_MK layer's both side (x and y) dimensions are greater than:",
+      "reason": "Dimension triggering dummy-row insertion, not a width constraint."
+    },
+    {
+      "id": "DCF.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 24,
+      "desc": "Remove truncated dummy squares (Truncated Dummy COMP shall not exist)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DCF.11b",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 26,
+      "desc": "There must be at least one row of dummy COMP (or substrate tie) between NDMY layer and the transistor channel active if NDMY layer's both side (x and y) dimensions are greater than:",
+      "reason": "Dimension triggering dummy-row insertion, not a width constraint."
+    },
+    {
+      "id": "DCF.13",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv",
+      "record": 28,
+      "desc": "Dummy COMP should not exist under IND_MK layer There must be at least one row of dummy COMP (or substrate tie) between IND_MK layer and the transistor channel active if IND_MK layer's both side (x and y) dimensions are greater than:",
+      "reason": "Dimension triggering dummy-row insertion, not a width constraint."
+    },
+    {
+      "id": "DPF.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv",
+      "record": 7,
+      "desc": "Stagger both X and Y direction",
+      "reason": "Array staggering offset, not edge spacing."
+    },
+    {
+      "id": "DPF.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv",
+      "record": 14,
+      "desc": "Space from dummy poly2 in prime die to scribe line",
+      "reason": "Scribe-line boundary has no identified mask in these sources."
+    },
+    {
+      "id": "DPF.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv",
+      "record": 17,
+      "desc": "Remove truncated dummy squares",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DPF.15",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv",
+      "record": 22,
+      "desc": "Dummy poly2 should not exist under IND_MK layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DPF.17",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv",
+      "record": 24,
+      "desc": "Dummy poly2 should not exist under MTPMARK layer",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DPF.18",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv",
+      "record": 25,
+      "desc": "Dummy poly2 cannot exit under the marking layer \u201cPMNDMY\u201d",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DM.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\53_Dummy_Metal_145.csv",
+      "record": 11,
+      "desc": "No overlap of Dummy Metal with the Subsequent Metal layers",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DM.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\53_Dummy_Metal_145.csv",
+      "record": 12,
+      "desc": "No overlap of Dummy Metal with the Previous layers",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "DM.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\53_Dummy_Metal_145.csv",
+      "record": 14,
+      "desc": "Do not use exact replicates of dummy metal fill patterns for consecutive metal layers to avoid dielectric and metal stress problems? E.g. the Metal4 dummy metal fill patterns should not be an exact copy of the Metal3 dummy fill pattern. (Offsets value:)",
+      "reason": "Pattern offset, not edge spacing."
+    },
+    {
+      "id": "DM.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\53_Dummy_Metal_145.csv",
+      "record": 15,
+      "desc": "Offset between the Dummy metal of the same layers",
+      "reason": "Pattern offset, not edge spacing."
+    },
+    {
+      "id": "LU.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 2,
+      "desc": "FOR LV and MV inside DNWELL This rule is to check Max. Nwell/DNWELL tap space to every point on the boundary of PCOMP inside Nwell/DNWELL. For within 50um from (the PCOMP inside NWELL or DNWELL), minimum LVPWELL to (PCOMP outside LVPWELL) space is defined as (x):",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.2",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 6,
+      "desc": "FOR LV and MV inside DNWELL This rule is to check Max. LVPWELL tap space to every point on the boundary of NCOMP inside LVPWELL. For within 50um from (the NCOMP inside LVPWELL), minimum LVPWELL to (PCOMP outside LVPWELL) space is defined as x:",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 10,
+      "desc": "FOR LV and MV outside DNWELL This rule is to check Max. LVPWELL (Psub) tap outside DNWELL space to every point on the boundary of NCOMP outside NWELL/DNWELL. For within 50um from the (NCOMP in LVPWELL or Psub), Minimum NWELL to (NCOMP outside Nwell) space is defined as y.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 14,
+      "desc": "FOR LV and MV outside DNWELL This rule is to check Max. Nwell tap space to every point on the boundary of PCOMP inside Nwell. For within 50um from (the PCOMP inside NWELL), minimum NWELL to (NCOMP outside Nwell) space is defined as y:",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 18,
+      "desc": "For Native Vt NMOS (check for NAT marking)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 19,
+      "desc": "For within 50um from NAT layer, If there is NWELL present, then NAT layer shall be directly surrounded by PCOMP substrate guard ring. (No other NCOMP, NWELL in between the NAT and PCOMP guard ring)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.5",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 20,
+      "desc": "Common Guidelines",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 21,
+      "desc": "Maximize the number of contacts in the substrate and well taps.",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "LU.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 22,
+      "desc": "Total equivalent contact area to the channel area generating substrate current (Poly2 intersecting COMP) should be more than 3%. This is a guideline only.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 23,
+      "desc": "Butted substrate contact to source is always the best for latch-up immunity wherever possible",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.9",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 24,
+      "desc": "All Nwell taps shall be connected to respective most highest Potential",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LU.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv",
+      "record": 25,
+      "desc": "All Psub shall be connected to their respective lowest potential",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "IO.0",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\56_IO_Latch-up1_156.csv",
+      "record": 2,
+      "desc": "To flag I/O latch-up related violation: i. Non well tap COMP directly connected to PAD is recommended to be marked by \u201cLatchup_MK\u201d layer.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "IO.0",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\56_IO_Latch-up1_156.csv",
+      "record": 4,
+      "desc": "FOR LV and MV",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "IO.1",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\56_IO_Latch-up1_156.csv",
+      "record": 5,
+      "desc": "(a1) NCOMP in PSub directly connected to I/O pad must be surrounded by Psub tap inside the Psub without any PCOMP in NWELL in between (Exclude the case when each NMOS transistor have full width butting to well tap).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "IO.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\56_IO_Latch-up2_158.csv",
+      "record": 3,
+      "desc": "a1\\) PCOMP in Nwell directly connected to I/O pad must be surrounded by Nwell tap inside the Nwell (Exclude the case when each PMOS transistor have full width butting to well tap).",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "LVESD.2",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 3,
+      "desc": "Poly Channel-length for each finger in multi-finger transistors must be same",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "G.LVESD.5(a)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 9,
+      "desc": "Recommended number of fingers share one pick-up ring in multi-finger transistors.",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "LVESD.5(b)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 10,
+      "desc": "Max. number of fingers share one pick-up ring in multi-finger Transistors",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "G.LVESD.6(a)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 11,
+      "desc": "Recommended total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "LVESD.6(b)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 12,
+      "desc": "Min. total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "LVESD.6(c)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 13,
+      "desc": "Max. total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "LVESD.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv",
+      "record": 14,
+      "desc": "SAB should cover drain and source and overlap gate or cover drain only with rule LVESD.7(a) partly overlap poly gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "HVNESD.2",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 3,
+      "desc": "Poly Channel-length for each finger in multi-finger transistors must be same",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "G.HVNESD.5(a)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 8,
+      "desc": "Recommended number of fingers share one pick-up ring in multi-finger transistors.",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "HVNESD.5(b)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 9,
+      "desc": "Max. number of fingers share one pick-up ring in multi- finger transistors",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "G.HVNESD.6(a)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 10,
+      "desc": "Recommended total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "HVNESD.6(b)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 11,
+      "desc": "Min. total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "HVNESD.6(c)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 12,
+      "desc": "Max. total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "HVNESD.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv",
+      "record": 13,
+      "desc": "SAB should cover drain and source and overlap gate or cover drain only with rule HVNESD.7(a) partly overlap poly Gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "HVPESD.2",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 3,
+      "desc": "Poly Channel-length for each finger in multi-finger transistors must be same",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "G.HVPESD.5(a)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 8,
+      "desc": "Recommended number of fingers share one pick-up ring in multi-finger transistors.",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "HVPESD.5(b)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 9,
+      "desc": "Max. number of fingers share one pick-up ring in multi- finger transistors",
+      "reason": "Object count, not a distance."
+    },
+    {
+      "id": "G.HVPESD.6(a)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 10,
+      "desc": "Recommended total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "HVPESD.6(b)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 11,
+      "desc": "Min. total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "HVPESD.6(c)",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 12,
+      "desc": "Max. total finger width",
+      "reason": "Aggregate finger width, not a single-layer geometric width."
+    },
+    {
+      "id": "HVPESD.7",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv",
+      "record": 13,
+      "desc": "SAB should cover drain and source and overlap gate or cover drain only with rule HVPESD.7(a) partly overlap poly Gate",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.3",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 4,
+      "desc": "Slot length (slot mark layers)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.4",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 7,
+      "desc": "Slot space (slot mark layers)",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.6",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 11,
+      "desc": "For multiple slots that spans the metal width, slots should be staggered.",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 14,
+      "desc": "(a) MetalTop area directly under the Pad",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 15,
+      "desc": "(b) MIM bottom plate directly under FuseTop",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 16,
+      "desc": "(c) MetalTop directly under FuseWindow_D",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 17,
+      "desc": "(d) Metal3 area (for MIM top plate connection) directly enclosed by FuseTop",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.8",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 18,
+      "desc": "(e) MetalTop area directly under UBM layers",
+      "reason": "No scalar distance in the value columns."
+    },
+    {
+      "id": "MSLOT.10",
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv",
+      "record": 20,
+      "desc": "Slot mark layer on the metal hole (same metal level, e.g. Metal1_Slot on the Metal1 hole) are not allowed",
+      "reason": "No scalar distance in the value columns."
+    }
+  ],
+  "supporting_tables": [
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\01_Document_rev2_3_4.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\02_Process_Identification7.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\03_met_levels8_1.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\03_met_levels8_2.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\04_gaurd_ring_8.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\05_Current_0.18_MCU_9.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\06_Drawn_layer10.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\07_Mask_Layer14.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\08_Topological_Truth_Table15.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\09_LAYOUT_RULE_DESCRIPTION27.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\28_ANTENNA3_69.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\37_Matched_pair_layout_guidelines_97.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_1.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_1.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\48_SRAM2_126.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\49_scribeline_guardring1_131.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\49_scribeline_guardring2_133.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\54_Electro-migration1_150.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\54_Electro-migration2_151.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\60_ESD_Performance_174.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\61_ESD2_Performance_175.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\62_ESD3_Performance_176.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\63_ESD4_Performance_177.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\64_ESD5_Performance_178.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\65_ESD6_Performance_179.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\66_ESD7_Performance_180.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\67_ESD8_Performance_181.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\69_Device_List_184.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    },
+    {
+      "path": "physical_verification_gf180\\design_manual\\tables_clear\\70_not_coded_rules_187.csv",
+      "reason": "Supporting table, not an identified design-rule table."
+    }
+  ],
+  "source_sha256": {
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\antenna.rb": "c825524a8764244c7bf2462aae16b01d8559402a1b365fbfc33c24388531c889",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\comp.rb": "97030747eb619ac41c0294e389a5576a3a109ab007c9c60779b65ff9397ea232",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\contact.rb": "1b2a96860b3e88e6767ac91c940b66e66a64f9dfbf36a2f3dec351feea02d344",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\cup.rb": "6dba4c9ee5555424e04b25b0125ea2ee769ac52afbf4e23eb090d741e0800273",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\density.rb": "5934a174799e2c143934e156e6561f9a414f795d3ccf368e10b3b6eed9b41ec2",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dnwell.rb": "6fd0cbc16f96eaab5c71ae75e92f94a32f2b9ae0967c99891a8375d80c66809c",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\drc_bjt.rb": "9f1b5ca6e8123b04c353b52f3ac25b8a8f3e6782a22ea5bab7996976ce61711a",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dualgate.rb": "6b316840af37314ab4a04b5a09bb8fec8ccf7ac09f17dd38fecee9a2e9ac17b0",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dummy_comp.rb": "f2f46c908e2c97d7d7491ca602d91b4c29a97e3b60130446998e59acc38a8cc8",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dummy_exclude.rb": "5d28ca707b6f6a652632b4fd3a097d1b2c2eb95c423c2836d21a3fa7f7720d8e",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dummy_metal.rb": "6239ec9ddb96a6c5f6a5238b3b0b75bda2e7ca7596a93c258561ff0f17fc9ea3",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dummy_poly2.rb": "63ab114f3be999f76a6f2f20d3d4cfc25fe9353c4726a9c860e2e70bbbd6d244",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\efuse.rb": "8688f3952f9b3cb3dfd5a32f61c517af9e87391a75acd320d42b199eed8d52b2",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\esd.rb": "ed986bc7bf91c90b17a4b969b3861c9cb84100314392fbea4e0147a7c37fa0e8",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\geom.rb": "f8652745b9b78c137f63daab7c8e19c0e349c7093787c8b7ce883d8de0305f96",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\guard_ring.rb": "20c8ec2b1d843c299e78a98111dfa46556fbe7e016023a6d2a0cf44bd99ce001",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\hres.rb": "eaed4ddef8806d65425512a409a2f7dcdcbe2325a10e797a3cadcecdf9fedd4e",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\ldnmos.rb": "f026a12c91807f846a0ad0da2966c2f7a4da8c1188fd58f5136aaf884ad19ca4",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\ldpmos.rb": "fb7da8183d20f72969e514ab8108d2f319bd3d57d1557bcda78ea38c863b3edb",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\lres.rb": "53dd5a9f68a45e0ea7f90862da7fb43c4f37fae9dd6e72d87b9c99bb7c8337ac",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\lvpwell.rb": "4251253299cdc1aa472ff683325e5b1f8eca2afdc05805dabfab31bd07667877",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\lvs_bjt.rb": "58bec979196b5b47e391550d1a10b5d54806d261fad0da1edea387b61c2c0688",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\mcell.rb": "9ae547d7ab9390e72bcd2db73e74a3a3415ae0b24d995311213e1900bb1716c9",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\metal.rb": "d8ba81b38adc8258c867c87a11a653640ad62b78ea61e7de3729b57bea2aee1e",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\metaltop.rb": "03cf4113d294a9e8d445cee4a01ce60db055dd93a1cb41b1ac704675f26c7da3",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\metaltop_30k.rb": "87d519bea0754a5436398af87650eec7e080cf900e4f89c54fbbe1ff220fbbfb",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\mim_a.rb": "e712155c89e0e55f1441e4588b9ff61d15d467a0136fa9b9f13e67c83ddbb40a",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\mim_b.rb": "79ac589f69f3a983e253e6c6e15df52180b2b9bf1d760aeb033312c45f1b1dc4",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\mslot.rb": "e13b27c8dbff98162a96a0f2483ab25f41666d8757ccfbb2ca72d9d85766bbce",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\nat.rb": "1af61b1c2ec2f91470001ab9fdb0dd6ff86cc513d06008cfd897e4124170440c",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\nplus.rb": "e848b12c408a32acb5aafbcd605f4d6a13f3efc496a18f2045f17bbd5aa91514",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\nwell.rb": "fe65056bf6179fe43f6f4f2923f3966d03a1231ab310ff6c175c07080d9290ae",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\otp_mk.rb": "41e33d7ce9796602c154edc903db259f46a11c61df16039a8fe713751a87b9c7",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\poly2.rb": "98872935f83315cce2b59539594aee401f7f1e12e23ad7940cdb8d455cde3891",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\pplus.rb": "0cb0ea019125c68bf514c1c3a2c79ff87c87e8d740b695066bad6955e4444f7c",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\pres.rb": "4a2d2806dad4e876f3629283caba67be8c3f00af10b2db36c6329dfb9bf37ff8",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\sab.rb": "b2bb0b46c9188fae59a44c7cda468db8f16b16b1b77cad309d429241ea5c2d36",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\sram_3p3.rb": "cf4535d0577df23780c487715fb2779f518d0fb93535c0ce95b898d6fadadde1",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\sram_5p0.rb": "c6a8f80947b071fc15e3ed98261d37c5debc73ac9d2d65012b31da9d3d731e7c",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\via.rb": "d48ead7abee03dec2bf9eb0abbf343c407dc4f1fc2e71b30878d38639ecaf5bf",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\ymtp_mk.rb": "ca5956582c8639bcf0c4a1f76d7bfd4eaaa91c5c221592051f3a83ad3b264836",
+    "gf180mcuA\\libs.tech\\klayout\\tech\\gf180mcu.lyp": "df2554c382713e671425ac9c6250c512e86e33bc469d70eee1c128878aaeb927",
+    "gf180mcuA\\libs.tech\\magic\\gf180mcuA.tech": "f5753fec7a60e057eb767f966a33cfd6b85348aa7e309295ce63b0661f83d40a",
+    "physical_verification_gf180\\design_manual\\Design_Manual.rst": "d14b41f5a1b3bbbd954774acfbff9c687bcf5b3a8a346179d989b3028208444c",
+    "physical_verification_gf180\\design_manual\\drm_01.rst": "89dcf92683be1051458cb0f7db8145b90644817bedb4380c91456f374811f9f3",
+    "physical_verification_gf180\\design_manual\\drm_02.rst": "bff9a5b5c65576dec67973ad4b6b31f2e875231c309757ba0f5859185bfb0b77",
+    "physical_verification_gf180\\design_manual\\drm_03.rst": "00cf778c5d88488a0464e960be535859f1fb279190bedfa84d92d466b1a8ef12",
+    "physical_verification_gf180\\design_manual\\drm_04.rst": "6eb26988bb140c3282a464eb8c718a93fdab0e64ed5d9f6adcea617687d6d447",
+    "physical_verification_gf180\\design_manual\\drm_04_1.rst": "e7a3db1eab60e89af568aec59c7b3d4f62dd8bfa4ebd4fe48f9acdcfb87478bd",
+    "physical_verification_gf180\\design_manual\\drm_04_2.rst": "156f513838bcb9426894eb0540cdefbe6fff31eb6a96a5ffdf243954f540dd3a",
+    "physical_verification_gf180\\design_manual\\drm_04_3.rst": "c483b24ea169c894cfd003679525384e127f2d6f9ffbb1059a3ea0a886cfdbf9",
+    "physical_verification_gf180\\design_manual\\drm_04_4.rst": "edc4d3ff30ae7f9c043dd823c6694ed84fee0747f81fbd68b84af25c15657669",
+    "physical_verification_gf180\\design_manual\\drm_05.rst": "a2d57e67092280f30c0fc8f7e7f0a3ae1e9582db28381a7497d9fc9321eb1cdf",
+    "physical_verification_gf180\\design_manual\\drm_05_1.rst": "3f2190deac462b1f407a0ff446784afbfa316f1bd73485c867fe3996d38a4301",
+    "physical_verification_gf180\\design_manual\\drm_05_2.rst": "a5408f276327fe63b70abc4c0a7347d454780881ea6fc56be9c26c19f18218b2",
+    "physical_verification_gf180\\design_manual\\drm_05_3.rst": "919a9626b90d54fa0513a7e7f941988420d919c2dda72f9e76db1b180110e5f7",
+    "physical_verification_gf180\\design_manual\\drm_05_4.rst": "3c0fb6418d4b23f5ecfbb909496bd945f5acc8cbf2caebcc8b9b25e482ab77b1",
+    "physical_verification_gf180\\design_manual\\drm_06.rst": "c9d313b333668746c80be0884b8f7311b516b3e1b0a691daa2f43b7c7e45faaf",
+    "physical_verification_gf180\\design_manual\\drm_07.rst": "bc9d4e98ef13e17d4aee3d8f976759ac1341018d3c91048ae9b512b922a60de4",
+    "physical_verification_gf180\\design_manual\\drm_07_02.rst": "bc2868527e5bd073875b6b4cdbf7660ff325edb810ab6fd16b4a316fd391f2be",
+    "physical_verification_gf180\\design_manual\\drm_07_03.rst": "01a417120a97ed8ec8da8de0b7ebadfda31b09ec37759fb63266b0e5b7bfa17a",
+    "physical_verification_gf180\\design_manual\\drm_07_04.rst": "8bfed49f3d854c5e62713897522ace97d5f23daf3357e0ce3cad8a6b1e3a886f",
+    "physical_verification_gf180\\design_manual\\drm_07_05.rst": "b2d44469af2ebc7219e5e4aeb992a076fc23bcbca19b984c44a766dae86cb177",
+    "physical_verification_gf180\\design_manual\\drm_07_06.rst": "f3503a674fde3fddd212870ebecf7efbcccef850d36a751da340202ff7fb137c",
+    "physical_verification_gf180\\design_manual\\drm_07_07.rst": "799f7579fbf661794dce229058a06724491418117cc5274609d4c937c5df206b",
+    "physical_verification_gf180\\design_manual\\drm_07_08.rst": "15caeadb7cf9b70e594733c4af55090ea0dc9832e6d2e77da4650da086f13960",
+    "physical_verification_gf180\\design_manual\\drm_07_09.rst": "e525fa2a714e31fc36ec9ea284ee1b440f3dea9635a68aa9681a1487da27dde2",
+    "physical_verification_gf180\\design_manual\\drm_07_10.rst": "38f35fe536c8317e32a75cece20437e83de36674b6fdb55b950db5805f1d0a4b",
+    "physical_verification_gf180\\design_manual\\drm_07_11.rst": "040d1b18c559eed5321e646049dba79592bfc45eac210671c9e9a7588f96cb6a",
+    "physical_verification_gf180\\design_manual\\drm_07_12.rst": "ad4e7c3493f34c0f32b9f8ff7af2a6c2fe12be2041bd99680165a2559fb325bf",
+    "physical_verification_gf180\\design_manual\\drm_07_13.rst": "c11443cd926181070669733af977665125d6142ed06759e61c312434904bf03d",
+    "physical_verification_gf180\\design_manual\\drm_07_14.rst": "d95c10d1c991fec223fc4653ce8a1dc97624fe6d08430825bbd86377232ecd24",
+    "physical_verification_gf180\\design_manual\\drm_07_15.rst": "1aa8a508cbf39e03bfb098c4d9b703831e8d2dbe072d1c4b5f0e54665a17bd8c",
+    "physical_verification_gf180\\design_manual\\drm_07_16.rst": "df45e8fea467b69114308561a34fdd63d5043c55ec66b205f33fb1275538c1a3",
+    "physical_verification_gf180\\design_manual\\drm_07_17.rst": "67936f4998367cfdeb50371dc611d9329bb6f251fd4525b177ead329348e4807",
+    "physical_verification_gf180\\design_manual\\drm_07_18.rst": "aaa0bcb0bc4ff895bec6e9a1ee725ef0460c7be63e19ac7d51cb324e1b69faa5",
+    "physical_verification_gf180\\design_manual\\drm_08.rst": "321c057c781ed8cdadf5a24294e35358f9094b2760a7475a194f4db0b4fa1ffb",
+    "physical_verification_gf180\\design_manual\\drm_09.rst": "819af86ab4ff8f6c2f9cfb53acf35ac39903696c5f4a79f1aea61e24d09bc50a",
+    "physical_verification_gf180\\design_manual\\drm_09_1.rst": "3fb3955cb45a98f608a6c634552607d18a322bf194d071e7ce77f613f9e3dffb",
+    "physical_verification_gf180\\design_manual\\drm_09_2.rst": "95f00ebc051221ff5fa7d9b3619404d0223c66131fefd9ef6a0a95b7bb204824",
+    "physical_verification_gf180\\design_manual\\drm_09_3.rst": "4f2892499cdc10732e9c812dd5307dfcf380af2d52c5b091f25fdbc22446dedf",
+    "physical_verification_gf180\\design_manual\\drm_09_4.rst": "af7077c03234990e43de4d202af930fe02ecbed0140157b8832d54a6d11b735c",
+    "physical_verification_gf180\\design_manual\\drm_09_4_1.rst": "4b33884279fc5e149d61cd2fcfa3736e166ac39c8072895289a5634465769a5f",
+    "physical_verification_gf180\\design_manual\\drm_09_4_2.rst": "d5d6d756e9f778d9afdbeac61617b7b87503729ce69ba7356aac8e591ffd8bb5",
+    "physical_verification_gf180\\design_manual\\drm_09_4_3.rst": "4ef22a70dea825195a6feae1a2333522cb440ded80f9975265c06fd7b572b1a0",
+    "physical_verification_gf180\\design_manual\\drm_09_4_4.rst": "026136b98c3a894a4f3981b1798b75c8e94e928533e035e62cee24da2d948799",
+    "physical_verification_gf180\\design_manual\\drm_09_4_5.rst": "83aa14cac26aaa4d4fdeab192a76bc1fca77594ea8bee431ba135958e2e582dd",
+    "physical_verification_gf180\\design_manual\\drm_10.rst": "6392849e8adc8b77bd58b6440ef65104591e2bb069d2a048755dcbc37883b81b",
+    "physical_verification_gf180\\design_manual\\drm_10_01.rst": "d12dc9becb6921333bee12cf98055683b65dec89dd87a916a3fb9c408483294c",
+    "physical_verification_gf180\\design_manual\\drm_10_02.rst": "771c7d298dc999b22743578224a5f38ac922fa17c0b596e31889c7ed08753134",
+    "physical_verification_gf180\\design_manual\\drm_10_03.rst": "ce70e86b51884632ef56f24d77da9f4b366d74873fd3cf5aaeebbd23fa6df73a",
+    "physical_verification_gf180\\design_manual\\drm_10_05.rst": "55f8f23108279c9ca0639eca9087d612c6deebb92ac1de6da0ebed8c3a0f787c",
+    "physical_verification_gf180\\design_manual\\drm_10_07.rst": "27def0d919e6fe7d486dfa3014595d734a49fa4a0481cf2670db4d2104189925",
+    "physical_verification_gf180\\design_manual\\drm_10_08.rst": "0463f1750c60d743f03710a0b52c5454a0b9077406e2dfc72e33c1a3736c895a",
+    "physical_verification_gf180\\design_manual\\drm_10_09.rst": "8af3ba079f32048cbc8d35344a117e9820ad76885f71829720842206e72842d0",
+    "physical_verification_gf180\\design_manual\\drm_10_10.rst": "0c528c61d95f5adfe7a9abc115d5d923a8522c3bb9bda1adbc514fa106038737",
+    "physical_verification_gf180\\design_manual\\drm_10_11.rst": "bd99cc1d17b76806a68b80ea94d11677e2bb4453bb05ad3487efadc80d415033",
+    "physical_verification_gf180\\design_manual\\drm_10_12.rst": "1cdb0e79f90485de74d0d1a19848a1da689d772285090a180dffa914c546345b",
+    "physical_verification_gf180\\design_manual\\drm_10_12_1.rst": "c3cf9b4d0eb17c3c6fbe235ee939899da4a03aa661da9ba751afa7326ad288db",
+    "physical_verification_gf180\\design_manual\\drm_10_12_2.rst": "114e27c162ab8811910ba7f25bbc6148e46d9e6ef74b10962b5b69df4e3f1431",
+    "physical_verification_gf180\\design_manual\\drm_10_13.rst": "2ca88d076c1fe6a612a5315421a2f8e41e05a329d82d97d79c291430e4111113",
+    "physical_verification_gf180\\design_manual\\drm_10_14.rst": "4cc886e4270e3e3b86ca0dcdc3c7a975946e19e262f23762048a7e6b94cb7dc0",
+    "physical_verification_gf180\\design_manual\\drm_10_15.rst": "6b224cb256a759cc5f565a557559fe8a19c843531f9b253358e38fc64d4d7474",
+    "physical_verification_gf180\\design_manual\\drm_10_4.rst": "dac176fe8551e8eaba0ff1b57d7ea0cfc8dd073fdb18518b69219698896e2b1a",
+    "physical_verification_gf180\\design_manual\\drm_10_4_1.rst": "16b9f53a2d183cd9c0fb3b1b628ab90e0be42ee1a6a2daab414bc19086dda3bc",
+    "physical_verification_gf180\\design_manual\\drm_10_4_2.rst": "cad675e85721a39c9187a44a93bb52505b347c978854d87e02221c2a1df908fb",
+    "physical_verification_gf180\\design_manual\\drm_10_6.rst": "892f7f072b04c0f34cd176b1964571816567202a445ababc1bd59c907438d150",
+    "physical_verification_gf180\\design_manual\\drm_10_6_1.rst": "fbf8b9d3110cc72bf8ab38b070f1d02a1b07b3a772efdf2ca9e86c9b25d48fdf",
+    "physical_verification_gf180\\design_manual\\drm_10_6_2.rst": "78a4f340c5b1d0e0e3eea3192f8d5a750c962fd970c20dc9f626300cf672f966",
+    "physical_verification_gf180\\design_manual\\drm_10_6_3.rst": "9861db3d5d43f2097708f60ede34d83809ad5ceddf258fe139f888ecb856c8cb",
+    "physical_verification_gf180\\design_manual\\drm_11.rst": "2e1426028f791ad30c8a74bfff1d393726eb556120a7fdc0d0781a48afc6f2c4",
+    "physical_verification_gf180\\design_manual\\drm_11_1.rst": "17b3b30d7c27e9385ded6335e8edd7573e09f64fd0b785e0e68f7653fd92ae8e",
+    "physical_verification_gf180\\design_manual\\drm_11_2.rst": "ce21bc67c7e2cbbb60488ebdb118fb9d75ee301d19c3b078c8d1748c215ad2e4",
+    "physical_verification_gf180\\design_manual\\drm_12.rst": "6e606d7d3a39aca08ecc262446f4915c95fd735499996878b70af23e205749ec",
+    "physical_verification_gf180\\design_manual\\drm_12_1.rst": "df9368cfa997bef331e8b125c59fc871abe2319ca2efe6ab15aa6cb279637a59",
+    "physical_verification_gf180\\design_manual\\drm_12_2.rst": "891ccad580d992940492935a0fc9fae3c488adb43e8d5c91a70cd9bb86ea3e3f",
+    "physical_verification_gf180\\design_manual\\drm_12_3.rst": "f55bf58abaaa47ad05dc55f86fc058960b2c22f9e1fb0e8f65d64ec754070c0c",
+    "physical_verification_gf180\\design_manual\\drm_12_4.rst": "29c6abb5ce4b15ac5a818e01f3742d330f0e05babfa46b927b069e12f91f5015",
+    "physical_verification_gf180\\design_manual\\drm_13.rst": "f5a7c74430b474bc8282d4a369180053b908f01679a9c679bf61f38b9761dc3a",
+    "physical_verification_gf180\\design_manual\\drm_13_1.rst": "00da78fa0a3722986ec1dad61f7c671e59d9d4a29413c3ada8b6b0da83af6b6c",
+    "physical_verification_gf180\\design_manual\\drm_13_2.rst": "3502234427aead8fc2cb2175702d535b4e7eed403a1fdb1d710159d7267cdcea",
+    "physical_verification_gf180\\design_manual\\drm_13_3.rst": "aa7ea7714064b547eaf68b13b1ce326b055dba21e0bce41c7fbb4ce997776e3d",
+    "physical_verification_gf180\\design_manual\\drm_14.rst": "cb8b73c8bec54d963e751f9c4128778e33b701832174b9b5873d00f703eac7d3",
+    "physical_verification_gf180\\design_manual\\drm_14_1.rst": "0d3706be0e43ac305c94f9ee8a1be66bc5cc4b784f3e28c2304f8361b59a8268",
+    "physical_verification_gf180\\design_manual\\drm_14_2.rst": "c5622e685e75b4731958b5b8e5deac7f6ed67c99f8283c01494d402b6a7ac800",
+    "physical_verification_gf180\\design_manual\\drm_14_3.rst": "f8045d0013d87ffbc6012b247f7834625cd3707de759a642f5d3e2789cafcc86",
+    "physical_verification_gf180\\design_manual\\drm_14_3_1.rst": "ccd536ae6b58a175851c62e464e2030fb271f55c8df0e8c609a9cc9f7846e5e6",
+    "physical_verification_gf180\\design_manual\\drm_14_3_2.rst": "8d54e965df0e78e7ccc515c373621f025c2ed37bbd8a58be2a3baa1568bd0ec9",
+    "physical_verification_gf180\\design_manual\\drm_14_3_3.rst": "44228e11f9241c58e7092593b59a9e1bca2be1624e41025652ab29c3facff6dc",
+    "physical_verification_gf180\\design_manual\\drm_14_3_4.rst": "7a3fd9c3f016b08a0ebaf4674994d294311b689f9070b44784c618361ecf2864",
+    "physical_verification_gf180\\design_manual\\drm_14_4.rst": "a227600d28c5ce645571e796578c9ef6639448c0095cdaba977bf0a6cb0c0b5c",
+    "physical_verification_gf180\\design_manual\\drm_14_4_1.rst": "2f1651e25f1490749ba52f5de1c21cf17d96b7795b2ae29c8b1a2db8d2a7167f",
+    "physical_verification_gf180\\design_manual\\drm_14_4_2.rst": "af8a3d7c4b0e7ccf48c967fa69c292e0af960287afd8c830b0efffc2ffd381dd",
+    "physical_verification_gf180\\design_manual\\drm_14_4_3.rst": "c36a88d932de23e4202a6a783d8e92e65f83b2a2ca5bb2e25188b47614c9322a",
+    "physical_verification_gf180\\design_manual\\drm_14_4_4.rst": "802aa035acf891ba26221d24be7e90f1c07cdeb67279506b03a242150e86747e",
+    "physical_verification_gf180\\design_manual\\drm_14_4_5.rst": "a5e570ac9f2fb0eb0c5503708b353f22330f81753a3ec1da79d51b4a5b625d53",
+    "physical_verification_gf180\\design_manual\\drm_14_5.rst": "d96a530c49f2fff6e48073814acf0787fe074693a63e7389f77dade7361cf371",
+    "physical_verification_gf180\\design_manual\\drm_14_5_1.rst": "5b09b7a47045bac49ae97eb81d775c49a920900284562644aa3cea1e08cda4f2",
+    "physical_verification_gf180\\design_manual\\drm_14_5_2.rst": "dcde73ee67c690f4aa5a13663a2191b7a69f92756962efe4add1205be43da2e3",
+    "physical_verification_gf180\\design_manual\\drm_14_5_3.rst": "35d4a49c09cbf0901ce516ae8b40741b93df3bc23ab1025e05e0e02fa66bedb0",
+    "physical_verification_gf180\\design_manual\\drm_14_5_4.rst": "e11401aa1f40862e00cba5c8573f3debae580b6a2820bdaf408639617059d13d",
+    "physical_verification_gf180\\design_manual\\drm_14_5_5.rst": "c2554bc169217daa55f582cb3ec1ed0835e5f07f52ea88e9f19fa63cdd3ee821",
+    "physical_verification_gf180\\design_manual\\drm_14_5_6.rst": "841b5e6da0ec2a9334a09ee3c2d1d5ee9d3245b68e9dd3c451d992cb4e9b81f2",
+    "physical_verification_gf180\\design_manual\\drm_14_5_7.rst": "f0b49e4f1401a25a88aaa9ea8ec7446992b154142f2180cedc6843e3d9f2544e",
+    "physical_verification_gf180\\design_manual\\drm_14_5_8.rst": "93696d05eeb5cd4db15ccb685704897376fd59c64fa80731b15821f3ef09e907",
+    "physical_verification_gf180\\design_manual\\drm_14_6.rst": "809c6128a7b267aa180c1e04b83029e3805ae6453a3ccc32bb8d623feb29abca",
+    "physical_verification_gf180\\design_manual\\drm_14_6_1.rst": "afe758983055bf3edb99a466f6ed45ccb9cb8a7a02ee7b70f5151cf46ad62ace",
+    "physical_verification_gf180\\design_manual\\drm_14_6_2.rst": "2813040067a957a02851e0c3e19b552c2674147082e84d40997ca245705ac469",
+    "physical_verification_gf180\\design_manual\\drm_14_6_3.rst": "eff0b0f9a7f49f6d31795dfed4a414177ddf195faa068c97ffbb83a0b2e97d4f",
+    "physical_verification_gf180\\design_manual\\drm_15.rst": "ac3a66dff33089899ea602f2cc208eae6b9cac7e70321c51a3ceb2df5d690730",
+    "physical_verification_gf180\\design_manual\\drm_16.rst": "9c132160f36cb19ced50704c0c34234d7b542a4b1a49a3c0ad0bf58a65454933",
+    "physical_verification_gf180\\design_manual\\tables_clear\\01_Document_rev2_3_4.csv": "165851db9c1da4f4548170532bd8f515c30a25e1ee75006e68c18040af49c087",
+    "physical_verification_gf180\\design_manual\\tables_clear\\02_Process_Identification7.csv": "215a57055b83146f52e473615d34bae219125fd642d401addcb20be3d55d891c",
+    "physical_verification_gf180\\design_manual\\tables_clear\\03_met_levels8_1.csv": "62309a3790e46afb9e5508bfdd93a8732a5fb6e5dd718b465dffafd0d6562c7c",
+    "physical_verification_gf180\\design_manual\\tables_clear\\03_met_levels8_2.csv": "cd4c47f4130e0ec3f3d024d0c56a7d3f462672213fffa7babfd08ec5ff483501",
+    "physical_verification_gf180\\design_manual\\tables_clear\\04_gaurd_ring_8.csv": "21e04517236d252e47c741cfcb80e914923db5c1d757fa94ae7ed686bd19b508",
+    "physical_verification_gf180\\design_manual\\tables_clear\\05_Current_0.18_MCU_9.csv": "67cbd973378eec8431d8e9a473456bd76bd1fd9d3dba438fd36277ca798b4cd5",
+    "physical_verification_gf180\\design_manual\\tables_clear\\06_Drawn_layer10.csv": "c93b839a3952e72cda5f623467f5ce0246f9b394ad2b10f100cf45a7468a54f8",
+    "physical_verification_gf180\\design_manual\\tables_clear\\07_Mask_Layer14.csv": "390382d3c7615654edfb8f2080dd7aa1d1064d5c78c8e9739babf9844369f9ba",
+    "physical_verification_gf180\\design_manual\\tables_clear\\08_Topological_Truth_Table15.csv": "82a73345343f36299238542ef4a801ab5701729ca7920052c2268a7dd6d2005f",
+    "physical_verification_gf180\\design_manual\\tables_clear\\09_LAYOUT_RULE_DESCRIPTION27.csv": "ac5d7aaec33c8c39fde6381d17567abe809c640cf9e00d5a3be298e280842fbe",
+    "physical_verification_gf180\\design_manual\\tables_clear\\10_Design_Geometry_Rules27.csv": "1399c1b81797dc013921c8c38982e3ad2dfea33de19af288fbbd2b1ad1188b23",
+    "physical_verification_gf180\\design_manual\\tables_clear\\11_DNWELL28.csv": "05238316ad5f6109337b3fbcdbdad68cfb874504179ab1edd61f2c9e52b74079",
+    "physical_verification_gf180\\design_manual\\tables_clear\\12_LVPWELL29_1.csv": "059c9f332d80742c7fc2ecd4f16d279468e01049ac7291f7653e4e49f16ae797",
+    "physical_verification_gf180\\design_manual\\tables_clear\\12_LVPWELL29_2.csv": "2c1d0f7365c8a897caf474441b191e97f114f630a76d80a3fd42ef9c6a1f9fc8",
+    "physical_verification_gf180\\design_manual\\tables_clear\\13_Nwell31.csv": "307ccd9d5009304c894b9bd368d81bcf34a3a736b544ff59c5b8b1de773105d5",
+    "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_1.csv": "a4a421c674b28e457d4821fc2043ce78217992d24cfa97812a67975435bd36e1",
+    "physical_verification_gf180\\design_manual\\tables_clear\\14_COMP33_2.csv": "cdf13c15c1dc789746ceb33bdee9e146779ea1e68466ce1d5bf5442bc01293d8",
+    "physical_verification_gf180\\design_manual\\tables_clear\\15_Dualgate40_1.csv": "13f62fe8c4458a43d938ece8d19d150253549d1dcd3cd167eb3cdf8b6b8498d3",
+    "physical_verification_gf180\\design_manual\\tables_clear\\15_Dualgate40_2.csv": "d12c447f1d4f5dc4f8dda5cd02d151b438dd5a1e412913556c64b85df5b971b6",
+    "physical_verification_gf180\\design_manual\\tables_clear\\16_Poly2_42.csv": "976a899c964607a55c728c0a684f93e7ed4e6d40aba4b0802c3b35b249d2091b",
+    "physical_verification_gf180\\design_manual\\tables_clear\\17_Nplus_44.csv": "297d96c2359bc4dbab6df1803b398072ada7d86d5b292da854a0556001f999d5",
+    "physical_verification_gf180\\design_manual\\tables_clear\\18_Pplus_48.csv": "03965c36761aeddfd4870e390c87005cdd0081e962c11da2e6c80cd61f84e207",
+    "physical_verification_gf180\\design_manual\\tables_clear\\19_SAB_52.csv": "3ea391958bbbcfdead0222572dbd80dab78618c4374135bc6ef5b38fa031c8ed",
+    "physical_verification_gf180\\design_manual\\tables_clear\\20_ESD_Implant_54.csv": "0f1127af317ea2ee64649fb1ac3b428dac259448701b2fa57402f28e928a64f9",
+    "physical_verification_gf180\\design_manual\\tables_clear\\21_Contact_56.csv": "78138f24a4b678d23bf3d36b3ec47f5e0697af1c14c1e54b9ed3473d3abbf70a",
+    "physical_verification_gf180\\design_manual\\tables_clear\\22_Metaln_58.csv": "5b2d176a4273ffe18c38a4a2f851b344b4d756d6bf8ea18b26b0abfb1bce6f05",
+    "physical_verification_gf180\\design_manual\\tables_clear\\23_Vian_59.csv": "94606470dba70a4a4267227dc21bf226cb0dd14de91a93df0760b5898f69a6e4",
+    "physical_verification_gf180\\design_manual\\tables_clear\\24_MetalTop_61.csv": "a7ecac398dd27807cedeafcc54e14d36937ee520a0de2cb4ce97f7945188a2a0",
+    "physical_verification_gf180\\design_manual\\tables_clear\\25_Thick_MetalTop_62.csv": "57e419e684792158bdaa2e2332cae4a13b98d069531fa32d2b17b1591ce84119",
+    "physical_verification_gf180\\design_manual\\tables_clear\\26_Mcell_64.csv": "0001b467270e94e31977b90d925ab7052986afe43c5da8d7e1a01d30e2aa48f3",
+    "physical_verification_gf180\\design_manual\\tables_clear\\27_ANTENNA1_66.csv": "f4d33e11a41fa87717762a4bc32f80994505fea676bdef82c950f85c41725083",
+    "physical_verification_gf180\\design_manual\\tables_clear\\28_ANTENNA2_67.csv": "2599b7b7c9d1426fa404517d5f423a1275748d0cb53602fa1093176c4b482edb",
+    "physical_verification_gf180\\design_manual\\tables_clear\\28_ANTENNA3_69.csv": "f4ce8558a7b724755015e0ea78a83fadee3bc0d81df5d1cdf21834388b144f7f",
+    "physical_verification_gf180\\design_manual\\tables_clear\\29_BondPad1_70.csv": "09b0df6140b5705416ac2e5153e8caf4ecbcc1e07923749ea5b227a8300d903a",
+    "physical_verification_gf180\\design_manual\\tables_clear\\29_BondPad2_70.csv": "85f29f37d9db959f83c29fa606ba32b862c4e6d42095d80fa2ab2e8275c4afe4",
+    "physical_verification_gf180\\design_manual\\tables_clear\\30_CUP_73.csv": "61f184c879e30b892daf0022fbb35c0ba216bfca65f1c22e4570235f3ea9954b",
+    "physical_verification_gf180\\design_manual\\tables_clear\\31_Top_Metal_76.csv": "2a3d7fc56eed2d8e3dc3e07250c00323e841c8d13c0b456fbd8b6b28209c77b0",
+    "physical_verification_gf180\\design_manual\\tables_clear\\32_Probe_pad_79.csv": "218ec4fa9c086f272c40c6e1d95f59fa0a93c621da03743d483f8803badb8d00",
+    "physical_verification_gf180\\design_manual\\tables_clear\\33_ANALOG_DEVICE1_80.csv": "b84a1c379c804ea8cda2ddedc256d7fd9ee7cda7384e3f40327f07045ac15cbf",
+    "physical_verification_gf180\\design_manual\\tables_clear\\33_ANALOG_DEVICE2_82.csv": "837f69cf6c93dddd737b3df7b1f2a948d87eaf9f3d618524bc62c66075e2d77f",
+    "physical_verification_gf180\\design_manual\\tables_clear\\33_ANALOG_DEVICE3_84.csv": "f8a20c1c32a73872ffb6d9b54fed9526fe5684f79d6cdb7cc3f5038beefe2555",
+    "physical_verification_gf180\\design_manual\\tables_clear\\34_MIM1_86.csv": "3386ba06f418a846bb2ac3a7dd9bf466f3b41e625672f8cb524ace3151081a30",
+    "physical_verification_gf180\\design_manual\\tables_clear\\35_MIM2_88.csv": "9e5529996d4c0d2acd18bca35cbaabf89af5d074d755c0c3d7e9947dd307bddd",
+    "physical_verification_gf180\\design_manual\\tables_clear\\36_Native_Vt_NMOS_90.csv": "1ac371f5aa1f0b414b11b610519a760d795834c42c372be1e56e8d08e98a0f21",
+    "physical_verification_gf180\\design_manual\\tables_clear\\37_Matched_pair_layout_guidelines_97.csv": "9dfc4214c241342194cded78c65476dfac3f0f1eea3b04aaa2885bf451222b60",
+    "physical_verification_gf180\\design_manual\\tables_clear\\38_DRC_BJT_103.csv": "3c65eb1848b743c8bfd437dbe6ec2833e8fdcf2556e128d6ba7416b4317a7fe7",
+    "physical_verification_gf180\\design_manual\\tables_clear\\39_Dummy_layers_104.csv": "1384efd1541d60ccd7857d3c48870719df0244f2834a18ea8444685f7e9ffb98",
+    "physical_verification_gf180\\design_manual\\tables_clear\\40_LVS_BJT_105.csv": "e2f67edb3a258e338da28dfa4146035c3c2f074f7b7fa635d7c1ada35cf897e1",
+    "physical_verification_gf180\\design_manual\\tables_clear\\41_OTP_MK_Mark_106.csv": "7adc7448880f74b82e01fbc70380380121d13bb99297db74e8c63f87a9747f06",
+    "physical_verification_gf180\\design_manual\\tables_clear\\42_MCU_eFuse_110.csv": "13ded01ef5af6ccbb53bf5c3a5808ddae0aa4af9ca96b0434848f10b35d5eb55",
+    "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_1.csv": "178a619ea02e9499e59a8679c6286f0c768e06d63ebdafd52bfb6cc5541a725d",
+    "physical_verification_gf180\\design_manual\\tables_clear\\43_LDNMOS_112_2.csv": "c754266afd6a1cdaa82d5c87ba14f675cd7c9046da98cc93d16f3ccb03b32ac7",
+    "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_1.csv": "a19bfb64458cd0f13124f6715c3964f40d3fe7e84416e50d54ebb22b1243eaa7",
+    "physical_verification_gf180\\design_manual\\tables_clear\\44_LDPMOS_117_2.csv": "028b78df1f01cc2b361b7e052cee3b1fb8ec0321907c3e26fd1d7426d5a45ceb",
+    "physical_verification_gf180\\design_manual\\tables_clear\\45_YMTP_MK_Mark_121.csv": "fbac8945ed4a30041f7d8ecf2ece7755905021ca8112fb7fbfc5dee97315e4cc",
+    "physical_verification_gf180\\design_manual\\tables_clear\\46_schottky_diode_122.csv": "1198ff78a3aba455626afdbeb364e7e6208fe82275fb3786bd138fd51030048d",
+    "physical_verification_gf180\\design_manual\\tables_clear\\47_NEO_EE_MK_124.csv": "360c8242cd5306806192759556408307250b2750968397df9f29b311bc5738fa",
+    "physical_verification_gf180\\design_manual\\tables_clear\\48_SRAM1_126.csv": "86a588eded0a3ab76a723645e4f2a22a8796175fd25c5910f8451217bb29be58",
+    "physical_verification_gf180\\design_manual\\tables_clear\\48_SRAM2_126.csv": "3da6c7aa85f51aa79b3847a61b542d854ff0f6df8d8358be1d13c2073e49b32e",
+    "physical_verification_gf180\\design_manual\\tables_clear\\48_SRAM3_128.csv": "e7df7bf51f01e2413951ac1de501608a0b93044deb57f8862ffe6b3eb9a1447d",
+    "physical_verification_gf180\\design_manual\\tables_clear\\49_scribeline_guardring1_131.csv": "438cbba985080ff6e71693c2297871dd5db8bb74c9606f5527784ddbeb2a3a01",
+    "physical_verification_gf180\\design_manual\\tables_clear\\49_scribeline_guardring2_133.csv": "5db17890b54cfdc3f5fdc69afe8d5e993e751b9a961d3d321320afac44602237",
+    "physical_verification_gf180\\design_manual\\tables_clear\\50_GUARD_RING_MK_134.csv": "3dc0271bbdab61477eeab492aaa37e59d3b9ba0adb83d30dd807c7da09f85e77",
+    "physical_verification_gf180\\design_manual\\tables_clear\\51_Dummy_COMP_136.csv": "07d5d19b694fbec7aa4ef40a11c76e077215dc7a7ab33b0ea16fdf0077dc824e",
+    "physical_verification_gf180\\design_manual\\tables_clear\\52_Dummy_Poly2_141.csv": "c62230a040e475b89bdfbf4aa30c6a3d6b7faf14ff2724d26df38ea36a46cdd5",
+    "physical_verification_gf180\\design_manual\\tables_clear\\53_Dummy_Metal_145.csv": "da14e79970f7bfcb511c14d4787682ee4f3ef9633e13b14bc9a83a84542b368a",
+    "physical_verification_gf180\\design_manual\\tables_clear\\54_Electro-migration1_150.csv": "de1989602a90b1f56b250ebe536c3e32062793ad97c602ca0e3092f1622dffb8",
+    "physical_verification_gf180\\design_manual\\tables_clear\\54_Electro-migration2_151.csv": "1aa912a39845770e0348614a291fa1c515af97c37e4f186b885ebf3207ed718e",
+    "physical_verification_gf180\\design_manual\\tables_clear\\55_Latch-up_152.csv": "50f0f0274bafb7109504ed9f0c9febb3b956cce2fdc08eff8bcea291fb54d596",
+    "physical_verification_gf180\\design_manual\\tables_clear\\56_IO_Latch-up1_156.csv": "2454e3f22a69ade33011e87fb6e2af14f304a8f60de29d2b902de4eddf4f56b4",
+    "physical_verification_gf180\\design_manual\\tables_clear\\56_IO_Latch-up2_158.csv": "14f9434474d1b21ba23cccd542d8e8ce0c55cd5676bc0a4fef5496882a1a26a4",
+    "physical_verification_gf180\\design_manual\\tables_clear\\57_LV_SAB_MOSFET_163.csv": "e8a8c6e3dd4ea63f348c9e91e8b1a2044d14273b1a8a5b16a91fb68db1f07985",
+    "physical_verification_gf180\\design_manual\\tables_clear\\58_HV_SAB_MOSFET_168.csv": "1c7bc85213bc23fac59e7fc801ff30cc842a04ae7d908f4a84917bfc1133c6b4",
+    "physical_verification_gf180\\design_manual\\tables_clear\\59_HV2_SAB_MOSFET_170.csv": "7bd85f8ef503ce5c914fa5904575b4f33220a976cca7d392ddf40f4f979f0f5f",
+    "physical_verification_gf180\\design_manual\\tables_clear\\60_ESD_Performance_174.csv": "c1130131c37c0773ba3cba23cfef7015a72d0f1a4be3be49c0bb93ff8a9f1ab6",
+    "physical_verification_gf180\\design_manual\\tables_clear\\61_ESD2_Performance_175.csv": "14985be39c3f4169350b63be9cbd3579e2c6def9448a95a9bfd9d448fd7a1a52",
+    "physical_verification_gf180\\design_manual\\tables_clear\\62_ESD3_Performance_176.csv": "6e6be3459ec4b0f407af7c764abdfce4d2c5f330813bb338fa4f1ab369e5231b",
+    "physical_verification_gf180\\design_manual\\tables_clear\\63_ESD4_Performance_177.csv": "0255f8ec2ce7d5796ade7a4ecea149a30662bf2a414e2dc9aa34dd4dafb69e1d",
+    "physical_verification_gf180\\design_manual\\tables_clear\\64_ESD5_Performance_178.csv": "edcfa2323ceb3e3f84b200b3306eba067d2f2d56826823c39395ee6efdcb45b3",
+    "physical_verification_gf180\\design_manual\\tables_clear\\65_ESD6_Performance_179.csv": "269b7286688fb8288c2b9140e2ca2d898869cc01b5697a2ee897815571b357d3",
+    "physical_verification_gf180\\design_manual\\tables_clear\\66_ESD7_Performance_180.csv": "ba2c42ec0fd25e68f29462623aebb603a21f404bdab3a072c1bff1aae3e79787",
+    "physical_verification_gf180\\design_manual\\tables_clear\\67_ESD8_Performance_181.csv": "13ca76dfce0c3c4061e628ef8381da6e9dd7d241cfe2cd6e105efb57b2d6f08f",
+    "physical_verification_gf180\\design_manual\\tables_clear\\68_ESD8_Metal_Slotting_183.csv": "aef63796f35a9d5816d5cf2fed52ccaeab3e01ec7d6e18a88748e317fcc0570a",
+    "physical_verification_gf180\\design_manual\\tables_clear\\69_Device_List_184.csv": "42e2d55ecfa1a471078a80de7932ab876eb252271b242334d0ba52e5ddd99a5b",
+    "physical_verification_gf180\\design_manual\\tables_clear\\70_not_coded_rules_187.csv": "11ade9eda921014d44af273a12e4e226138ad04d9a1cd51332b62c8c9a34ed89"
+  }
+}

@@ -1,0 +1,2997 @@
+================================================================================
+CONCATENATION DES FICHIERS DU PROJET
+Dossier racine: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear
+================================================================================
+
+
+================================================================================
+FICHIER: 01_Document_rev2_3_4.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\01_Document_rev2_3_4.csv
+================================================================================
+
+Document Revision,Paragraph(s) Of Changed, Description of Change(s)
+1,New Release,New Release
+2,Section 7.3,Change  DF.1a Min. COMP Width : from 0.30(6V) to 0.22(6V)
+ ,           ,Change  DF.4b Min. Nwell enclose NCOMP: from 0.16(6V) to 0.12(6V)
+ ,           ,Change  DF.5b Min. space from Nwell to (PCOMP outside Nwell): from 0.16(6V) to 0.12(6V)
+ ,Section 7.5,Change  PL.3a Space on COMP: from 0.4(6V) to 0.24(6V)
+ ,Section 7.12,Change Vn.2 index from Vn.2 to Vn.2a
+ ,            ,Add    Vn.2b Vian Space in 4x4 or larger Vian array:0.36
+3,Section 10.7,Change BJT.1 index from BJT.1 to DRC_BJT.1
+ ,            ,Add  DRC_BJT.2  Minimum space of DRC_BJT layer to unrelated COMP: 0.1
+ ,Section 10.9,Add  LVS_BJT Mark Layer
+ ,            ,Add  LVS_BJT.1 Minimum LVS_BJT enclosure of  NPN or PNP Emitter COMP layers: 0
+ ,Appendix A  ,Add  Below devices to the device list:
+ ,            ,nfet_06v0_nvt 6V Native NMOS
+ ,            ,cap_nmos_03v3_b 3.3V NMOS capacitor (inside Nwell)
+ ,            ,cap_pmos_03v3_b 3.3V PMOS capacitor (inside Psub)
+ ,            ,cap_nmos_06v0_b 6V NMOS capacitor (inside NWell)
+ ,            ,cap_pmos_06v0_b 6V PMOS capacitor (inside Psub)
+ ,Section 13.4 and 13.5, Add  ESD related design rules.
+4,Section 4   ,Add MCU SONOS related layer information
+,Section 4    ,Define OTP_MK in the notes of drawn layer table.
+,Section 7    ,Add MCU SONOS related design rules
+,Section 7.9  ,Delete OTP related O.PL.2b and integrate it to OTP design rule.
+,Section 10.7 and 10.9,Add MCU SONOS NPN related DRC and LVS
+,Section 12.1 and 12.2,Add MCU SONOS related dummy rules
+,Appendix A           ,Add DNWell related device list for model and LVS deck
+,Section 10.10        ,Add OTP related design rules
+,Section 12.3         ,Add OTP_MK layer to the dummy metal pattern forbidden list in DM. 8
+5,Section 4.3         ,Insert L9A FuseWindow mask layer
+6,Section 10.10       ,Update OTP related design rules.
+,Section 4.4,Update truth table for item “MIM capacitor”
+,Section 7.9,Add 5V devices
+,"Section 4, 7, 10, 12",Delete all SONOS related items.
+,Section 13.4.4,13.4.4 update ESD guideline  for HVPMOS Device
+,Change Title,Title change from “0.18UM 3.3V/6V MCU Technology TOPOLOGICAL
+,            ,AND RELIABILITY Design Rules” to “0.18UM 3.3V/(5V)6V MCU
+,            ,Technology Topological And Reliability Design Rules”
+7,Section 4.1,"Add marking layer of ESD_MK, LVS_Source and WELL_DIODE_MK"
+ ,Section 4.4,Add ESD devices and SramCore marking layer  in Truth Table
+ ,           ,"Update column Nwell, LVPWELL, FuseTop, MIM_L_MK in Truth Table"
+ ,           ,Separate Diff Res and MOS CAP by inside and outside DNW
+ ,Appendix.A ,Add ESD (SAB MOSFET)
+ ,           ,Separate 5V and 6V MOSFET
+ ,Section 14.4.1,Update design guidelines for 3.3V LV SAB MOSFET
+ ,Section 14.4.3,Update design guidelines for 5V/6V HV SAB NMOS
+ ,Section 14.4.4,Update design guidelines for 5V/6V HV SAB PMOS
+ ,Section 11.0,Add SRAM Core rule. Remark:
+ ,            ,1. SRAM devices are allowed inside/out side of DNWELL
+ ,            ,2. SRAM devices follow the Logic 5V/6V SPICE Models.
+ ,Section 7.10,Rule SAB.12 from 'Overlap with Poly2' to 'Overlap with Poly2 outside ESD_MK'
+ ,            ,Rule SAB.16 is also  excluded by ESD_MK layer
+ ,Section 14.2.1,Remove 30kA MetalTop thickness from table 14.3
+ ,All           ,Re-brand “Green” Technology to 180nm MCU Platform per 
+ ,              ,Marketing request. Change all “Green” to “MCU” when it is
+,,referring to technology platform.
+,Document Title,Change document title from “0.18UM 3.3V/(5V)6V Green
+,,Technology Topological And Reliability Design Rules” 
+,,To “0.18UM 3.3V/(5V)6V MCU Technology TOPOLOGICAL
+,,AND RELIABILITY Design Rules”
+,Section 13.3,Add dummy rule DM.2b_Min Dummy metal line space (for DRC) 0.99um
+8,Section 7.15,Specify this section is for 6K/9KA meal thickness
+,Section 7.16,Add 3um thick top metal option
+,Section 8.0,Add 3um TM in ANTENNA RATIO RULES
+,Appendix A,Add tm30k Top Metal resistor
+9,Section 4.4,Add 3K HRES in truth table
+,Appendix A,Add 3K HRES device
+,,Add 2fF MIM device
+10,Section 4.1,"Add  MVSD, MVPSD, LDMOS_XTOR, PLFUSE and"
+,,EFUSE_MK in Drawn layer definition and abbreviation
+,Section 4.4,"Add MVSD, MVPSD, LDMOS_XTOR, PLFUSE and"
+,,EFUSE_MK in Topological Truth Table for 3.3V/(5V)6VProcess
+,,Add devices 10V LDNMOS and LDPMOS
+,,Change all “0/1” and “Op” to “X” in truth table
+,Section 7.7,Redefine rule existing ground rule PL.1
+,Section 10.10,"Separate  rules for 3.3V and 5V OTP (O.SB.5b), add O.SB.13"
+,Section 10.11,Add 0.18um MCU eFuse Design Rules
+,Section 10.12,Add High Voltage LDMOS and related rules
+,Section 13.3,Change DM.2a from 0.99um to 0.98um
+,Appendix A,Add eFuse in Device List
+,,Add LD-NMOS and LD-PMOS in Device List
+,,Add column of “Spec” for SPICE model
+,Appendix B,Appendix: rules not coded
+11,Section 4.1,Drawn layer definition and abbreviation
+,,Add new marking layer MCELL_FEOL_MK and YMTP_MK
+,Section 4.3,Mask layer numbering
+,,Add new mask L2E
+,,Amend layer 1L name to “MVNVT” from “NLDD”
+12,Section 7.17,Mcell
+,,Add Mcell implant layer rules
+,Section 9.3,Circuit-Under-Pad (CUP) Rules
+,,Add rule CUP.7f
+,Section 10.10,OTP_MK Mark Layer
+,,Add Poly2 gate orientation restrict rule O.PL.ORT
+,Section 10.13,YMTP_MK Marking Layer Rules
+,,Add YMTP related design rules
+,Section 11.1,5V SRAM
+,,Change rule name “S.CO.4” to “S.CO.4_MV”
+,Section 11.2,3.3V SRAM
+,,Add 3.3V SramCore Layer Rules
+,Section 13.1,Design rules for Dummy COMP creation
+,,Add rule DCF.1d to trigger Max COMP density alert
+,Section 14.2,Electro-migration
+,,Add 30kA TM max current density
+13,Section 2.9,Update guard ring checker which is already running
+,,Background from Q3-2015
+,Section 2.10,Current 0.18 MCU PDK support following BEOL
+,Section 4.1,Add in  NEO_EE_MK
+,,Add in LVS marking layer - DEV_WF_MK for Fab special
+,,Purpose layout
+,Section 4.4,"Add Schottky_diode, device sc_diode,"
+,Section 7.15,Specify this section is for 6K/9KA/11KA meal thickness.
+,,remove  the baseline MetalTop thickness is 6K Å.
+,Section 8.0,Add 11um TM in ANTENNA RATIO RULES
+,Section 9.2,Not recommended to use 6k TM for cu wire bonding
+,Section 10.14,Add Schottky diode related design rules
+,Section 10.15,Drawn layer definition and abbreviation NEO_EE_MK
+,,And NEO_EE_MK related design rules
+,Section 14.2.1,Add 11kA TM max current density
+,Section 14.3.1,Modify LU.3 and LU.4 to define N/P tap by NWELL by adding in LU.1 & .U.2
+,Section 14.4.3,Design Guidelines for 5V/6V HV SAB NMOS Device
+,,Update rule G_HVNESD.10 from 2um to 1.5um
+,Appendix A,"Add tm11k Top Metal resistor,  Schottky diode  in Device List"
+,Section 4.3,"PIB layer polarity from ""Chrome"" to ""Clear"""
+
+================================================================================
+FICHIER: 02_Process_Identification7.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\02_Process_Identification7.csv
+================================================================================
+
+Process,Operating Voltages,PID in Fab3E
+0.18um 3.3V/(5V) 6V (No MIM),"LV=3.3V, HV=5V or 6V",TH18*0019A
+0.18um 3.3V/(5V) 6V (with MIM),"LV=3.3V, HV=5V or 6V",TH18*0020A
+
+================================================================================
+FICHIER: 03_met_levels8_1.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\03_met_levels8_1.csv
+================================================================================
+
+Levels of Metal,BEOL metal and via to be included
+6LM,"Metal1, Via1, Metal2, Via2, Metal3, Via3, Metal4, Via4, Metal5, Via5, MetalTop."
+5LM,"Metal1, Via1, Metal2, Via2, Metal3, Via3, Metal4, Via4, MetalTop.
+
+SKIP Metal5, Via5."
+4LM,"Metal1, Via1, Metal2, Via2, Metal3, Via3, MetalTop.
+
+SKIP Metal5, Via5, Metal4, Via4."
+3LM,"Metal1, Via1, Metal2, Via2, MetalTop.
+
+SKIP Metal5, Via5, Metal4, Via4, Metal3, Via3."
+2LM,"Metal1, Via1, MetalTop.
+
+SKIP Metal5, Via5, Metal4, Via4, Metal3, Via3, Metal2, Via2."
+
+================================================================================
+FICHIER: 03_met_levels8_2.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\03_met_levels8_2.csv
+================================================================================
+
+Levels of Metal,BEOL metal and via to be included
+6LM,"Metal1, Via1, Metal2, Via2, Metal3, Via3, Metal4, Via4, Metal5, Via5, MetalTop."
+5LM,"Metal1, Via1, Metal2, Via2, Metal3, Via3, Metal4, Via4, Metal5.
+
+Metal 5 must comply with MetalTop rule."
+4LM,"Metal1, Via1, Metal2, Via2, Metal3, Via3, Metal4.
+
+Metal 4 must comply with MetalTop rule."
+3LM,"Metal1, Via1, Metal2, Via2, Metal3.
+
+Metal 3 must comply with MetalTop rule."
+2LM,"Metal1, Via1, Metal2.
+
+Metal 2 must comply with MetalTop rule."
+
+================================================================================
+FICHIER: 04_gaurd_ring_8.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\04_gaurd_ring_8.csv
+================================================================================
+
+Type of Guard Ring,Guard Ring selected,PID in Fab3E
+CUSTOMER_INSERT_GUARD_RING,Customer to insert guard ring,TH18*00G1A
+FOUNDRY_INSERT_GUARD_RING,Foundry to insert guard ring,TH18*00G1A
+
+================================================================================
+FICHIER: 05_Current_0.18_MCU_9.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\05_Current_0.18_MCU_9.csv
+================================================================================
+
+No,Metal stack option
+1,"1P2M, TM30K"
+2,"1P3M,TM6K, MIM Option A"
+3,"1P3M,TM9K, MIM Option A"
+4,"1P3M,TM11K, MIM Option A"
+5,"1P3M,TM30K, MIM Option A"
+6,"1P4M,TM6K, MIM Option A"
+7,"1P4M,TM9K, MIM Option A"
+8,"1P4M,TM11K, MIM Option A"
+9,"1P4M,TM30K, MIM Option A"
+10,"1P4M,TM9K, MIM Option B"
+11,"1P4M,TM11K, MIM Option B"
+12,"1P4M,TM30K, MIM Option B"
+13,"1P5M,TM9K, MIM Option A"
+14,"1P5M,TM9K, MIM Option B"
+15,"1P5M,TM11K, MIM Option B"
+16,"1P6M,TM9K, MIM Option B"
+
+================================================================================
+FICHIER: 06_Drawn_layer10.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\06_Drawn_layer10.csv
+================================================================================
+
+Layer Type,Layer Name,Purpose,GDS #,Data type 
+Drawn,COMP (1),Diffusion for device and interconnect,22,0
+Drawn,DNWELL,Deep Nwell,12,0
+Drawn,Nwell,Nwell implant,21,0
+Drawn,LVPWELL,Pwell implant,204,0
+Drawn,Dualgate,6V Gate Oxide,55,0
+Drawn,Poly2,POLY2 gate & interconnect,30,0
+Drawn,Nplus,Nplus Implant,32,0
+Drawn,Pplus,Pplus Implant,31,0
+Drawn,SAB,Unsalicided poly & active regions,49,0
+Drawn,ESD (2),ESD Implant (Optional),24,0
+Drawn,Contact,Metal1 to Active or Poly2 contact,33,0
+Drawn,Metal1,Metal1 interconnect,34,0
+Drawn,Via1,Metal2 to Metal1 contact,35,0
+Drawn,Metal2,Metal2 interconnect,36,0
+Drawn,Via2,Metal3 to Metal2 contact,38,0
+Drawn,Metal3,Metal3 interconnect,42,0
+Drawn,Via3,Metal4 to Metal3 contact,40,0
+Drawn,Metal4,Metal4 interconnect,46,0
+Drawn,Via4,Metal5 to Metal4 contact,41,0
+Drawn,Metal5,Metal5 interconnect,81,0
+Drawn,Via5,Metal 6 to Metal5 contact,82,0
+Drawn,MetalTop,MetalTop interconnect,53,0
+Drawn,Pad (1),Bond pad opening,37,0
+Drawn,Resistor (3),High sheet rho P-poly resistor (Optional),62,0
+Drawn,FHRES (3),Free high sheet rho P-POLY2 resistor,227,0
+Drawn,FuseTop (3),Top plate of MIM capacitors (Optional),75,0
+Drawn,FuseWindow_D,Metal Fuse window (Optional),96,1
+Drawn,POLYFUSE,POLY FUSE window (Optional),220,0
+Drawn,MVSD,Define LDNMOS Drain,210,0
+Drawn,MVPSD,Define LDPMOS Drain,11,39
+Drawn,NAT,N-channel native VT mark layer,5,0
+Drawn,COMP_Dummy,COMP Dummy fill,22,4
+Drawn,Poly2_Dummy,Poly2 Dummy Fill,30,4
+Drawn,Metal1_Dummy (4),Metal1 Dummy Fill,34,4
+Drawn,Metal2_Dummy (4),Metal2 Dummy Fill,36,4
+Drawn,Metal3_Dummy (5),Metal3 Dummy Fill,42,4
+Drawn,Metal4_Dummy (5),Metal4 Dummy Fill,46,4
+Drawn,Metal5_Dummy (5),Metal5 Dummy Fill,81,4
+Drawn,MetalTop_Dummy (5),MetalTop Dummy Fill,53,4
+Drawn,COMP_Label (6),LABEL drawn at active layer,22,10
+Drawn,Poly2_Label (6),LABEL drawn at poly2 layer,30,10
+Drawn,Metal1_Label (6),LABEL drawn at Metal1 layer,34,10
+Drawn,Metal2_Label (6),LABEL drawn at Metal2 layer,36,10
+Drawn,Metal3_Label(6),LABEL drawn at Metal3 layer,42,10
+Drawn,Metal4_Label (6),LABEL drawn at Metal4 layer,46,10
+Drawn,Metal5_Label (6),LABEL drawn at Metal5 layer,81,10
+Drawn,MetalTop_Label (6),LABEL drawn at MetalTop layer,53,10
+Drawn,Metal1_Slot,Metal1 Slot  (used to create slots in metal1),34,3
+Drawn,Metal2_Slot,Metal2 Slot  (used to create slots in metal2),36,3
+Drawn,Metal3_Slot,Metal3 Slot (used to create slots in metal3),42,3
+Drawn,Metal4_Slot,Metal4 Slot (used to create slots in metal4),46,3
+Drawn,Metal5_Slot,Metal5 Slot (used to create slots in metal5),81,3
+Drawn,MetalTop_Slot,MetalTop Slot (used to create slots in metal top),53,3
+Drawn,UBMPPeri,Direct Bumping option using peripheral printing,183,0
+Drawn,UBMPArray,Direct Bumping option using Array printing,184,0
+Drawn,UBMEPlate,Direct Bumping option using Electroplating,185,0
+Drawn,Schottky_diode,Define Schottky diode area,241,0
+Drawn,ZENER,ZENER diode implant,178,0
+Marking,RES_MK (1),Resistor Mark,110,5
+Marking,OPC_drc,Marking layer for OPC design rule check. ,124,5
+Marking,NDMY (1),Dummy Active Exclude Mark layer,111,5
+Marking,PMNDMY (1),Dummy Poly & Metal Exclude Mark,152,5
+Marking,V5_XTOR (7),Define 5V Transistor Marking Layer,112,1
+Marking,CAP_MK (8),MIM Capacitor Marking layer,117,5
+Marking,MOS_CAP_MK,MOS capacitor LVS marking,166,5
+Marking,IND_MK,Inductor Mark,151,5
+Marking,DIODE_MK,Diode Mark,115,5
+Marking,DRC_BJT (9),BJT marking for DRC,127,5
+Marking,LVS_BJT,BJT Mark,118,5
+Marking,MIM_L_MK,Min length marking layer for MIM Capacitor,117,10
+Marking,Latchup_MK,Marking layer for I/O latch-up rule check,137,5
+Marking,GUARD_RING_MK,Marking Layer for Scribe Line Guard Ring,167,5
+Marking,OTP_MK,To define OTP area with Marking layer,173,5
+Marking,MTPMARK,Multi Time Program Memory cell marking,122,5
+Marking,NEO_EE_MK,NeoEE OTP area with Marking layer,88,17
+Marking,SramCore (10),SRAM Mark,108,5
+Marking,LVS_RF,RF LVS Mark,100,5
+Marking,LVS_Drain,RF Drain LVS Mark,100,7
+Marking,IND_MK1,Inductor Mark,151,5
+Marking,HVPOLYRS,High Voltage Poly2 Resistor in HV area Marking layer,123,5
+Marking,LVS_IO,IO LVS Mark,119,5
+Marking,PROBE_MK,Marking layer for probe pad,13,17
+Marking,ESD_MK,Marking layer on ESD protection device,24,5
+Marking,LVS_Source,Source LVS/DRC marking Layer,100,8
+Marking,WELL_DIODE_MK,"Marking layer for Nwell/Psub, LVPwell/Dnwell, DNwell/Psub diode",153,51
+Marking,LDMOS_XTOR, LDMOS device mark layer,226,0
+Marking,PLFUSE ,Marking layer for eFUSE Link,125,5
+Marking,EFUSE_MK ,Marking layer for whole eFUSE Element,80,5
+Marking,MCELL_FEOL_MK (13) ,Marking layer to define YMTP Mcell Implant region,11,17
+Marking,YMTP_MK (13) ,Marking layer to define YMTP Cell and exclude NLDD region,86,17
+Marking,DEV_WF_MK, LVS marking layer for Fab special purposes layout,128,17
+EDAMark,Metal1_BLK ,Place & Route Metal1 Blockage,34,5
+EDAMark,Metal2_BLK ,Place & Route Metal2 Blockage,36,5
+EDAMark,Metal3_BLK ,Place & Route Metal3 Blockage,42,5
+EDAMark,Metal4_BLK ,Place & Route Metal4 Blockage,46,5
+EDAMark,Metal5_BLK ,Place & Route Metal5 Blockage,81,5
+EDAMark,MetalT_BLK ,Place & Route MetalTop Blockage,53,5
+EDAMark,PR_bndry ,"PR Boundary for cell, block or chip",0,0
+EDAMark,MDIODE ,MDiode Mark,116,5
+EDAMark,Metal1_Res (11) ,Metal 1 Resistor,110,11
+EDAMark,Metal2_Res (11)  ,Metal 2 Resistor,110,12
+EDAMark,Metal3_Res (11)  ,Metal 3 Resistor,110,13
+EDAMark,Metal4_Res (11)  ,Metal 4 Resistor,110,14
+EDAMark,Metal5_Res (11)  ,Metal 5 Resistor,110,15
+EDAMark,Metal6_Res (11)  ,Metal6  Resistor,110,16
+DevMark,Border ,Border,63,0
+
+================================================================================
+FICHIER: 07_Mask_Layer14.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\07_Mask_Layer14.csv
+================================================================================
+
+Mask#,Layer Name,Description,Drawn/Generated,Digitized Polarity,Output GDS II #,N-Value
+10,COMP,COMP,Drawn + Generated,Chrome,22,1
+11,AD,Planarization Aid,Generated,Clear,15,0
+5,Nwell,NWELL,Drawn + Generated,Clear,21,0.25
+6,DNWELL,Deep Nwell,Drawn,Clear,12,0.25
+18,LVPWELL,LVPWELL,Drawn + Generated,Chrome,204,0.25
+64,TP,3.3V PMOS Vt Implant,Generated,Clear,10,0.25
+61,TN,3.3V NMOS Vt Implant,Generated,Clear,47,0.25
+38,Dualgate,Dualgate,Drawn,Chrome,55,1
+60,Poly2,POLY2,Drawn,Chrome,30,1
+1L,MVNVT,5V or 6V NLDD,Generated,Clear,205,0.25
+2E,MVPVT,MTP Cell Implant,Generated,Clear,206,0.25
+65,Nplus,Nplus  Implant,Drawn,Clear,32,0.5
+67,ESD,ESD implant,Drawn,Clear,24,0.25
+70,Pplus,Pplus Implant,Drawn + Generated,Clear,31,0.5
+63,Resistor,Resistor,Drawn,Clear,62,0.25
+68,SAB,Salicide Block,Drawn,Chrome,49,0.25
+9Z,POLYFUSE,POLY FUSE Window,Drawn,Clear,220,0.25
+75,Contact,Contact,Drawn,Clear,33,1
+80,Metal1,Metal1,Drawn + Generated,Chrome,34,1
+85,Via1,Via1,Drawn,Clear,35,1
+88,Metal2,Metal2,Drawn + Generated,Chrome,36,1
+91,Via2,Via2,Drawn,Clear,38,1
+93,Metal3,Metal3,Drawn + Generated,Chrome,42,1
+94,Via3,Via3,Drawn,Clear,40,1
+96,Metal4,Metal4,Drawn + Generated,Chrome,46,1
+92,FuseTop,FuseTop (MIM top),Drawn,Chrome,75,0.5
+97,Via4,Via4,Drawn,Clear,41,1
+9E,Metal5,Metal5,Drawn + Generated,Chrome,81,1
+9D,Via5,Via5,Drawn,Clear,82,1
+98,MetalTop,TopMetal,Drawn + Generated,Chrome,53,0.5
+95,Pad,Pad,Drawn + Generated,Clear,37,0
+99,PIB,Bond opening and Passivation opening,Generated,Clear,50,0
+9A,FuseWindow,Metal FuseWindow (Optional),Drawn + Generated,Clear,96,0.5
+
+================================================================================
+FICHIER: 08_Topological_Truth_Table15.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\08_Topological_Truth_Table15.csv
+================================================================================
+
+Truth Table,3.3V/(5V)6V Process,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Device Drawn Layers,,,,,,,,,,,,,,Marking Layers,,,,,,,,,,,,,,,
+Layer Abbreviation =>,DNWELL,COMP,NWLL,LVPWELL,Dualgate,POLY2,Nplus,Pplus,Resistor ,ESD ,SAB ,FuseTop ,FuseWindow_D,POLYFUSE,RES_MK,V5_XTOR,CAP _MK&MIM_ L_MK,DIODE_MK,DRC_BJT,NAT,MOS_CAP_MK,ESD_MK,LVS_Source,WELL_DIODE_MK,EFUSE_MK,PLFUSE,MVSD,MVPSD,LDMOS_XTOR,Schottky _diode
+Digitized Area Polarity =>,CL,CH,CL,CH,CH,CH,CL,CL,CL,CL,CH,CH,CL,CL,-,-,-,-,-,-,-,-,-,-,-,,,,,
+(1) MOS Transistors:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3.3V NMOS (Outside DNWELL),0,1,0,X,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+3.3V NMOS (Inside DNWELL),1,1,0,1,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+3.3V PMOS (Outside DNWELL),0,1,1,0,0,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+3.3V PMOS (Inside DNWELL),1,1,X,0,0,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+3.3V native Vt NMOS,0,1,0,0,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,1,0,0,0,X,0,0,0,0,0,0
+6V NMOS (Outside DNWELL),0,1,0,X,1,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+6V  NMOS (Inside DNWELL),1,1,0,1,1,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+6V  PMOS (Outside DNWELL),0,1,1,0,1,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+6V PMOS (Inside DNWELL),1,1,X,0,1,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+6V  native Vt NMOS,0,1,0,0,1,1,1,0,0,0,0,X,0,0,0,0,X,0,0,1,0,0,0,X,0,0,0,0,0,0
+5V NMOS (Outside DNWELL),0,1,0,X,1,1,1,0,0,0,0,X,0,0,0,1,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+5V  NMOS (Inside DNWELL),1,1,0,1,1,1,1,0,0,0,0,X,0,0,0,1,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+5V  PMOS (Outside DNWELL),0,1,1,0,1,1,0,1,0,0,0,X,0,0,0,1,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+5V PMOS (Inside DNWELL),1,1,X,0,1,1,0,1,0,0,0,X,0,0,0,1,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+10V LDNMOS,0,1,0,0,1,1,1,0,0,0,0,X,0,0,0,0,X,X,0,0,0,0,0,X,0,0,1,0,1,0
+10V LDPMOS,1,1,0,0,1,1,0,1,0,0,0,X,0,0,0,0,X,X,0,0,0,0,0,X,0,0,0,1,1,0
+(2) BJT:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+VPNP (Psub as collector),0,1,1,0,0,0,1,1,0,0,0,X,0,0,0,0,X,0,1,0,0,0,0,0,0,0,0,0,0,0
+VNPN (Isolated collector),1,1,0,1,0,0,1,1,0,0,0,X,0,0,0,0,X,0,1,0,0,0,0,0,0,0,0,0,0,0
+(3) Diodes:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+N+/LVPWELL (3.3V area),X,1,0,1,0,0,1,1,0,0,0,X,0,0,0,0,X,1,0,0,0,X,X,X,0,0,0,0,0,0
+N+/LVPWELL (5V/6V area),X,1,0,1,1,0,1,1,0,0,0,X,0,0,0,X,X,1,0,0,0,X,X,X,0,0,0,0,0,0
+P+/Nwell (3.3V area),X,1,1,0,0,0,1,1,0,0,0,X,0,0,0,0,X,1,0,0,0,X,X,X,0,0,0,0,0,0
+P+/Nwell (5V/6V  area),X,1,1,0,1,0,1,1,0,0,0,X,0,0,0,X,X,1,0,0,0,X,X,X,0,0,0,0,0,0
+Nwell/Psub (3.3V area),0,1,1,0,0,0,1,1,0,0,0,X,0,0,0,0,X,X,0,0,0,X,X,1,0,0,0,0,0,0
+Nwell/Psub (5V/6V  area),0,1,1,0,1,0,1,1,0,0,0,X,0,0,0,X,X,X,0,0,0,X,X,1,0,0,0,0,0,0
+LVPWELL/DNWELL (3.3V area),1,1,0,1,0,0,1,1,0,0,0,X,0,0,0,0,X,X,0,0,0,X,X,1,0,0,0,0,0,0
+LVPWELL/DNWELL (5V/6V area),1,1,0,1,1,0,1,1,0,0,0,X,0,0,0,X,X,X,0,0,0,X,X,1,0,0,0,0,0,0
+DNWELL/Psub (3.3V area),1,1,1,0,0,0,1,1,0,0,0,X,0,0,0,0,X,X,0,0,0,X,X,1,0,0,0,0,0,0
+DNWELL/Psub (5V/6V  area),1,1,1,0,1,0,1,1,0,0,0,X,0,0,0,X,X,X,0,0,0,X,X,1,0,0,0,0,0,X
+sc_diode,1,1,X,0,X,0,1,0,0,0,0,X,0,0,0,X,X,0,0,0,0,0,0,X,0,0,0,0,0,1
+(4) Resistors:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+N+ Diffusion Unsalicided Rs (Outside DNWELL),0,1,0,X,0,0,1,0,0,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+P+ Diffusion Unsalicided Rs (Outside DNWELL),0,1,1,0,0,0,0,1,0,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+N+ Diffusion Salicided Rs (Outside DNWELL),0,1,0,X,0,0,1,0,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+P+ Diffusion Salicided Rs (Outside DNWELL),0,1,1,0,0,0,0,1,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+N+ Diffusion Unsalicided Rs (Intside DNWELL),1,1,0,1,0,0,1,0,0,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+P+ Diffusion Unsalicided Rs (Intside DNWELL),1,1,X,0,0,0,0,1,0,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+N+ Diffusion Salicided Rs (Intside DNWELL),1,1,0,1,0,0,1,0,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+P+ Diffusion Salicided Rs (Intside DNWELL),1,1,X,0,0,0,0,1,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+N+ Poly Unsalicided Rs,X,0,X,X,X,1,1,0,0,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+P+ Poly Unsalicided Rs,X,0,X,X,X,1,0,1,0,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+P+ Poly Salicided Rs,X,0,X,X,X,1,0,1,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+N+ Poly Salicided Rs,X,0,X,X,X,1,1,0,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+1K P+ HRS (3.3V area),X,0,X,X,0,1,0,1,1,0,1,X,0,0,1,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+1K P+ HRS (5V/6V  area),X,0,X,X,1,1,0,1,1,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+2K P+ HRS (3.3V area),X,0,X,X,0,1,0,1,1,0,1,X,0,0,1,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+2K P+ HRS (5V/6V area),X,0,X,X,1,1,0,1,1,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+3K P+ HRS (3.3V area),X,0,X,X,0,1,0,1,1,0,1,X,0,0,1,0,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+3K P+ HRS (5V/6V area),X,0,X,X,1,1,0,1,1,0,1,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+Nwell (under STI),0,1,1,0,0,0,1,0,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+LVPWELL (under STI),1,1,0,1,0,0,0,1,0,0,0,X,0,0,1,X,X,0,0,0,0,0,0,X,0,0,0,0,0,0
+(5) Capacitors:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+MIM capacitor,X,X,X,X,X,X,X,X,X,X,X,1,X,X,X,X,1,X,X,X,X,X,X,X,0,0,X,X,X,X
+3.3V NMOS Cap (Outside DNWELL),0,1,0,X,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+3.3V NMOS Cap (Inside DNWELL),1,1,0,1,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+3.3V PMOS Cap (Outside DNWELL),0,1,1,0,0,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+3.3V PMOS Cap (Inside DNWELL),1,1,X,0,0,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"3.3V NMOS Cap_b  (Inside NWELL, Outside DNWELL)",0,1,1,0,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"3.3V NMOS Cap_b  (Inside NWELL, Inside DNWELL)",1,1,X,0,0,1,1,0,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"3.3V PMOS Cap_b (Inside LVPWELL, Outside DNWELL)",0,1,0,X,0,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"3.3V PMOS Cap_b (Inside LVPWELL, Inside DNWELL)",1,1,0,1,0,1,0,1,0,0,0,X,0,0,0,0,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+5V/6V  NMOS Cap (Outside DNWELL),0,1,0,X,1,1,1,0,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+5V/6V  NMOS Cap (Inside DNWELL),1,1,0,1,1,1,1,0,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+5V/6V  PMOS Cap (Outside DNWELL),0,1,1,0,1,1,0,1,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+5V/6V  PMOS Cap (Inside DNWELL),1,1,X,0,1,1,0,1,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"5V/6V  NMOS Cap_b  (Inside NWELL, Outside DNWELL)",0,1,1,0,1,1,1,0,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"5V/6V  NMOS Cap_b  (Inside NWELL, Inside DNWELL)",1,1,X,0,1,1,1,0,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"5V/6V  PMOS Cap_b (Inside LVPWELL, Outside DNWELL)",0,1,0,X,1,1,0,1,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+"5V/6V  PMOS Cap_b (Inside LVPWELL, Inside DNWELL)",1,1,0,1,1,1,0,1,0,0,0,X,0,0,0,X,X,0,0,0,1,0,0,X,0,0,0,0,0,0
+(6) Well Taps,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Nwell tap (Outside DNWELL),0,1,1,0,X,0,1,0,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,0,0,0,0,0,0,0
+DNWELL/Nwell tap (Inside DNWELL),1,1,X,0,X,0,1,0,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,0,0,0,0,0,0,0
+LVPWELL tap (Outside DNWELL),0,1,0,1,X,0,0,1,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,0,0,0,0,0,0,0
+LVPWELL tap (Inside DNWELL),1,1,0,1,X,0,0,1,0,0,0,X,0,0,0,0,X,0,0,0,0,0,0,0,0,0,0,0,0,0
+(7) N+ Poly Fuse (Optional):,X,0,X,X,X,1,1,0,0,X,1,X,0,1,0,0,X,0,0,0,0,0,0,0,0,0,0,0,0,0
+(8) Metal Fuse (Optional):,X,0,X,X,X,0,X,X,X,X,X,X,1,0,0,0,X,0,0,0,0,0,0,0,0,0,0,0,0,0
+(9) ESD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+nfet_03v3_dn_dss (SAB 3.3V NMOS inside DNWELL),1,1,0,1,0,1,1,0,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+nfet_03v3_dss (SAB 3.3V NMOS outside DNWELL),0,1,0,X,0,1,1,0,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+nfet_05v0_dn_dss (SAB 5V NMOS inside DNWELL),1,1,0,1,1,1,1,0,0,X,1,X,0,0,0,1,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+nfet_05v0_dss (SAB 5V NMOS outside DNWELL),0,1,0,X,1,1,1,0,0,X,1,X,0,0,0,1,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+nfet_06v0_dn_dss (SAB 6V NMOS inside DNWELL),1,1,0,1,1,1,1,0,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+nfet_06v0_dss (SAB 6V NMOS outside DNWELL),0,1,0,X,1,1,1,0,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+pfet_03v3_dn_dss (SAB 3.3V PMOS inside DNWELL),1,1,X,0,0,1,0,1,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+pfet_03v3_dss (SAB 3.3V PMOS outside DNWELL),0,1,1,0,0,1,0,1,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+pfet_05v0_dn_dss (SAB 5V PMOS inside DNWELL),1,1,X,0,1,1,0,1,0,X,1,X,0,0,0,1,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+pfet_05v0_dss (SAB 5V PMOS outside DNWELL),0,1,1,0,1,1,0,1,0,X,1,X,0,0,0,1,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+pfet_06v0_dn_dss (SAB 6V PMOS inside DNWELL),1,1,X,0,1,1,0,1,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+pfet_06v0_dss (SAB 6V PMOS outside DNWELL),0,1,1,0,1,1,0,1,0,X,1,X,0,0,0,0,X,0,0,0,0,1,1,X,0,0,0,0,0,0
+(10) eFuse,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+eFuse,X,0,0,X,X,1,0,1,0,0,0,0,0,0,0,X,0,0,0,0,0,0,1,0,1,1,0,0,0,0
+
+================================================================================
+FICHIER: 09_LAYOUT_RULE_DESCRIPTION27.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\09_LAYOUT_RULE_DESCRIPTION27.csv
+================================================================================
+
+Term,Definition
+NCOMP,COMP AND Nplus
+PCOMP,COMP AND Pplus
+Field,NOT COMP
+Transistor gate,Poly2 AND COMP
+N-channel gate,Nplus AND Poly2 AND COMP
+P-channel gate,Pplus AND Poly2 AND COMP
+Unsalicided Nplus Poly2,Poly2 AND Nplus AND SAB
+Unsalicided Pplus Poly2,Poly2 AND Pplus AND SAB
+Unsalicided COMP,COMP AND SAB
+Unsalicided Poly2,Poly2 AND SAB
+
+================================================================================
+FICHIER: 10_Design_Geometry_Rules27.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\10_Design_Geometry_Rules27.csv
+================================================================================
+
+Rule No.,Description
+GRID,The design grid must be an integer multiple of 0.005μm.
+OFFGRID,All edge boundaries must be snapped to the grid defined above.
+ACUTE,All shapes must be orthogonal or on a 45° unless otherwise stated.
+
+================================================================================
+FICHIER: 11_DNWELL28.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\11_DNWELL28.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT
+Layer,DN = DNWELL,
+DN.1,Min. DNWELL Width,1.7
+DN.2a,"Min. DNWELL Space (Equi-potential), Merge if the space is less than",2.5
+DN.2b,Min. DNWELL Space (Different potential),5.42
+DN.3,Each DNWELL shall be directly surrounded by PCOMP guard ring tied to the P-substrate potential.,
+Note.1,"Both 3.3V and  5V/6V transistors are not allowed in the same DNWELL.
+
+It is a layout Guide for Customer.",
+
+================================================================================
+FICHIER: 12_LVPWELL29_1.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\12_LVPWELL29_1.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT,
+Layer,LPW = LVPWELL,3.3V ,5V/6V
+LPW.1,Min. LVPWELL Width,0.6,0.74
+LPW.2a,Min. LVPWELL to LVPWELL Space (Inside DNWELL) [Different potential],1.4,1.7
+LPW.2b,Min. LVPWELL to LVPWELL Space [Equi potential],0.86,0.86
+LPW.3,Min. DNWELL enclose LVPWELL,2.5,2.5
+LPW.4*,"If LVPWELL is used as resistor, it must be covered by RES_MK (for LVS purpose).
+
+Width of the resistor determined by LVPWELL. Length by COMP-to-COMP space.
+
+RES_MK length shall be coinciding with resistor length (Touching COMP each side) and width covering the width of LVPWELL.",,
+LPW.5,LVPWELL resistors must be enclosed by DNWELL,,
+Note.1 **,Recommended Min. width to achieve stable LVPWELL resistor.,2,2
+
+================================================================================
+FICHIER: 12_LVPWELL29_2.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\12_LVPWELL29_2.csv
+================================================================================
+
+RULE NO. ,DESCRIPTION ,LAYOUT 
+Layer,LPW = LVPWELL,
+LPW.11,Min (LVPWELL outside DNWELL) space to DNWELL,1.5
+LPW.12,LVPWELL cannot overlap with Nwell,
+
+================================================================================
+FICHIER: 13_Nwell31.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\13_Nwell31.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT,
+Layer,NW = Nwell,3.3V, 5V/6V
+NW.1a,Min. Nwell Width (This is only for litho purpose on the generated area),0.86,0.86
+NW.1b,Min. Nwell Width as a resistor (Outside DNWELL only),2,2
+NW.2a,"Min. Nwell Space (Outside DNWELL) [Equi-potential], Merge if the space is less than",0.6,0.74
+NW.2b,Min. Nwell Space (Outside DNWELL) [Different potential],1.4,1.7
+NW.3,Min. Nwell to DNWELL space,3.1,3.1
+NW.4,Min. Nwell to LVPWELL space,0,0
+NW.5,Min. DNWELL enclose Nwell,0.5,0.5
+NW.6,Nwell resistors can only exist outside DNWELL,,
+NW.7*,"If Nwell is used as resistor, it must be covered by RES_MK (for LVS purpose).
+
+Width of the resistor determined by Nwell width. Length by COMP to COMP space. 
+
+RES_MK length shall be coincide with resistor length (Touching COMP each side) and width covering the width of Nwell)""",,
+
+================================================================================
+FICHIER: 14_COMP33_1.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\14_COMP33_1.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE,
+Layer,DF = Diffusion / Active / Composite,3.3V ,5V/6V
+DF.1a,Min. COMP Width,0.22,0.3
+DF.1b*,Min. COMP Width as a resistor with low sheet resistivity,0.3,0.3
+DF.1c,Min. COMP Width for MOSCAP,1,1
+DF.2a,Min Channel Width,0.22,0.3
+DF.2b,"Max.  COMP width for all cases except those used for capacitors, marked by “MOS_CAP_MK” layer.",100,100
+DF.3a,Min. COMP Space. P-substrate tap (PCOMP outside NWELL and DNWELL) can be butted for different voltage devices as the potential is same,0.28,0.36
+DF.3b,Min./Max. NCOMP Space to PCOMP in the same well for butted COMP (MOSCAP butting is not allowed),0,0
+DF.3c,Min. COMP Space in BJT area (area marked by DRC_BJT layer),0.32,NA
+DF.4a,Min. (LVPWELL Space to NCOMP well tap) inside DNWELL,0.12,0.16
+DF.4b,Min. DNWELL overlap of NCOMP well tap,0.62,0.66
+DF.4c,Min. (Nwell overlap of PCOMP) outside DNWELL,0.43,0.6
+DF.4d,Min. (Nwell overlap of NCOMP) outside DNWELL,0.12,0.16
+DF.4e,Min. DNWELL overlap of PCOMP,0.93,1.1
+DF.5,Min. (LVPWELL overlap of PCOMP well tap) inside DNWELL,0.12,0.16
+DF.6,Min. COMP extend beyond gate (it also means source/drain overhang),0.24,0.4
+DF.7,Min. (LVPWELL Spacer to PCOMP) inside DNWELL.,0.43,0.6
+DF.8,Min. (LVPWELL overlap of NCOMP) Inside DNWELL,0.43,0.6
+DF.9,Min. COMP area (um2),0.2025,0.2025
+DF.10,Min. field area (um2),0.26,0.26
+DF.11,Min. Length of butting COMP edge,0.3,0.3
+DF.12,COMP not covered by Nplus or Pplus is forbidden (except those COMP under marking).,,
+DF.13,Max distance of Nwell tap (NCOMP inside Nwell) from (PCOMP inside Nwell),20,15
+DF.14,Max distance of substrate tap (PCOMP outside Nwell)  from (NCOMP outside Nwell),20,15
+DF.15a**,"NCOMP inside DNWELL and Dualgate, but outside LVPWELL
+
+i.e. [(NCOMP AND DNWELL AND Dualgate) AND (NOT LVPWELL)] can only be connected to 5V/6V VDD.""",,
+DF.15b**,"NCOMP inside DNWELL but outside Dualgate and LVPWELL 
+
+i.e.[(NCOMP AND DNWELL) AND (NOT Dualgate) AND ( NOT LVPWELL) can only be connected to 3.3V VDD.",,
+
+================================================================================
+FICHIER: 14_COMP33_2.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\14_COMP33_2.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE,
+Layer,DF = Diffusion / Active / Composite,3.3V ,5V/6V
+DF.16,Min. space from (Nwell outside DNWELL) to (NCOMP outside Nwell and DNWELL).,0.43,0.6
+DF.17,Min. space from (Nwell Outside DNWELL) to (PCOMP outside Nwell and DNWELL),0.12,0.16
+DF.18,Min. DNWELL space to (PCOMP outside Nwell and DNWELL),2.5,2.5
+DF.19,Min. DNWELL space to (NCOMP outside Nwell and DNWELL),3.2,3.28
+
+================================================================================
+FICHIER: 15_Dualgate40_1.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\15_Dualgate40_1.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer ,DV = Dual Voltage = Dualgate,
+DV.1  ,Min. Dualgate enclose DNWELL,0.5
+DV.2 ,Min. Dualgate Space. Merge if Space is less than this design rule.,0.44
+DV.3,Min. Dualgate to COMP space [unrelated],0.24
+DV.4*,Circuits covered by Dualgate layer will have 5V/6V gate oxide for 5V/6V operation.,
+
+================================================================================
+FICHIER: 15_Dualgate40_2.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\15_Dualgate40_2.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+DV.5,Min. Dualgate width,0.7
+DV.6,Min. Dualgate enclose COMP  (except substrate tap),0.24
+DV.7 ,COMP (except substrate tap) can not be partially overlapped by Dualgate,
+DV.8 ,Min Dualgate enclose Poly2,0.4
+DV.9 ,3.3V and 5V/6V PMOS cannot be sitting inside same NWELL,
+
+================================================================================
+FICHIER: 16_Poly2_42.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\16_Poly2_42.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE,,
+Layer,PL = Poly2,3.3V,5V, 6V
+PL.1,Interconnect Width  (outside PLFUSE),0.18,0.2,0.2
+PL.1a,Interconnect Width (inside PLFUSE),0.18,0.18,0.18
+PL.2,Gate Width  (Channel Length) 1,0.28,0.6/0.5, 0.7/0.55
+PL.3a,"Space on COMP
+
+Space on Field","0.24
+
+0.24","0.24
+
+0.24","0.24
+
+0.24"
+PL.3b*,Poly2 Space on COMP for low active sheet resistivity (guideline),0.26,0.4,0.4
+PL.4,Extension beyond COMP to form Poly2 end cap,0.22,0.22,0.22
+PL.5a,"Space from field Poly2 to unrelated COMP
+
+Spacer from field Poly2 to Guard-ring",0.1,0.3,0.3
+PL.5b,Space from field Poly2 to related COMP,0.1,0.3,0.3
+PL.6,90 deg bends on the COMP are not allowed,,,
+PL.7,45 deg bent gate width,0.3,0.7,0.7
+PL.8,"Poly2 coverage over the entire die shall be >= 14%
+
+Dummy poly2 lines must be added to meet the minimum poly2 density requirement. ",,,
+PL.9,"Poly2 inter connect connecting 3.3V and 5V/6V areas (area inside 
+
+and outside Dualgate) are not allowed. They shall be done though metal lines only.",,,
+PL.10*,Maximum Poly2 current density,1mA/um,1mA/um ,1mA/um
+PL.11,V5_Xtor must enclose 5V device,,,
+PL.12,V5_Xtor enclose 5V Comp, NA,0, NA
+
+================================================================================
+FICHIER: 17_Nplus_44.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\17_Nplus_44.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,NP = Nplus Implant,
+NP.1,Width,0.4
+NP.2,Space,0.4
+NP.3a,Space to PCOMP for PCOMP: (1) Inside Nwell  (2) Outside LVPWELL but inside DNWELL,0.16
+NP.3b,"Space to PCOMP: For Inside DNWELL, inside LVPWELL:
+
+I\) For PCOMP overlap by LVPWELL < 0.43μm
+
+II\) For PCOMP overlap by LVPWELL >= 0.43μm","
+
+0.16
+
+0.08"
+NP.3c,"Space to PCOMP: For Outside DNWELL:
+
+I\) For PCOMP space to Nwell < 0.43μm
+
+II\) For PCOMP space to Nwell >= 0.43μm","
+
+0.16
+
+0.08"
+NP.3d,Min/max space to a butted PCOMP,0
+NP.3e,Space to related PCOMP edge adjacent to a butting edge,0
+NP.4a,Space to related P-channel gate at a butting edge parallel to gate,0.32
+NP.4b,"Within 0.32μm of channel, space to P-channel gate extension perpendicular to
+
+the direction of Poly2",0.22
+NP.5a,Overlap of N-channel gate,0.23
+NP.5b,Extension beyond COMP for the COMP (1) inside LVPWELL (2) outside Nwell and DNWELL,0.16
+NP.5c,"Extension beyond COMP: For Inside DNWELL:
+
+I\) For Nplus < 0.43μm from LVPWELL edge for Nwell or DNWELL tap inside DNWELL
+
+II\) For Nplus >= 0.43μm from LVPWELL edge for Nwell or DNWELL tap inside DNWELL","
+
+0.16
+
+0.02"
+NP.5d,"Extension beyond COMP: For Outside DNWELL, inside Nwell:
+
+I\) For  Nwell  overlap of  Nplus  < 0.43μm
+
+II\) For Nwell overlap of Nplus >= 0.43μm","
+
+0.16
+
+0.02"
+NP.6,Overlap with NCOMP butted to PCOMP,0.22
+NP.7,Space to unrelated unsalicided Poly2,0.18
+NP.8a,Minimum Nplus area,0.35 μm2
+NP.8b,Minimum area enclosed by Nplus,0.35 μm2
+NP.9,Overlap of unsalicided Poly2,0.18
+NP.10,Overlap of unsalicided COMP,0.18
+NP.11,"Butting Nplus and PCOMP is forbidden within 0.43μm of Nwell edge
+
+(for outside DNWELL) and of LVPWELL edge (for inside DNWELL case).",
+NP.12,Overlap with P-channel poly2 gate extension is forbidden within 0.32μm of P-channel gate,
+
+================================================================================
+FICHIER: 18_Pplus_48.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\18_Pplus_48.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,PP = Nplus Implant,
+PP.1,Width,0.4
+PP.2,Space,0.4
+PP.3a,Space to NCOMP for NCOMP (1) inside LVPWELL (2) outside NWELL and DNWELL,0.16
+PP.3b,"Space to NCOMP: For Inside DNWELL.
+
+I\) NCOMP space to LVPWELL >= 0.43μm
+
+II\) NCOMP space to LVPWELL< 0.43μm","
+
+0.08
+
+0.16"
+PP.3c,"Space to NCOMP: For Outside DNWELL, inside Nwell:
+
+I\) NWELL Overlap of  NCOMP >= 0.43μm
+
+II\) NWELL Overlap of  NCOMP < 0.43μm","
+
+0.08
+
+0.16"
+PP.3d,Min/max space to a butted NCOMP,0
+PP.3e,Space to NCOMP edge adjacent to a butting edge,0
+PP.4a,Space related to N-channel gate at a butting edge parallel to gate,0.32
+PP.4b,"Within 0.32μm of channel, space to N-channel gate extension perpendicular to the direction of Poly2",0.22
+PP.5a,Overlap of P-channel gate,0.23
+PP.5b,Extension beyond COMP for COMP (1) Inside NWELL (2) outside LVPWELL but inside DNWELL.,0.16
+PP.5c,"Extension beyond COMP: For Inside DNWELL, inside LVPWELL:
+
+I\) For LVPWELL overlap of Pplus  >= 0.43μm for LVPWELL tap
+
+II\) For LVPWELL overlap of Pplus < 0.43um for the LVPWELL tap","
+
+0.02
+
+0.16"
+PP.5d,"Extension beyond COMP: For Outside DNWELL
+
+I\) For Pplus to NWELL space  >= 0.43μm for Pfield or LVPWELL tap
+
+II\) For Pplus to NWELL space  < 0.43μm for Pfield or LVPWELL tap","
+
+0.02
+
+0.16"
+PP.6,Overlap with PCOMP butted to NCOMP,0.22
+PP.7,Space to unrelated unsalicided Poly2,0.18
+PP.8a,Minimum Pplus area,0.35 μm2
+PP.8b,Minimum area enclosed by Pplus,0.35 μm2
+PP.9,Overlap of unsalicided Poly2,0.18
+PP.10,Overlap of unsalicided COMP,0.18
+PP.11,"Butting Pplus and NCOMP is forbidden within 0.43μm of  Nwell edge
+
+(for outside DNWELL) and of LVPWELL edge (for inside DNWELL case).",
+PP.12,Overlap with N-channel Poly2 gate extension is forbidden within 0.32μm of N-channel gate,
+
+================================================================================
+FICHIER: 19_SAB_52.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\19_SAB_52.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,SB = Salicide Block,
+SB.1,Width,0.42
+SB.2,Space,0.42
+SB.3,Space from salicide block to unrelated COMP,0.22
+SB.4,Space from salicide block to contact,0.15
+SB.5a,Space from salicide block to unrelated Poly2 on field,0.3
+SB.5b,Space from salicide block to unrelated Poly2 on COMP,0.28
+SB.6,Salicide block extension beyond related COMP,0.22
+SB.7,COMP extension beyond related salicide block,0.22
+SB.8,Non-salicided contacts are forbidden,
+SB.9,Salicide block extension beyond unsalicided Poly2,0.22
+SB.10,Poly2 extension beyond related salicide block,0.22
+SB.11,Overlap with COMP,0.22
+SB.12,Overlap with Poly2 outside ESD_MK,0.22
+SB.13,Min. area,2.0 μm2
+SB.14a,"Space from unsalicided Nplus Poly2 to unsalicided Pplus Poly2
+
+(Unsalicided Nplus Poly2 must not fall within a square of 0.56μm x 0.56μm at unsalicided Pplus Poly2 corners)",0.56
+SB.14b,"Space from unsalicided Nplus Poly2 to P-channel gate
+
+(Unsalicided Nplus Poly2 must not fall within a square of 0.56μm x 0.56μm at P-channel gate corners)",0.56
+SB.15a,Space from unsalicided Poly2 to unrelated Nplus/Pplus,0.18
+SB.15b,Space from unsalicided Poly2 to unrelated Nplus/Pplus along Poly2 line,0.32
+SB.16,"SAB layer cannot exist on 3.3V and 5V/6V CMOS transistors' Poly and COMP area of the core circuit
+
+(Excluding the transistors used for ESD purpose). It can only exist on CMOS transistors marked by
+
+LVS_IO, OTP_MK, ESD_MK  layers.",
+
+================================================================================
+FICHIER: 20_ESD_Implant_54.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\20_ESD_Implant_54.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,ESD = ESD Implant,
+ESD.1,Minimum width of an ESD implant area,0.6
+ESD.2,"Minimum space between two ESD implant areas
+
+(Merge if the space is less than 0.6um)",0.6
+ESD.3a,Minimum space to NCOMP,0.6
+ESD.3b,Min/max space to a butted PCOMP,0
+ESD.4a,Extension beyond NCOMP,0.24
+ESD.4b,Minimum overlap of an ESD implant edge to a COMP,0.45
+ESD.5a,Minimum ESD area,0.49 μm2
+ESD.5b,Minimum field area enclosed by ESD implant,0.49 μm2
+ESD.6,Extension perpendicular to Poly2 gate,0.45
+ESD.7,No ESD implant inside PCOMP,
+ESD.8,Minimum space to Nplus/Pplus,0.3
+ESD.PL,Minimum gate length of 5V/6V gate NMOS,0.8
+ESD.9,ESD implant layer must be overlapped by Dualgate layer (as ESD implant option is only for 5V/6V devices),
+ESD.10,LVS_IO shall be drawn covering I/O MOS active area by minimum overlap,0
+
+================================================================================
+FICHIER: 21_Contact_56.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\21_Contact_56.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,CO = Contact,
+CO.1,Min/max contact size,0.22
+CO.2a,Space,0.25
+CO.2b,Space in 4x4 or larger contact array,0.28
+CO.3,Poly2 overlap of contact,0.07
+CO.4,COMP overlap of contact,0.07
+CO.5a,Nplus overlap of contact on COMP (Only for contacts to butted Nplus and Pplus COMP areas),0.1
+CO.5b,Pplus overlap of contact on COMP (Only for contacts to butted Nplus and Pplus COMP areas),0.1
+CO.6,"Metal1 overlap of contact
+
+I\) Metal1 (< 0.34μm) end-of-line overlap (1)
+
+II\) If Metal1 overlaps contact by < 0.04μm on one side, adjacent metal1 edges overlap
+
+III\) Minimum Metal1 overlap of contact on all sides for minimum contact resistance variation* (guideline)","0.005
+
+0.06
+
+0.06
+
+0.12"
+CO.7,Space from COMP contact to Poly2 on COMP,0.15
+CO.8,Space from Poly2 contact to COMP,0.17
+CO.9,Contact on NCOMP to PCOMP butting edge is forbidden (contact must not straddle butting edge),
+CO.10,Contact on Poly2 gate over COMP is forbidden.,
+CO.11,Contact on field oxide is forbidden.,
+
+================================================================================
+FICHIER: 22_Metaln_58.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\22_Metaln_58.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,Mn --- Metaln  (where n = 1 to 5),
+Mn.1,Width,"0.23 (n = 1)
+
+0.28 (2 <= n <= 5)"
+Mn.2a,Space,"0.23 (n = 1)
+
+0.28 (2 <= n <= 5)"
+Mn.2b,Space to wide Metaln (length & width > 10μm),0.3
+Mn.3,Minimum Metaln area,0.1444 um2
+Mn.4,"Metaln coverage over the entire die shall be >30% 
+
+(Refer to section 13.0 for Dummy Metal fill guidelines.
+
+Customer needs to ensure enough dummy metal to satisfy Metaln coverage)",
+
+================================================================================
+FICHIER: 23_Vian_59.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\23_Vian_59.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,Vn --- Vian  (where n = 1 to 5),
+Vn.1,Min/max Vian size (1 <= n <= 5),0.26
+Vn.2a,Space (1 <= n <= 5),0.26
+Vn.2b,Vian Space in 4x4 or larger Vian array,0.36
+Vn.3,"Metaln (where n=1 to 5) overlap of Vian
+
+
+i. Metaln (< 0.34μm) end-of-line overlap (1)
+
+ii. If Metaln overlap Vian by < 0.04μm on one side, adjacent Metaln edges overlap
+
+iii. Minimum Metaln overlap of Vian on all sides for minimum Vian resistance
+
+variation (guideline)*","0.00 (n = 1)
+
+0.01 (2 <= n <= 5)
+
+0.06
+
+0.06
+
+0.12"
+Vn.4,"Metal [n+1] overlap of Vian
+
+i. Metal [n+1] (< 0.34μm) end-of-line overlap1
+
+ii. If Metal [n+1] overlap Vian by < 0.04μm on one side, adjacent Metal [n+1] edges overlap
+
+iii. Minimum Metal[n+1] overlap of Vian on all sides for minimum Vian resistance
+
+variation (guideline)*","0.01
+
+0.06
+
+0.06
+
+0.12"
+Vn.5*,Vian stack (2) over contact is permitted,
+
+================================================================================
+FICHIER: 24_MetalTop_61.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\24_MetalTop_61.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,MT --- MetalTop,
+MT.1,Width,0.36/0.44*
+MT.2a,Space,0.38/0.46*
+MT.2b,Space between wide (length & width > 10um) MetalTop,0.50/0.60*
+MT.3,"MetalTop coverage over the entire die shall be >30%
+
+(Refer to section 10.3 for Dummy Metal-fill guidelines. Customer needs
+
+to ensure enough dummy metal to satisfy Metaln coverage) ",
+MT.4,Minimum MetalTop area,0.5625μm2
+
+================================================================================
+FICHIER: 25_Thick_MetalTop_62.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\25_Thick_MetalTop_62.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,MT30 = 3um Metal Top,
+MT30.1,"(a) Min. thick MetalTop width
+
+(b) Min width for >1000um long metal line (based on metal edge)","1.8
+
+2.2"
+MT30.2,Min. thick MetalTop space,1.8
+MT30.3,The separation of two corners should satisfy the minimum spacing,1.8
+MT30.4,The separation of single metal line from a any degree metal line should satisfy the minimum spacing,1.8
+MT30.5,Minimum thick MetalTop enclose underlying via (for example: via5 for 6LM case) [Outside Not Allowed],0.12
+MT30.6,Thick MetalTop end-of-line (width <2.5um) enclose underlying via (for example: via5 for 6LM case) [Outside Not Allowed],0.25
+MT30.7,"Thick MetalTop coverage over the entire die shall be >30%
+
+(Refer to section 13.0 for Dummy Metal-fill guidelines. Customer needs to
+
+Ensure enough dummy metal to satisfy Metaln coverage)",
+MT30.8a,"As via size compare to min thick-metal width is very small. Single top via
+
+(e.g Via3 for 4 layer metal process with 3.0um thick top metal option.
+
+in other words via connecting to thick metal) At one location cannot exit under the thick (3um thick) metal.", DRC check
+MT30.8b,"There shall be minimum 2X2 array of vias (top vias) at one location  connecting to 3um thick top metal.
+
+Note: This rule will not checked for seal ring area (identified by  GUARD_RING_MK
+
+As the via rules in this area are separately covered  under seal ring section)", DRC check
+
+================================================================================
+FICHIER: 26_Mcell_64.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\26_Mcell_64.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,MC = MTP Cell Implant,
+MC.1,Width,0.4
+MC.2,Space,0.4
+MC.3,Minimum Mcell area,0.35 μm2
+MC.4,Minimum area enclosed by Mcell,0.35 μm2
+
+================================================================================
+FICHIER: 27_ANTENNA1_66.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\27_ANTENNA1_66.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,"Poly2, Metal1 to MetalTop",
+ANT.1,Maximum ratio of Poly2 perimeter area to related gate oxide area,200
+ANT.2 (1),Maximum ratio of Metal1 perimeter area to related gate oxide area,400
+ANT.3 (1),Maximum ratio of Metal2 perimeter area to related gate oxide area,400
+ANT.4 (1),Maximum ratio of Metal3 perimeter area to related gate oxide area,400
+ANT.5 (1),Maximum ratio of Metal4 perimeter area to related gate oxide area,400
+ANT.6 (1),Maximum ratio of Metal5 perimeter area to related gate oxide area,400
+ANT.7 (1),Maximum ratio of MetalTop perimeter area to related gate oxide area,400
+ANT.8,Maximum ratio of contact area to related gate oxide area,10
+ANT.9  (1),Maximum ratio of Via1 area to related gate oxide area,20
+ANT.10 (1),Maximum ratio of Via2 area to related gate oxide area,20
+ANT.11 (1),Maximum ratio of Via3 area to related gate oxide area,20
+ANT.12 (1),Maximum ratio of Via4 area to related gate oxide area,20
+ANT.13 (1),Maximum ratio of Via5 area to related gate oxide area,20
+ANT.14,"If MIM is between Metaln and Metal (n+1), Then:
+
+Maximum ratio of each of the metal layer (Metal (n+1) to MetalTop) perimeter
+
+area to related MIM area (For example, If MIM is between Metal2 and
+
+Metal3, then need to check ANT.14 for M3, M4, ... MetalTop to its related MIM)",400
+ANT.15,"If MIM is between Metaln and Metal (n+1), then:
+
+Maximum ratio of each of Via (Vian to most top Via) area to related MIM
+
+area (For example, If MIM is between Metal2 and Metal3, then need to
+
+check ANT.15 for V2, V3, ... most top Via to its related MIM)",20
+
+================================================================================
+FICHIER: 28_ANTENNA2_67.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\28_ANTENNA2_67.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+ANT.16,"If any of the above antenna ratio rules fails then the antenna diodes
+
+shall be connected in a reverse bias mode between the metal line 
+
+failing antenna ratio (connected to gate poly or MIM cap top plate)
+
+and the substrate underneath.
+
+
+For DRC check if Metaln or Vian fails antenna ratio then it shall
+
+check whether this Metaln or Vian is directly connected to COMP
+
+through lower level metals, vias and contacts or not?
+
+Case (a): Connection to COMP is not present: Flag error
+
+Case (b): Connection to COMP is present: Then:
+
+
+(i) For Thin gate case: (COMP AND Poly2 NOT DUALGATE):
+
+Treat Gate area = (thin gate area +
+
+MF* (COMP area directly connection that node))
+
+
+This comp area contained the protection diode and any other
+
+drain or source junction connected to this node.
+
+MF: stand for multiplying factor, for this case MF=2
+
+(ii) For Thick gate case (COMP AND Poly2 AND
+
+DUALGATE) Treat Gate area = (Thick gate area +
+
+MF* (COMP area directly connection that node))
+
+
+This comp area contained the protection diode and any other
+
+drain or source junction connected to this node.
+
+
+MF: stand for multiplying factor, for this case MF=15
+
+
+(iii) For MIM Cap case:
+
+Treat MIM area = (FuseTop area + MF* (COMP area directly
+
+connection that node))(For MIM option-A process)
+
+
+Treat MIM area = (FuseTop area + MF* (COMP area directly
+
+connection that node))(For MIM option-B process)
+
+This comp area contained the protection diode and any other
+
+drain or source junction connected to this node.
+
+MF: stand for multiplying factor, for this case MF=15
+
+And check back the validity of antenna ratios as specified in
+
+rules ANT.1 to ANT.15.",
+
+================================================================================
+FICHIER: 28_ANTENNA3_69.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\28_ANTENNA3_69.csv
+================================================================================
+
+,Poly2,Metal1,Metal2,Metal3,Metal4,Metal5,"MetalTop
+(6K Å)","MetalTop.1
+(9K Å)","MetalTop.2
+(11K Å)","MetalTop.3
+(30K Å)"
+t(um),0.2um,0.54um,0.54um,0.54um,0.54um,0.54um,0.69um,0.99um,1.19um,3.035um
+
+================================================================================
+FICHIER: 29_BondPad1_70.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\29_BondPad1_70.csv
+================================================================================
+
+RULE NO.,RULE NO. DESCRIPTION,"Wedge type Wire bond
+(without CUP) ","Ball type
+Wire bond
+(with CUP)",Gold bump
+LAYER , Pad,,,
+PAD.4, Top layer metal overlap of pad opening,,2,
+
+================================================================================
+FICHIER: 29_BondPad2_70.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\29_BondPad2_70.csv
+================================================================================
+
+GUIDELINE NO.,DESCRIPTION,"Wedge type
+Wire bond
+(without CUP)","Ball type
+Wire bond
+(with CUP)",Gold bump
+Layer ,Pad,,,
+PAD.1 ,Pad opening1,40,40,4
+PAD.2 ,Pad opening to pad opening (1),9,9,9
+PAD.5 ,MetalTop (2) overlap of Top_Via (3),0.5,0.5,0.5
+PAD.6 ,MetalTop-1 (4) overlap of Top_Via (3),0.5,0.5,0.5
+PAD.7 ,Metal5 overlap of Via4,0.5,0.5,--
+PAD.8 ,Metal4 overlap of Via4,0.5,0.5,--
+PAD.9 ,Metal4 overlap of Via3,0.5,0.5,--
+PAD.10 ,Metal3 overlap of Via3,0.5,0.5,--
+PAD.11 ,Metal3 overlap of Via2,0.5,0.5,--
+PAD.12 ,Metal2 overlap of Via2,0.5,0.5,--
+PAD.13 ,Metal2 overlap of Via1,0.5,0.5,--
+PAD.14 ,Metal1 overlap of Via1,0.5,0.5,--
+PAD.15,"Min pad opening space to nearest S/L guard ring
+
+(Inner edge of GUARD_RING_MK marking)",30,30,30
+PAD.16 ,"Max pad opening space to nearest S/L guard ring
+
+(Inner edge of GUARD_RING_MK marking)",200,200,NA
+PAD.17 , Pad opening space to active circuit COMP,15, NA,NA
+PAD.18 , Pad opening space to active circuit Poly2,15, NA,NA
+PAD.19a,"Pad opening to non-pad circuit Metal1, 2, 3, 4,5
+
+Up to MetalTop-1",6,NA,NA
+PAD.19b ,Pad opening to non-pad circuit MetalTop,6,6,6
+PAD.20 ,Pad metal to pad metal space,5,5,5
+PAD.21,"FOR other rules specific to CUP (circuit under pad
+
+Case) refer to section 9.3",,,
+
+================================================================================
+FICHIER: 30_CUP_73.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\30_CUP_73.csv
+================================================================================
+
+Rule NO.,DESCRIPTION,Ball type Wire bond,Solder bump/Gold bump
+CUP.1,"All FEOL are allowed to be below Pad region
+
+(except the items stated in CUP.4). ",Per Design Manual,Per Design Manual
+CUP.1a,CUP is not allowed for Wedge-type Wire bond case.,,
+CUP.2,Minimum width of the metal line used for bond pads,1,NA
+CUP.3,Minimum space of the metal line used for bond pads (slots),1,NA
+CUP.4* (1),"Circuits currently not allowed under bond pad are:
+
+\- Devices sensitive to strain (eg: silicon band-gap references)
+
+\- Matched pair devices like transistors, resistors and
+
+capacitors For precision analog application.
+
+\- All RF components",Guideline,Guideline
+CUP.5,Top vias directly underneath the pad opening,Not Allowed,NA
+CUP.6,"However it is good to have a ring of top vias connected around the pad
+
+opening to MetalTop-1 with min top via space to pad opening:",0.5,NA
+CUP.7,"a\) Guideline: Metals underneath pad shall be in the form of stripes which
+
+Should be aligned parallel to the expected current flow during normal
+
+operation and ESD condition. Refer Fig.CUP7(a)",,
+,"b\) Guideline*: If orthogonal current flow is required crosshatched Metal
+
+grids with similar line and space may be used. Refer Fig.CUP7(b)",,
+,"c\) Vias shall be in the form of cluster or arrays (<=3x3). Sea of 
+
+Via (>3x3 array) is not allowed. Refer Fig.CUP7(c)",,
+,d\) Min via space in via arrays,0.3,NA
+,e\) Min space between via arrays,0.5,NA
+,"f\) Guideline: Individual top vias (Space = 1.3um) may be used
+
+under pad open area. Refer Fig.CUP7(f) ",,
+CUP.8,Top_Via-1 (2) directly underneath the Pad mask,Not Allowed,NA
+CUP.8a,Top_Via-1 (2) under the top metal with min top_Via-1 (2) space to pad opening,0.5,NA
+CUP.9,"1LM, 2LM and 3LM process with CUP.",Not Allowed,NA
+
+================================================================================
+FICHIER: 31_Top_Metal_76.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\31_Top_Metal_76.csv
+================================================================================
+
+NO.,DESCRIPTION,LAYOUT RULE
+TM.1,Passivation Opening  (Pad mask),A
+TM.1a,Min Passivation Opening,40
+TM.2*,UBM Opening,A+20
+TM.2a,"Min UBM Opening (defined by the layers UBMPPeri or UBMPArray
+or UBMEPlate layers depending upon the process)",60
+TM.3,Bump Pad (Top metal in this case),A+32
+TM.3a,Min Bump Pad,72
+TM. 3b*,Bump Pad larger then UBM Opening,6 / per side
+TM. 4,"Space from centre of Pad to Die Edge (Outer edge of
+GUARD_RING_MK marking)",90
+TM. 5,Min allowable bump pitch,">= 70 +
+(1.3*TM.2)"
+TM.6,"Pad without UBM layers is not allowed except the Pad under
+PROBE_MK marking.",Not allowed
+TM.7,"Shape of the Pad shall be at least octagonal (or more closer to
+circular) except the Pad under PROBE_MK marking.",DRC check
+TM.8,Space from edge of top via to the edge of UBM opening,2
+TM.9,Partially overlap of top via with passivation opening is not allowed,DRC check
+TM.10,Space from edge of top via to the edge of passivation opening,2
+
+================================================================================
+FICHIER: 32_Probe_pad_79.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\32_Probe_pad_79.csv
+================================================================================
+
+NO.,DESCRIPTION,LAYOUT RULE
+PM.1,Min PROBE_MK overlap of probe pad passivation opening,0
+PM.2,Min probe pad passivation opening1,50
+PM.3,Min probe pad pitch1,80
+PM.4,Min Probe pad top layer metal overlap of pad opening,2
+PM.5,Min Probe pad passivation opening to solder bump UBM opening,13
+
+================================================================================
+FICHIER: 33_ANALOG_DEVICE1_80.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\33_ANALOG_DEVICE1_80.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,Rule
+PRES.1,Minimum width of Poly2 resistor,0.8
+PRES.2,Minimum space between Poly2 resistors,0.4
+PRES.3,Minimum space from Poly2 resistor to COMP,0.6
+PRES.4,Minimum space from Poly2 resistor to unrelated Poly2,0.6
+PRES.5,Minimum Plus implant overlap of Poly2 resistor,0.3
+PRES.6,Minimum salicide block overlap of Poly2 resistor in width direction,0.28
+PRES.7,Space from salicide block to contact on Poly2 resistor,0.22
+PRES.8*,Maximum current density of Poly2 resistor (mA/um),1
+PRES.9,"Pplus Poly2 resistor shall be covered by RES_MK marking. RES_MK
+
+length shall be coincide with resistor length (Defined by SAB length)
+
+and width covering the width of Poly2.
+
+If the size of single RES_MK mark layer is greater than 15000um2 and
+
+both side (X and Y) are greater than 80um. then the minimum spacing to
+
+adjacent RES_MK layer",20
+
+================================================================================
+FICHIER: 33_ANALOG_DEVICE2_82.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\33_ANALOG_DEVICE2_82.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,Rules
+LRES.1,Minimum width of Poly2 resistor,0.8
+LRES.2,Minimum space between Poly2 resistors,0.4
+LRES.3,Minimum space from Poly2 resistor to COMP,0.6
+LRES.4,Minimum space from Poly2 resistor to unrelated Poly2,0.6
+LRES.5,Minimum Nplus implant overlap of Poly2 resistor,0.3
+LRES.6,Minimum salicide block overlap of Poly2 resistor in width direction,0.28
+LRES.7,Space from salicide block to contact on Poly2 resistor,0.22
+LRES.8*,Maximum current density of Poly2 resistor (mA/m),1
+LRES.9,"Nplus Poly2 resistor shall be covered by RES_MK marking.
+
+RES_MK length shall be coincide with resistor length (Defined by
+
+SAB length) and width covering the width of Poly2.
+
+If the size of single RES_MK mark layer is greater than 15000um2
+
+and both side (X and Y) are greater than 80um. Then the minimum
+
+spacing to adjacent RES_MK layer",20
+
+================================================================================
+FICHIER: 33_ANALOG_DEVICE3_84.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\33_ANALOG_DEVICE3_84.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,Rule
+HRES.1,"Minimum space
+Note : Merge if the spacing is less than 0.40 um",0.4
+HRES.2,Minimum width of Poly2 resistor,1
+HRES.3,Minimum space between Poly2 resistors,0.4
+HRES.4,Minimum RESISTOR overlap of Poly2 resistor,0.4
+HRES.5,Minimum RESISTOR space to unrelated Poly2,0.3
+HRES.6,Minimum RESISTOR space to COMP,0.3
+HRES.7,Minimum Pplus overlap of contact on Poly2 resistor,0.2
+HRES.8,Space from salicide block to contact on Poly2 resistor,0.22
+HRES.9,Minimum salicide block overlap of Poly2 resistor in width direction,0.28
+HRES.10,Minimum  & maximum Pplus overlap of SAB,0.1
+HRES.11*,Maximum current density of Poly2 resistor (mA/um),1
+HRES.12,"P type Poly2 resistor (high sheet rho) shall be covered by RES_MK
+
+marking. RES_MK length shall be coincide with resistor length (Defined
+
+by Pplus space) and width covering the width of Poly2.
+
+If the size of single RES_MK mark layer is greater than 15000um2 and
+
+both side (X and Y) are greater than 80um. Then the minimum spacing to
+
+adjacent RES_MK layer",20
+
+================================================================================
+FICHIER: 34_MIM1_86.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\34_MIM1_86.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+MIM.1,"Minimum MiM bottom plate (1) spacing to the bottom plate metal
+
+(whether adjacent MiM or routing metal)",1.2
+MIM.2,"Minimum MiM bottom plate (1) overlap of Via2 layer
+
+[This is applicable for via2 within 1.06um oversize of FuseTop
+
+layer (referenced to virtual bottom plate)]",0.4
+MIM.3,Minimum MiM bottom plate overlap of Top plate,0.6
+MIM.4,Minimum MiM top plate (FuseTop) overlap of Via2,0.4
+MIM.5,"Minimum spacing between top plate and the Via2 connecting to the
+
+bottom plate",0.4
+MIM.6,Minimum spacing between unrelated top plates,0.6
+MIM.7,Min  FuseTop enclosure by CAP_MK,0
+MIM.8a,Minimum MIM cap area (defined by FuseTop area),5*5 um2
+MIM.8b,"Maximum single MIM Cap area  (Use multiple MIM caps in
+
+parallel connection if bigger capacitors are required)",100*100 um2
+MIM.9,Min. via spacing for sea of via on MIM top plate,0.5
+MIM.10,"(a) There cannot be any Via1 touching MIM bottom plate Metal2
+
+(b) MIM bottom plate Metal2 can only be connected through the higher Via (Via2).",
+MIM.11,"Bottom plate of multiple MIM caps can be shared (for common
+
+nodes) as long as total MIM area with that single common plate
+
+does not exceed “MIM.8b” rule.",
+MIM.12*,"For MIM need to identify its' length and width, use MIM_L_MK to
+
+mark MIM capacitor's length",
+Guideline,There cannot be any sensitive matching analog circuitry underneath MIM.,
+
+================================================================================
+FICHIER: 35_MIM2_88.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\35_MIM2_88.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+MIMTM.1,Minimum MiM bottom plate (1) spacing to the bottom plate metal (whether adjacent MiM or routing metal),1.2
+MIMTM.2,Minimum MiM bottom plate (1) overlap of “Vian-1” layer [This is applicable for “Vian-1” within 1.06um oversize of FuseTop layer (referenced to virtual bottom plate)],0.4
+MIMTM.3,Minimum MiM bottom plate overlap of Top plate,0.6
+MIMTM.4,Minimum MiM top plate (FuseTop) overlap of “Vian-1”,0.4
+MIMTM.5,Minimum spacing between top plate and the “Vian-1” connecting to the bottom Plate,0.4
+MIMTM.6,Minimum spacing between unrelated top plates,0.6
+MIMTM.7,Min  FuseTop enclosure by CAP_MK,0
+MIMTM.8a,Minimum MIM cap area (defined by FuseTop area),5*5um2
+MIMTM.8b,Maximum single MIM Cap area  (Use multiple MIM caps in parallel connection if bigger capacitors are required),100*100um2
+MIMTM.9,Min. Via (“Vian-1”) spacing for sea of Via on MIM top plate,0.5
+MIMTM.10,"(a) There cannot be any “Vian-2” touching MIM bottom plate “Metaln-1”
+(b) MIM bottom plate “Metaln-1” can only be connected through the higher Via (“Vian-1”).",
+MIMTM.11,Bottom plate of multiple MIM caps can be shared (for common nodes) as long as total MIM area with that single common plate does not exceed “MIMTM.8b” rule.,
+MIMTM.12*,"For MIM need to identify its' length and width, use MIM_L_MK to mark MIM capacitor's length",
+Guideline,There cannot be any sensitive matching analog circuitry underneath MIM.,
+
+================================================================================
+FICHIER: 36_Native_Vt_NMOS_90.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\36_Native_Vt_NMOS_90.csv
+================================================================================
+
+RULE NO. ,DESCRIPTION,LAYOUT RULE
+LAYER ,NAT,
+NAT.1 ,Min. NAT Overlap of COMP of Native Vt NMOS,2
+NAT.2 ,Space to unrelated COMP (outside NAT),0.3
+NAT.3, Space to NWell edge,0.5
+NAT.4,"Minimum channel length for 3.3V Native Vt NMOS (For smaller L
+Ioff will be higher than Spec)",1.8
+NAT.5,"Minimum channel length for 6.0V Native Vt NMOS  (For smaller L
+Ioff will be higher than Spec)",1.8
+NAT.6,"Two or more COMPs if connected to different potential are not
+allowed under same NAT layer",
+NAT.7 ,Minimum NAT to NAT spacing,0.74
+NAT.8 ,Min. Dualgate overlap of NAT (for 5V/6V) native VT NMOS only,0
+NAT.9,"Poly interconnect under ""NAT"" layer is not allowed
+min spacing of un-related poly from the NAT layer",0.3
+NAT.10 ,"Nwell,inside  “NAT” layer are not allowed",
+NAT.11,"NCOMP not intersecting to Poly2, is not allowed inside “NAT” layer",
+NAT.12 ,"Poly2 not intersecting with COMP is not allowed inside “NAT”
+
+\(Poly2 resistor is not allowed inside “NAT”\)",
+
+================================================================================
+FICHIER: 37_Matched_pair_layout_guidelines_97.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\37_Matched_pair_layout_guidelines_97.csv
+================================================================================
+
+Sr.No,Guideline,Comment
+MP.1,"Matched pair device layout shall be exactly identical to each other (as
+shown in above diagrams)",
+MP.2a,"Matched pair devices shall be of the same dimension. If the matching is
+required to be 1:n ratio, then a unit cell of the same size shall be used.",
+MP.2b,"For matching requirement of 1:n ratio for transistors, following layout
+
+shall be avoided:
+
+Expecting 1 finger device to have “n X” ratio matching with “n” fingers
+(n>=2) devices.
+
+Expecting one of the fingers of n finger transistor to be have (1: “n-1”)
+ratio matched with its rest of (n-1) finger. (n >= 3)",
+MP.3,"Matched pair devices shall be placed as close as possible to each other (of
+
+course abiding by layout rules)",
+MP.4,"Matched pair devices shall preferably be surrounded by one row of
+
+identical dummy devices.",
+MP.5,"Matched pair devices shall see identical surrounding around it. For
+
+example if two NMOS in P-substrate are expected to be matched and one
+
+of them have Nwell adjacent to it and other have P-substrate tap their
+
+matching will not be good.",
+MP.6,"Metal connection width and lengths to each identical node of the matched
+pair shall be similar",
+MP.7,"Matched pair devices shall run in parallel and not in perpendicular or anti
+
+Parallel.",
+MP.8,"Use cross-coupled or interleave kind of layout to create as much symmetry
+
+in the devices as possible (see examples of matched pair layouts)",
+MP.9,"Do not use smallest design rule lines and widths. Minimum device
+
+dimensions (L and W) used for matched pair shall be 2 or 3X to the
+
+minimum design rules in that technology for those devices.",
+MP.10,"There shall not be any unrelated (not as a direct part of the device or its
+
+direct connection) conductors (metal, poly or salicided diffusion), over or
+
+under the matched pair devices.",
+MP.11,"Matched pair devices shall not be separated by unrelated devices in
+
+Between.",
+MP.12,"Matched pair devices shall see identical DC bias at all identical device
+
+Nodes.",
+MP.13,"Matched pair devices shall have same well (either both Nwell or both
+
+Pwell) underneath.",
+
+================================================================================
+FICHIER: 38_DRC_BJT_103.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\38_DRC_BJT_103.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,DRC_BJT --- Marking for Vertical NPN and PNP BJT,
+BJT.1,Min. DRC_BJT overlap of DNWELL for NPN BJT,0
+BJT.2,Min. DRC_BJT overlap of PCOM in Psub,0
+BJT.3,Minimum space of DRC_BJT layer to unrelated COMP,0.1
+
+================================================================================
+FICHIER: 39_Dummy_layers_104.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\39_Dummy_layers_104.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,"LAYOUT
+RULE"
+DE.1*,"Dummy COMP exclude and dummy poly/metal exclude layers shall be drawn only if
+
+necessary (for example for certain critical RF circuit area where RF coupling is critical).
+
+Other wise in normal analog and digital active circuits, the presence of “dummy COMP”
+
+Around it rather maintains the better Ioff performance of the transistors and junctions.",
+DE.2,Minimum NDMY or PMNDMY size (x or y dimension in um),0.8
+DE.3,(c) Maximum NDMY size  (um2),15000
+,(d) If size greater than 15000um2 then two sides should not be greater than (um).,80
+DE.4,Minimum NDMY to NDMY space (Merge if space is less).,20
+
+================================================================================
+FICHIER: 40_LVS_BJT_105.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\40_LVS_BJT_105.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Layer,LVS_BJT,
+LVS_BJT.1,Minimum LVS_BJT enclosure of  NPN or PNP Emitter COMP layers,0
+
+================================================================================
+FICHIER: 41_OTP_MK_Mark_106.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\41_OTP_MK_Mark_106.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE,
+,,3.3V OTP ,5V OTP (1)
+O.DF.3a,Min. COMP Space.     P-substrate tap (PCOMP outside NWELL) can be butted for different voltage devices as the potential is same,0.24,0.24
+O.DF.6,Min. COMP extend beyond poly2 (it also means source/drain overhang),0.22,0.22
+O.DF.9,Min.  COMP area (um2),0.1444,0.1444
+O.PL.2,Min.  poly2 width,0.22,0.22
+O.PL.3a,Min. poly2 Space on COMP,0.18,0.18
+O.PL.4,Min.  extension beyond COMP to form Poly2 end cap,0.14,0.14
+\*O.PL.5a,Min.  space from field Poly2 to unrelated COMP.      Min.  space from field Poly2 to Guard-ring.,0,0
+\*O.PL.5b,Min.  space from field Poly2 to related COMP,0,0
+O.SB.2,Min.  salicide Block Space,0.28,0.28
+O.SB.3,Min.  space from salicide block to unrelated COMP,0.09,0.09
+O.SB.4,Min.  space from salicide block to contact,0.03,0.03
+\*O.SB.5a,Min.  space from salicide block to unrelated Poly2 on field,0,0
+O.SB.5b,Min.  space from salicide block to unrelated Poly2 on COMP,0.1,0\*
+O.SB.9,Min.  salicide block extension beyond unsalicided Poly2,0.1,0.1
+O.SB.11,Min.  salicide block overlap with COMP,0.04,0.04
+\*O.SB.12,Min.  salicide block overlap with Poly2,0,0
+O.SB.13,Min. area of silicide block (um2),1.488,2
+\*O.SB.15b,Min.  space from unsalicided Poly2 to unrelated Nplus/Pplus along Poly2 Line,0,0
+O.CO.7,Min.  space from COMP contact to Poly2 on COMP,0.13,0.13
+O.PL.ORT,Orientation-restricted gates must have the gate width aligned along the X-axis (poly line running horizontally) in reference to wafer notch down,DRC ,NA
+
+================================================================================
+FICHIER: 42_MCU_eFuse_110.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\42_MCU_eFuse_110.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,"LAYOUT
+RULE"
+EF.01,Min. (Poly2 butt PLFUSE) within EFUSE_MK and Pplus,0
+EF.02,Min. Max. PLFUSE width,0.18
+EF.03,Min. Max. PLFUSE length,1.26
+EF.04a,"Min. Max. PLFUSE overlap Poly2 (coinciding permitted) and
+touch cathode and anode",0
+EF.04b,PLFUSE must be rectangular,
+EF.04c,Cathode Poly2 must be rectangular,
+EF.04d,Anode Poly2 must be rectangular,
+EF.05,Min. Max. LVS_Source overlap Poly2 (at Anode),0
+EF.06,Min. Max. Cathode Poly2 width,2.26
+EF.07,Min. Max. Cathode Poly2 length,1.84
+EF.08,Min. Max. Anode Poly2 width,1.06
+EF.09,Min. Max. Anode Poly2 length,2.43
+EF.10,Min. Cathode Poly2 to Poly2 space,0.26
+EF.11,Min. Anode Poly2 to Poly2 space,0.26
+EF.12,Min. Space of Cathode Contact to PLFUSE end,0.155
+EF.13,Min. Space of Anode Contact to PLFUSE end,0.14
+EF.14,Min. EFUSE_MK enclose LVS_Source,0
+EF.15,NO Contact is allowed to touch PLFUSE,
+EF.16a,Cathode must contain exact number of Contacts at each ends,4
+EF.16b,Anode must contain exact number of Contacts at each ends,4
+EF.17,Min. Space of EFUSE_MK to EFUSE_MK,0.26
+EF.18,"PLFUSE must sit on field oxide (NOT COMP), no cross with
+any COMP, Nplus, ESD, SAB, Resistor, Metal1, Metal2",
+EF.19,"Min. PLFUSE space to Metal1, Metal2",0
+EF.20,"Min. PLFUSE space to COMP, Nplus, ESD, SAB, Resistor",2.73
+EF.21,Min. Max. eFUSE Poly2 length,5.53
+EF.22a,"Min. Max. Cathode Poly2 overlap with PLFUSE in width Direction",1.04
+EF.22b,"Min. Max. Anode Poly2 overlap with PLFUSE in width Direction",0.44
+
+================================================================================
+FICHIER: 43_LDNMOS_112_1.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\43_LDNMOS_112_1.csv
+================================================================================
+
+Items,Layers or Logic operations for identifying the device and its nodes
+LDNMOS,"Device under LDMOS_XTOR with Dualgate and COMP, Poly2, MVSD"
+LDNMOS Drain,MVSD
+LDNMOS Source,"((Nplus AND COMP) Interact (((Poly2 AND Dualgate) AND LDMOS_XTOR) AND MVSD)) NOT Poly2"
+"LDNMOS Channel Length",MVSD space to POLY2 edge in COMP
+"LDNMOS Channel Width",LDNMOS COMP width intersecting with (((POLY2 AND Dualgate) AND (LDMOS_XTOR Interact MVSD))" 
+
+================================================================================
+FICHIER: 43_LDNMOS_112_2.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\43_LDNMOS_112_2.csv
+================================================================================
+
+Rule NO,Description,"Layout
+Rule"
+MDN.1,Min MVSD width (for litho purpose),1
+MDN.2a,Min MVSD space [Same Potential],1
+MDN.2b,Min MVSD space [Diff Potential],2
+MDN.3a,Min transistor channel length,0.6
+MDN.3b,Max transistor channel length,20
+MDN.4a,Min transistor channel width,4
+MDN.4b,Max transistor channel width,50
+MDN.5ai,"Min PCOMP (Pplus AND COMP) space to LDNMOS Drain MVSD (source and body
+
+tap non-butted)
+
+PCOMP (Pplus AND COMP) intercept with LDNMOS Drain MVSD is not allowed",1
+MDN.5aii,"Min PCOMP (Pplus AND COMP) space to LDNMOS Drain MVSD (source and body
+
+tap butted)
+
+PCOMP (Pplus AND COMP) intercept with LDNMOS Drain MVSD is not allowed",0.92
+MDN.5b,"Min PCOMP (Pplus AND COMP) space to LDNMOS Source (Nplus AND COMP)
+
+Use butted source and p-substrate tab otherwise and that is good for Latch-up immunity
+as well.",0.4
+MDN.5c,Maximum distance of the nearest edge of the substrate tab from NCOMP edge,15
+MDN.6,ALL LDNMOS shall be covered by Dualgate layer,
+MDN.6a,Min Dualgate enclose NCOMP,0.5
+MDN.7,Each LDNMOS shall be covered by LDMOS_XTOR (GDS#226) mark layer,
+MDN.7a,Min LDMOS_XTOR enclose Dualgate,0
+MDN.8a,Min LDNMOS drain MVSD space to any other equal potential Nwell space,1
+MDN.8b,Min LDNMOS drain MVSD space to any other different potential Nwell space,2
+MDN.9,"Min LDNMOS drain MVSD space to NCOMP (Nplus AND COMP) outside LDNMOS
+
+drain MVSD",4
+MDN.10,POLY2 rules,
+MDN.10a,Min LDNMOS POLY2 width,1.2
+MDN.10b,"Min POLY2 extension beyond COMP in the width direction of the transistor (other than
+
+the LDNMOS drain direction)",0.4
+MDN.10c,Min/Max POLY2 extension beyond COMP on the field towards LDNMOS drain COMP Direction,0.2
+MDN.10d,Min/Max POLY2 on field space to LDNMOS drain COMP,0.16
+MDN.10ei,Min POLY2 space to Psub tap (source and body tap non-butted),0.4
+MDN.10eii,Min POLY2 space to Psub tap (source and body tap butted),0.32
+MDN.10f,"Poly2 interconnect in HV region (LDMOS_XTOR marked region) not allowed. Also,
+
+any Poly2 interconnect with “poly2 to substrate” potential greater than 6V is not Allowed)",
+MDN.11,"Min/Max MVSD overlap channel COMP ((((LDMOS_XTOR AND MVSD) AND
+COMP) AND POLY2) AND Nplus)",0.4
+MDN.12,Min MVSD enclose NCOMP in the LDNMOS drain and in the direction along the transistor width.,0.5
+MDN.13,Wide width transistor can be used with multi finger type with following rules:,
+MDN.13a,Max single finger width,50
+MDN.13b,Layout shall have alternative source & drain,
+MDN.13c,Both sides of the transistor shall be terminated by source,
+MDN.13d,"Every two poly fingers shall be surrounded by a P-sub guard ring. (Exclude the case
+
+when each LDNMOS transistor have full width butting to well tap)",
+MDN.14,Min MVSD space to any DNWELL,6
+MDN.15a,Min LDNMOS drain COMP width,0.22
+MDN.15b,Min LDNMOS drain COMP enclose contact,0
+MDN.16,"Others unlisted layer like Nplus, Pplus, CONTACT, Metal, VIA, shall follow MV rules
+
+listed in section 7.0",
+MDN.17,"It is recommended to surround the LDNMOS transistor with non-broken Psub guard ring Guideline
+
+to improve the latch up immunity.",
+
+================================================================================
+FICHIER: 44_LDPMOS_117_1.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\44_LDPMOS_117_1.csv
+================================================================================
+
+Items,Layers or Logic operations for identifying the device and its nodes
+LDPMOS,"Device under LDMOS_XTOR with Dualgate and COMP, Poly2, MVPSD"
+LDPMOS Drain,MVPSD
+LDPMOS Source,"((Pplus AND COMP) Interact (((Poly2 AND Dualgate) AND LDMOS_XTOR) AND
+
+MVPSD)) NOT Poly2"
+"LDPMOS Channel
+Length",MVPSD space to POLY2 edge in COMP
+"LDPMOS Channel
+Width","LDPMOS COMP width intersecting with (((POLY2 AND Dualgate) AND
+
+(LDMOS_XTOR Interact MVPSD))"
+
+================================================================================
+FICHIER: 44_LDPMOS_117_2.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\44_LDPMOS_117_2.csv
+================================================================================
+
+Rule NO,Description,"Layout
+Rule"
+MDP.1,Minimum transistor channel length,0.6
+MDP.1a,Max transistor channel length,20
+MDP.2,Minimum transistor channel width,4
+MDP.3,"Each LDPMOS shall be surrounded by non-broken Nplus guard ring inside DNWELL. Nplus
+
+guard ring shall be connected to the highest potential. It is better to put wider than minimum
+
+guard ring for latch-up prevention if LDNMOS and LDPMOS are adjacent to each other
+
+(refer to latch-up guidelines in section 14.5.4).",
+MDP.3ai,"Min NCOMP (Nplus AND COMP) space to MVPSD (source and body tap non-butted)
+
+NCOMP (Nplus AND COMP) intercept with MVPSD is not allowed",1
+MDP.3aii,"Min NCOMP (Nplus AND COMP) space to MVPSD (source and body tap butted)
+
+NCOMP (Nplus AND COMP) intercept with MVPSD is not allowed",0.92
+MDP.3b,"Min NCOMP (Nplus AND COMP) space to PCOMP in DNWELL (Pplus AND COMP AND 
+
+DNWELL). Use butted source and DNWELL contacts otherwise and that is best for Latch-up
+
+immunity as well",0.4
+MDP.3c,"Maximum distance of the nearest edge of the DNWELL tab (NCOMP inside DNWELL)
+
+from PCOMP edge (PCOMP inside DNWELL)",15
+MDP.3d,"The metal connection for the Nplus guard ring recommended to be continuous,
+
+The maximum gap between this metal if broken
+
+Note: To put maximum number of contact under metal for better manufacturability and
+
+reliability",10
+MDP.4,"DNWELL covering LDPMOS shall be surrounded by non broken Pplus guard
+
+The metal connection for the Pplus guard ring recommended to be continuous, The maximum
+
+gap between this metal if broken.
+
+Note: To put maximum number of contact under metal for better manufacturability and
+Reliability",10
+MDP.4a,Min PCOMP (Pplus AND COMP) space to DNWELL,2.5
+MDP.4b,"Maximum distance of the nearest edge of the DNWELL from the PCOMP Guard ring outside
+DNWELL",15
+MDP.5,"Each LDPMOS shall be covered by Dualgate layer,",
+MDP.5a,Minimum Dualgate enclose Plus guarding ring PCOMP (Pplus AND COMP),0.5
+MDP.6,Each LDPMOS shall be covered by LDMOS_XTOR (GDS#226) layer,
+MDP.6a,Minimum LDMOS_XTOR enclose Dualgate,0
+MDP.7,Minimum LDMOS_XTOR (GDS#226) layer space to Nwell outside LDMOS_XTOR,2
+MDP.8,"Minimum LDMOS_XTOR (GDS#226) layer space to NCOMP (Nplus AND COMP) outside
+
+LDMOS_XTOR (GDS#226)",1.5
+MDP.9,POLY2 rules,
+MDP.9a,Min LDPMOS POLY2 width (POLY2 inside DNWELL AND LDMOS_XTOR (GDS#226)),1.2
+MDP.9b,"Min POLY2 extension beyond COMP in the width direction of the transistor (other
+
+than the LDMOS drain direction)",0.4
+MDP.9c,"Min/Max POLY2 extension beyond COMP on the field towards LDPMOS drain
+
+(MVPSD AND COMP AND Pplus NOT POLY2) direction",0.2
+MDP.9d,"Min/Max POLY2 on field to LDPMOS drain COMP (MVPSD AND COMP AND
+
+Pplus NOT POLY2) space",0.16
+MDP.9ei,"Min LDMPOS gate Poly2 space to Nplus guardring (source and body tap non-
+
+Butted)",0.4
+MDP.9eii,Min LDMPOS gate Poly2 space to Nplus guardring (source and body tap butted),0.32
+MDP.9f,"Poly2 interconnect is not allowed in LDPMOS region (LDMOS_XTOR marked
+Region)",
+MDP.10,"Min/Max MVPSD overlap onto the channel (LDMOS_XTOR AND COMP AND
+POLY2 AND Pplus)",0.4
+MDP.10a,Min MVPSD space within LDMOS_XTOR marking [diff potential],2
+MDP.10b,"Min MVPSD space [same potential]
+
+Merge if space less than 1um",1
+MDP.11,"Min MVPSD enclosing PCOMP in the drain (MVPSD AND COMP NOT POLY2)
+
+direction and in the direction along the transistor width.",0.8
+MDP.12,Min DNWELL enclose Nplus guard ring (NCOMP),0.66
+MDP.13,Wide width transistor can be used with multi finger with following rules,
+MDP.13a,Max single finger width,50
+MDP.13b,Layout shall have alternative source & drain,
+MDP.13c,Both sides of the transistor shall be terminated by source,
+MDP.14,"Others unlisted layer like Nplus, Pplus, Nwell, Contact, Metal, VIA, shall follow
+
+MV rules listed in section 7.0",
+MDP.15,Min “DNWELL enclosing MVPSD” to any DNWELL spacing,6
+MDP.16a,Min LDPMOS drain COMP width,0.22
+MDP.16b,Min LDPMOS drain COMP enclose contact,0
+MDP.17,"(a) For better latch up immunity, it is necessary to put DNWELL guard ring Check DRC
+
+Between “MVPSD Inside DNWELL covered by LDMOS_XTOR” and NCOMP
+
+(outside DNWELL and outside Nwell) when spacing between them is less than 40um
+
+(b) Layout for DNWELL guard ring shall follow rule DN.1, DN.2a, DN.2b, DN.3,
+
+DF.4b, DF.18, and MDP.15.
+
+(c) DNWELL guard ring shall have NCOMP tab to be connected to highest Potential.
+
+(d) DNWELL guard ring length shall be bigger than the width of “MVPSD inside Check DRC DNWELL” and NCOMP.",
+
+================================================================================
+FICHIER: 45_YMTP_MK_Mark_121.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\45_YMTP_MK_Mark_121.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT,
+,,3.3V ,5V/6V
+Y. NW.2b,"Min. Nwell Space (Outside DNWELL, Inside YMTP_MK) [Different potential]",1,1
+Y.DF.4d,(Nwell overlap of NCOMP) outside DNWELL (inside YMTP_MK) is allowed,,
+Y.DF.6,"Min. COMP extend beyond gate (it also means source/drain overhang) inside
+YMTP_MK",NA ,0.15
+Y.DF.16,"Min. space from (Nwell outside DNWELL) to (unrelated NCOMP outside
+Nwell and DNWELL) (inside YMTP_MK)",0.27,0.23
+Y.PL.1,Interconnect Width (inside YMTP_MK),0.13,NA
+Y.PL.2,Gate Width  (Channel Length) (inside YMTP_MK),0.13,0.47
+Y.PL.4,Poly2 extension beyond COMP to form Poly2 end cap (inside YMTP_MK),NA ,0.16
+Y.PL.5a,"Space from field Poly2 to unrelated COMP  (inside YMTP_MK)
+
+Spacer from field Poly2 to Guard-ring (inside YMTP_MK)",0.04,0.2
+Y.PL.5b,Space from field Poly2 to related COMP (inside YMTP_MK),0.04,0.2
+Y.PL.6,90 deg bends on the COMP are not allowed (except YMTP_MK),,
+Y.LU.3,"This rule is to check: 
+(a) Max. Psub tap space to every point on the boundary of
+NCOMP outside NWELL.
+
+(b) For within 50um from the (NCOMP in Psub), Minimum NWELL to 
+(NCOMP outside Nwell) space is defined as y,
+
+(c) If y <1.0um, then Max. Psub tap space to every point on the boundary of
+NCOMP outside NWELL. (inside YMTP_MK)",20, NA
+
+================================================================================
+FICHIER: 46_schottky_diode_122.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\46_schottky_diode_122.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+Definitions,"Anode COMP = (COMP AND Schottky_diode) NOT Nplus
+
+Cathode COMP = (COMP AND Schottky_diode) AND Nplus",
+Definitions,"Diode area = Anode area = (COMP AND Schottky_diode) NOT (Nplus
+
+OR Pplus)",Mainly for LVS
+SK.1,Min “Schottky_diode” marking layer width,0.6
+SK.2,Min “Schottky_diode” marking layer space,0.6
+SK.3,"Min “Schottky_diode” marking layer enclose schottky diode anode and
+
+cathode COMP",0.16
+SK.4,"Schottky diode shall need both cathode and anode
+
+a\) Only Cathode COMP or only Anode COMP under “Schottky_diode”
+
+Marking is not allowed
+
+B\) “Schottky_diode” without COMP is not allowed.",
+SK.5,Min/Max schottky diode's anode COMP to cathode COMP space,0.28
+SK.6,Min. Schottky diode Anode COMP to Nplus space,0.16
+SK.7,Min. Schottky diode Anode COMP to Pplus space,0.16
+SK.8,Min. Schottky diode outside DNWELL is not allowed,
+SK.9,Min. DNWELL enclose schottky diode Anode COMP,1.4
+SK.10,Min. “Schottky_diode” space to PCOMP,0.8
+SK.11,Min. “Schottky_diode” space to LVPWELL,0.9
+SK.12,Poly2 intersect with Schottky_diode mark layer is not allowed,
+SK.14,"a\) Two anode COMP area must be separated by cathode COMP in the
+
+anode width direction (two anode comp can not exist side by side without
+
+having cathode COMP in between).
+
+
+B\) Cathode COMP length cannot be shorter than that of anode COMP length.",
+SK.15,Min. Anode COMP to Nwell space,0.16
+SK.16,"Min/Max schottky diode anode width (shorter dimension of schottky
+
+diode anode COMP) (This is for model accuracy of schottky diode)",0.62
+SK.17,Each anode must have cathode on both sides of anode width direction,
+
+================================================================================
+FICHIER: 47_NEO_EE_MK_124.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\47_NEO_EE_MK_124.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LAYOUT RULE
+,,3.3V
+"EE.DF.4d_LV
+\*LDMOS",Min Nwell overlap of NCOMP (Outside DNWELL only),0
+"EE.DF.16_LV
+\*LDMOS","Min space from NWELL (outside DNWELL) to NCOMP outside
+
+Nwell and DNWELL = 0",0
+EE.NP.5a, Nplus overlap of N-channel gate = 0,0
+EE.PP.5a, Pplus overlap of P-channel gate = 0,0
+EE.NP.6 ,Nplus overlap with NCOMP butted PCOMP = 0.14,0.14
+EE.PP.6, Pplus Implant overlap with PCOMP butted to NCOMP = 0.14,0.14
+EE.NP.7, Nplus space to unsalicided Poly2 = 0.17,0.17
+EE.PP.7 ,Pplus Implant space to unsalicided Poly2 = 0.08,0.08
+EE.NP.9, Nplus overlap of unsalicided Poly2  = NA,NA
+EE.PP.9, Pplus Implant overlap of unsalicided Poly2 = NA,NA
+EE.NP.10,Nplus overlap of unsalicided COMP = NA,NA
+EE.PP.10, Pplus Implant overlap of unsalicided COMP = NA,NA
+EE.NP.12,"Nplus overlap with P-channel poly gate extension is forbidden within
+
+0.32um of P-channel gate",NA
+EE.PP.12,"Pplus Implant overlap with N-channel poly gate extension is
+
+forbidden within 0.32um of N-channel gate",NA
+EE.PL.2_LV, Min gate width (Channel length) = NA,NA
+EE.PL.6, Poly2 90 degree bends on COMP are not allowed,NA
+EE.SB.10, Poly2 extension beyond related Salicide Block = 0.14,0.14
+EE.SB.11, Salicide Block overlap with COMP = 0.12,0.12
+EE.SB.12,Salicide Block overlap with Poly2 outside ESD_MK = 0.21,0.21
+EE.SB.14a,Space from unsalicided Nplus Poly2 to unsalicided Pplus Poly2 = NA,NA
+EE.SB.14b,Space from unsalicided Nplus Poly2 to P-channel gate = NA,NA
+EE.SB.16,"SAB layer cannot exist on 3.3V and 5V/6V CMOS transistor's Poly
+
+and COMP area of the core ciruit
+
+(Excluding the transistors used for ESD purpose).
+
+It can only exist on CMOS transistors marked by LVS_IO,
+
+OTP_MK, ESD_MK layers.",NA
+EE.LU.4b_LV,"Max. Nwell tap space to any point in the boundary of Pcomp inside
+
+Nwell = 30 (LV)
+
+For Nwell to (Ncomp outside Nwell) space >= 1.0um and < 2.0um",NA
+EE.LU.4c_LV,"Max. Nwell tap space to any point in the boundary of Pcomp inside
+
+Nwell = 15 (LV)
+
+For Nwell to (Ncomp outside Nwell) space < 1.0um",NA
+EE.LVESD.1_esd_mk,"LV MOSFET used for ESD protection should be enclosed by
+
+ESD_MK, ESD_MK must enclose well pick-up implant
+
+Debug1 : Mosfet with SAB but no LVS_IO, OTP_MK or ESD_MK",NA
+
+================================================================================
+FICHIER: 48_SRAM1_126.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\48_SRAM1_126.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,"LAYOUT RULE
+
+(5V)"
+S.DF.4c_MV,Min. (Nwell overlap of PCOMP) outside DNWELL,0.45
+S.DF.6_MV,Min. COMP extend beyond gate (it also means source/drain overhang),0.32
+S.DF.7_MV,Min. (LVPWELL Spacer to PCOMP) inside DNWELL,0.45
+S.DF.8_MV,Min. (LVPWELL overlap of NCOMP) Inside DNWELL,0.45
+S.DF.16_MV,Min. space from (Nwell outside DNWELL) to (NCOMP outside Nwell and  DNWELL).,0.45
+S.PL.5a_MV,"Space from field Poly2 to unrelated COMP
+
+Spacer from field Poly2 to Guard-ring",0.12
+S.PL.5b_MV,Space from field Poly2 to related COMP,0.12
+S.CO.4_MV,COMP overlap of contact,0.04
+
+================================================================================
+FICHIER: 48_SRAM2_126.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\48_SRAM2_126.csv
+================================================================================
+
+Cell name,13P5
+Cell horizontal ( X ) dimension,3
+Cell vertical ( Y ) dimension,4.5
+Cell area (mm2),13.5
+Grid,0.005
+Cell pull-up PMOS transistor (W/L) (2),0.6/0.6
+Cell pull-down NMOS transistor (W/L) (2),0.95/0.6
+Cell pass-gate NMOS transistor (W/L) (2),0.6/0.77
+Beta ratio (pull-down W/L over pass-gate W/L),2.03
+
+================================================================================
+FICHIER: 48_SRAM3_128.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\48_SRAM3_128.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,"LAYOUT RULE
+
+(3.3V)"
+S.DF.4c_LV,Min. (Nwell overlap of PCOMP) outside DNWELL,0.4
+S.DF.16_LV,"Min. space from (Nwell outside DNWELL) to (NCOMP outside Nwell and DNWELL).",0.4
+S.CO.3_LV,Poly2 overlap of contact,0.04
+S.CO.4_LV,COMP overlap of contact,0.03
+S.CO.6_ii_LV,"If Metal1 overlaps contact by < 0.04μm on one side, adjacent metal1 edges Overlap",0.02
+S.M1.1_LV,Width,0.22
+
+================================================================================
+FICHIER: 49_scribeline_guardring1_131.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\49_scribeline_guardring1_131.csv
+================================================================================
+
+Ring,"Starting
+Coordinate","Ending
+Coordinate",Size (μm)
+PCOMP,0,16,16
+"GUARD_R
+ING_MK",0,16,16
+AD,0,16,16
+Contact,3.7,3.92,0.22
+Contact,5.3,5.52,0.22
+Contact,6.9,7.12,0.22
+Contact,8.5,8.72,0.22
+Contact,10.1,10.32,0.22
+Contact,11.7,11.92,0.22
+Metal1,1,13,12
+Via1,4.44,4.7,0.26
+Via1,6.24,6.5,0.26
+Via1,8.04,8.3,0.26
+Via1,9.84,10.1,0.26
+Via1,11.64,11.9,0.26
+Metal2,0,13,13
+Via2,3,3.26,0.26
+Via2,4.8,5.06,0.26
+Via2,6.6,6.86,0.26
+Via2,8.4,8.66,0.26
+Via2,10.2,10.46,0.26
+Via2,12,12.26,0.26
+Metal3,1,13,12
+Via3,4.08,4.34,0.26
+Via3,5.88,6.14,0.26
+Via3,7.68,7.94,0.26
+Via3,9.48,9.74,0.26
+Via3,11.28,11.54,0.26
+Metal4,0,13,13
+Via4,3.36,3.62,0.26
+Via4,5.16,5.42,0.26
+Via4,6.96,7.22,0.26
+Via4,8.76,9.02,0.26
+Via4,10.56,10.82,0.26
+Via4,12.36,12.62,0.26
+Metal5,1,13,12
+Via5,3.72,3.98,0.26
+Via5,5.52,5.78,0.26
+Via5,7.32,7.58,0.26
+Via5,9.12,9.38,0.26
+Via5,10.92,11.18,0.26
+MetalTop,0,13,13
+
+================================================================================
+FICHIER: 49_scribeline_guardring2_133.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\49_scribeline_guardring2_133.csv
+================================================================================
+
+Ring,"Starting
+Coordinate","Ending
+Coordinate",Size (μm)
+PCOMP,0,16,16
+GUARD_RING_MK,0,16,16
+AD,0,16,16
+Contact,3.7,3.92,0.22
+Contact,5.3,5.52,0.22
+Contact,6.9,7.12,0.22
+Contact,8.5,8.72,0.22
+Contact,10.1,10.32,0.22
+Contact,11.7,11.92,0.22
+Contact,13.3,13.52,0.22
+Metal1,1,16,15
+Via1,4.44,4.7,0.26
+Via1,6.24,6.5,0.26
+Via1,8.04,8.3,0.26
+Via1,9.84,10.1,0.26
+Via1,11.64,11.9,0.26
+Via1,13.44,13.7,0.26
+Metal2,0,16,16
+Via2,3,3.26,0.26
+Via2,4.8,5.06,0.26
+Via2,6.6,6.86,0.26
+Via2,8.4,8.66,0.26
+Via2,10.2,10.46,0.26
+Via2,12,12.26,0.26
+Metal3,1,16,15
+Via3,4.08,4.34,0.26
+Via3,5.88,6.14,0.26
+Via3,7.68,7.94,0.26
+Via3,9.48,9.74,0.26
+Via3,11.28,11.54,0.26
+Via3,13.08,13.34,0.26
+Metal4,0,16,16
+Via4,3.36,3.62,0.26
+Via4,5.16,5.42,0.26
+Via4,6.96,7.22,0.26
+Via4,8.76,9.02,0.26
+Via4,10.56,10.82,0.26
+Via4,12.36,12.62,0.26
+Metal5,1,16,15
+Via5,3.72,3.98,0.26
+Via5,5.52,5.78,0.26
+Via5,7.32,7.58,0.26
+Via5,9.12,9.38,0.26
+Via5,10.92,11.18,0.26
+Via5,12.72,12.98,0.26
+MetalTop,0,16,16
+Pad,4,13,9
+
+================================================================================
+FICHIER: 50_GUARD_RING_MK_134.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\50_GUARD_RING_MK_134.csv
+================================================================================
+
+Rule NO,Description,"Solder
+Bump",Other Cases
+GR.1,Min/Max GUARD_RING_MK overlap of guard ring comp,0,0
+GR.2,"Min GUARD_RING_MK space to prime die COMP, NWELL, 
+Poly2, Metal 1, 2, 3, 4, 5 and metal Top",10,10
+GR.3,Minimum Pplus overlap of PCOMP inside guard ring,0,0
+GR.4,Minimum metal-n width (n= 1 to 6),12,12
+GR.5,"Minimum metal-n (n=1 to 6) outer edge space to die edge
+(Identified by the outer edge of GUARD_RING_MK).",3,\-
+GR.6,Min PCOMP width,16,16
+GR.7,Minimum Contact to Contact spacing,0.7,0.7
+GR.8,Minimum via to via spacing,0.7,0.7
+R.9 (1)*,"All Metal & Vias shall exist in the seal ring area
+All Vias shall put in a staggered row",\-,\-
+GR.10 (2)*,There must be rows of contact in the seal ring area,\-,\-
+GR.11,Pad opening on top of GUARD_RING_MK layer,Not allowed,Required
+
+================================================================================
+FICHIER: 51_Dummy_COMP_136.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\51_Dummy_COMP_136.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,"LAYOUT
+RULE","For Drawing OR
+
+DRC Check"
+Layer,DCF-Dummy COMP Fill,,
+,"Use “NDMY” mark layer to exclude dummy COMP generation in
+certain critical High frequency/RF circuit areas.",--,--
+DCF.1a,"All area between active polygons (COMP) (with spacing greater than
+
+equal to this rule) must be filled with “Dummy COMP” except area
+
+marked by NDMY, RES_MK, Pad and IND_MK, as well as the
+
+Region define by DCF.6a, 6b, 6c, 6d, 6e.
+
+Use rules DCF.1c to DCF.13 to drawn “Dummy COMP”",20,For DRC
+DCF.1b,"Minimum global density for active layers (COMP+ Dummy COMP)
+
+Local density is governed by DCF.1a , DE.3 and DE.4",25%,For DRC
+DCF.1c,"A staggered array of dummy COMP 5 umX5 um squares is created to
+
+cover the prime die (1), frame, SLM Etest patterns and SLM reliability
+
+test patterns.",5X5,DRC check for
+DCF.1d,Maximum global density for active layers (COMP+ Dummy COMP),70%,For DRC
+DCF.2a*,"Min/Max Adjacent placement Space between dummy COMP cells
+",3,For Drawing
+DCF.2b,"Resulted minimum space between Dummy active in all directions
+
+(for DRC check)",1.9,For DRC
+DCF.3*,Stagger both X and Y direction,1.6,For Drawing
+DCF.4,Space from dummy COMP to COMP (circuit COMP).,3.5,For DRC
+DCF.5,Space from dummy COMP to poly2,1.5,For DRC
+DCF.6a,Space from dummy COMP to Nwell boundary,1.3,For DRC
+DCF.6b,Space from dummy COMP to DNWELL boundary,4,For DRC
+DCF.6c,Space from dummy COMP to LVPWELL boundary,1.3,For DRC
+DCF.6d,Space from dummy COMP to Dualgate boundary,1.3,For DRC
+DCF.7a*,"Space from dummy COMP in prime die including guard ring to the
+
+scribe line",26,For DRC
+DCF.7b*,"Space from dummy COMP in frame to edge of frame (valid only for
+
+scribe lines)",6,For DRC
+DCF.7c*,"Space from dummy COMP in frame to any frame cell except non-ET
+
+(valid only for scribe line structures)",10,For Drawing
+DCF.7d*,"Space from dummy COMP in SLM Etest patterns or SLM reliability
+
+test patterns to the boundary of test patterns (valid only for scribe line
+
+Structures)",6,For DRC
+DCF.8a,"Space from dummy COMP to Resistor marking layer (RES_MK).
+
+Dummy COMP should not exit under RES_MK",3.5,For DRC
+DCF.8b,"There must be at least one row of dummy COMP (or substrate tie)
+
+between RES_MK layer and the transistor channel active if RES_MK
+
+layer's both side (x and y) dimensions are greater than:",80,For DRC
+DCF.9*,"Space from dummy COMP to Pad
+
+(Just a guideline for RF circuits)",7,"Guideline only,no DRC"
+DCF.10*,"Remove truncated dummy squares (Truncated Dummy COMP shall
+
+not exist)",--,For DRC
+DCF.11a,"Dummy COMP cannot exit under “NDMY” marking layer and space
+
+from dummy COMP to dummy COMP excluding layer (NDMY) (2)",3.5,For DRC
+DCF.11b,"There must be at least one row of dummy COMP (or substrate tie)
+
+between NDMY layer and the transistor channel active if NDMY
+layer's both side (x and y) dimensions are greater than:",80,For DRC
+DCF.12,Minimum dummy COMP space to IND_MK layer,3,For DRC
+DCF.13,"Dummy COMP should not exist under IND_MK layer There must be
+
+at least one row of dummy COMP (or substrate tie) between
+
+IND_MK layer and the transistor channel active if IND_MK layer's
+
+both side (x and y) dimensions are greater than:",80,
+
+================================================================================
+FICHIER: 52_Dummy_Poly2_141.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\52_Dummy_Poly2_141.csv
+================================================================================
+
+"RULE
+NO.",DESCRIPTION,"LAYOUT
+RULE","For Drawing /
+For DRC"
+Layer,DPF – Dummy Poly2 Fill,-,-
+,"Use PMNDMY mark layer to exclude dummy Poly2 generation in
+
+Certain critical analog/RF areas.",-,-
+DPF.1,"Dummy Poly2 is generated on top of dummy COMP by sizing up the 
+
+Dummy COMP by 0.3um per side. The size of the dummy
+
+poly2 is 5.6 umX 5.6um square, and generated in prime die (1).",,For Drawing
+DPF.2a*,Space between dummy poly2 (for drawing algorithm).,2.4,For Drawing
+DPF.2b,"Resulted minimum space between Dummy poly in all directions
+
+(for DRC check)",1.1,For DRC Check
+DPF.3*,Stagger both X and Y direction,1.6,For Drawing
+DPF.4,Space of dummy poly2 to COMP,3.2,For DRC
+DPF.5,Space of dummy poly2 to poly2,5,For DRC
+DPF.6a,Space of dummy poly2 to Nwell boundary,1,For DRC
+DPF.6b,Space of dummy poly2 to DNWELL boundary,2,For DRC
+DPF.6c,Space of dummy poly2 to LVPWELL boundary,1,For DRC
+DPF.6d,Space of dummy poly2 to Dualgate boundary,1,For DRC
+DPF.7*,Space from dummy poly2 in prime die to scribe line,25.7,For DRC
+DPF.8,Space from dummy poly2 to Resistor marking layer (RES_MK).,19.7,For DRC
+DPF.9,Space of dummy poly2 to Pad,6.7,For DRC
+DPF.10*,Remove truncated dummy squares,,For DRC
+DPF.11,Space to dummy COMP exclude layer,29.7,For DRC
+DPF.12,Space of dummy poly2 fill to active circuit metal1 (2),2,For DRC
+DPF.13,Space of dummy poly2 fill to active circuit metal2 (2),2,For DRC
+DPF.14,Minimum dummy poly2 space to IND_MK layer,3,For DRC
+DPF.15,Dummy poly2 should not exist under IND_MK layer,,For DRC
+DPF.16,Minimum dummy poly2 space to MTPMARK layer,3,For DRC
+DPF.17,Dummy poly2 should not exist under MTPMARK layer,,For DRC
+DPF.18,Dummy poly2 cannot exit under the marking layer “PMNDMY”,,For DRC
+DPF.19,"Space from dummy poly2 to dummy poly2 excluding layer
+
+(PMNDMY) (2)",8,For DRC
+
+================================================================================
+FICHIER: 53_Dummy_Metal_145.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\53_Dummy_Metal_145.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,"LAYOUT
+GUIDELINE"
+Layer,DMF – Dummy Metal Fill,
+,"Use PMNDMY mark layer to exclude dummy metal generation in
+
+certain critical analog/RF areas.",
+DM.1,Min/Max Dummy metal line width/length,2.0 um
+DM.2a*,Min Dummy metal line space (for Layout),1.2 um
+DM.2b,Min Dummy metal line space (for DRC),0.98um
+DM.2c,Min Dummy metal line space for thick top metal (3um Top metal),2.0um
+DM.3,Minimum space between dummy metal and circuit Metal line,2.0um
+DM.4,"Dummy Metal space to Subsequent Metal layer (E.g. Dummy M1
+
+space to M2)",1um
+DM.5,"Dummy Metal space to Previous Metal layer (E.g. Dummy M2
+
+space to M1;  Dummy M1 space to Poly2)",1um
+DM.6,No overlap of Dummy Metal with the Subsequent Metal layers,
+DM.7,No overlap of Dummy Metal with the Previous layers,
+DM.8,"There should not be any dummy metal pattern fill in the following areas
+
+(i) MIM CAP area (recognized by Fuse Top)
+
+(ii) Poly fuse area (recognized by POLYFUSE)
+
+(iii) Metal fuse area (recognized by FUSEWINDOW_D)
+
+(iv) Dummy metal exclusion area (recognized by PMNDMY)
+
+(v) MTP mark area (recognized by MTPMK)
+
+(vi) OTP mark area ( recognized by OTP_MK)
+
+Space from these Structures",6um
+DM.9*,"Do not use exact replicates of dummy metal fill patterns for
+
+consecutive metal layers to avoid dielectric and metal stress
+
+problems? E.g. the Metal4 dummy metal fill patterns should not be
+
+an exact copy of the Metal3 dummy fill pattern. (Offsets value:)",0.5um
+DM.10*,Offset between the Dummy metal of the same layers,0.5um
+
+================================================================================
+FICHIER: 54_Electro-migration1_150.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\54_Electro-migration1_150.csv
+================================================================================
+
+Table 14.3Maximum Line Current Density per Drawn Width,,,
+,Maximum Current Density (mA/um),,
+,85 deg C ,110 deg C,125 deg C
+Metal 1-Top Metal - 1,,,
+• Unidirectional (CB),2.09,1,0.67
+• Bi-directional  (CB),3.14,1.5,1
+MetalTop (6kÅ thick),,,
+• Unidirectional (CB),3.3,1.6,1.07
+• Bi-directional  (CB),5.03,2.4,1.6
+MetalTop (9kÅ thick),,,
+• Unidirectional  (CB),3.77,1.8,1.21
+• Bi-directional (CB),5.66,2.7,1.82
+MetalTop (11kÅ thick),,,
+• Unidirectional  (CB),4.5,2.2,1.5
+• Bi-directional (CB),7,3,2.2
+MetalTop (30kÅ thick),,,
+• Unidirectional  (CB),16.52,8.01,5.37
+• Bi-directional (CB),24.78,12.02,8.06
+
+================================================================================
+FICHIER: 54_Electro-migration2_151.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\54_Electro-migration2_151.csv
+================================================================================
+
+Table 14.4 Maximum Contact/Via Current,,,
+,Current Per Contact (mA),,
+,85 deg C  ,110 deg C,125 deg C
+POLY2 Contact,,,
+• Unidirectional,0.43,0.21,0.14
+• Bi-directional,0.65,0.3,0.21
+COMP Contact,,,
+• Unidirectional,0.58,0.28,0.18
+• Bi-directional,0.87,0.42,0.28
+"Via1/2/3/4/5
+(Top via size = 0.26um)",,,
+• Unidirectional,0.58,0.28,0.18
+• Bi-directional,0.87,0.42,0.28
+
+================================================================================
+FICHIER: 55_Latch-up_152.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\55_Latch-up_152.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LV,MV,Comment
+LU.1,"FOR LV and MV inside DNWELL
+
+This rule is to check Max. Nwell/DNWELL tap space to every
+
+point on the boundary of PCOMP inside Nwell/DNWELL.
+
+For within 50um from (the PCOMP inside NWELL or DNWELL),
+
+minimum LVPWELL to (PCOMP outside LVPWELL) space is
+
+defined as (x):",,,
+,"a\) If x >= 2.0um, then max Nwell/DNWELL tap space to every
+
+Point on the boundary of PCOMP inside NWELL/DNWELL",50,15,Rule
+,"b\) If x >= 1.0um and < 2um, then max Nwell/DNWELL tap space to
+
+every point on the boundary of PCOMP inside NWELL/DNWELL",30,15,Rule
+,"c\) If x < 1.0um, then max Nwell/DNWELL tap space to every
+
+point on the boundary of PCOMP inside NWELL/DNWELL",15,15,Rule
+LU.2,"FOR LV and MV inside DNWELL
+
+This rule is to check Max. LVPWELL tap space to every point on
+
+the boundary of NCOMP inside LVPWELL.
+
+For within 50um from (the NCOMP inside LVPWELL), minimum
+
+LVPWELL to (PCOMP outside LVPWELL) space is defined as x:",,,
+,"a\) If x >= 2.0um, then Max. LVPWELL tap space to every point on
+
+the boundary of NCOMP inside LVPWELL.",50,15,Rule
+,"b\) If x >= 1.0um and < 2um, then Max. LVPWELL tap space to
+
+every point on the boundary of NCOMP inside LVPWELL.",30,15,Rule
+,"c\) If x <1.0um, then Max. LVPWELL tap space to every point on
+
+the boundary of NCOMP inside LVPWELL.",15,15,Rule
+LU.3,"FOR LV and MV outside DNWELL
+
+This rule is to check Max. LVPWELL (Psub) tap outside
+
+DNWELL space to every point on the boundary of NCOMP
+
+outside NWELL/DNWELL.
+
+For within 50um from the (NCOMP in LVPWELL or Psub),
+
+Minimum NWELL to (NCOMP outside Nwell) space is defined as y.",,,
+,"a\) If y >= 2.0um, then Max. LVPWELL (Psub) tap outside
+
+DNWELL space to every point on the boundary of NCOMP
+
+outside NWELL/DNWELL.",50,15,Rule
+,"b\) If y >= 1.0um and < 2.0um, then Max. LVPWELL (Psub) tap
+
+outside DNWELL space to every point on the boundary of
+
+NCOMP outside NWELL/DNWELL.",30,15,Rule
+,"c\) If y <1.0um, then Max. LVPWELL (Psub) tap outside
+
+DNWELL space to every point on the boundary of NCOMP
+
+outside NWELL/DNWELL.",15,15,Rule
+LU.4,"FOR LV and MV outside DNWELL
+
+This rule is to check Max. Nwell tap space to every point on the
+
+boundary of PCOMP inside Nwell.
+
+For within 50um from (the PCOMP inside NWELL), minimum
+
+NWELL to (NCOMP outside Nwell) space is defined as y:",,,
+,"a\) If y >= 2.0um, then Max. Nwell tap space to every point on the
+
+boundary of PCOMP inside Nwell",50,15,Rule
+,"b\) If y >= 1.0um and < 2um, then Max. Nwell tap space to every
+
+point on the boundary of PCOMP inside Nwell",30,15,Rule
+,"c\) If y < 1.0um, then Max. Nwell tap space to every point on the
+
+boundary of PCOMP inside Nwell",15,15,Rule
+,For Native Vt  NMOS (check for NAT marking),,,
+LU.5,"For within 50um from NAT layer, If there is NWELL present, then
+
+NAT layer shall be directly surrounded by PCOMP substrate guard
+
+ring. (No other NCOMP, NWELL in between the NAT and
+
+PCOMP guard ring)",,,Rule
+,Common Guidelines,,,
+LU.7*,Maximize the number of contacts in the substrate and well taps.,--,--,Guideline
+,"Total equivalent contact area to the channel area generating
+
+substrate current (Poly2 intersecting COMP) should be more than
+
+3%.  This is a guideline only.",,,
+LU.8*,"Butted substrate contact to source is always the best for latch-up
+
+immunity wherever possible",--,--,Guideline
+LU.9*,"All Nwell taps shall be connected to respective most highest
+
+Potential",--,--,Guideline
+LU.10*,All Psub shall be connected to their respective lowest potential,--,--,Guideline
+
+================================================================================
+FICHIER: 56_IO_Latch-up1_156.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\56_IO_Latch-up1_156.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LV,MV,Comment
+IO.0,"To flag I/O latch-up related violation:
+
+
+i. Non well tap COMP directly connected to PAD is
+
+recommended to be marked by “Latchup_MK” layer.",-,-,Guidelines
+,"(b) Min/max Latchup_MK layer overlap of COMP (directly
+
+connected to Pad)",0,0,Guidelines
+,FOR LV and MV,,,
+IO.1,"(a1) NCOMP in PSub directly connected to I/O pad must be
+
+surrounded by Psub tap inside the Psub without any PCOMP in
+
+NWELL in between (Exclude the case when each NMOS
+
+transistor have full width butting to well tap).",,,
+,"(a2) It should also be directly surrounded by an Nwell guard ring
+
+(Non broken NCOMP ring inside Nwelll). Nwell guard ring shall
+
+be connected to the most positive supply.  Max space of Nwell
+
+guard ring to the NCOMP in Psub directly connected to I/O pad.",15,15,Rule
+,"(b) Within 15um from the edge of the NCOMP connected to I/O
+
+pad (marked by Latchup_MK): Max Nwell tap distance to
+
+PCOMP inside Nwell (irrespective of its direct connection to Pad)",2,2,Rule
+
+IO.2,"Minimum recommended Nwell guard ring width:
+
+(Maximize contact to guard uniformly.  As a guideline, ratio of
+
+total contact area to the active area of the guard ring should be
+
+more than 5%).",2,2,Rule
+
+================================================================================
+FICHIER: 56_IO_Latch-up2_158.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\56_IO_Latch-up2_158.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,LV,MV,Comment
+,FOR LV and MV,,,
+IO.3,"a1\) PCOMP in Nwell directly connected to I/O pad must be
+
+surrounded by Nwell tap inside the Nwell (Exclude the case when
+
+each PMOS transistor have full width butting to well tap).",,,
+,"a2\) It should also be directly surrounded by PCOMP guard ring
+
+outside Nwell. PCOMP guard ring shall be connected to the lowest
+
+potential.  Max space of guard ring PCOMP to the PCOMP in
+
+Nwell directly connected to the I/O pad.
+",15,15,Rule
+,"b\) Within 10um from the edge of the PCOMP connected to I/O
+
+Pad (marked by Latchup_MK): Max P substrate tap distance to
+
+NCOMP outside Nwell (irrespective of its direct connection to Pad)",5,5,Rule
+IO.4,"Minimum recommended PCOMP guard ring width:
+
+(Maximize contact to guard uniformly.  As a guideline, ratio of
+
+total contact area to the active area of the guard ring should be
+
+more than 5%).
+",2,2,Rule
+
+================================================================================
+FICHIER: 57_LV_SAB_MOSFET_163.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\57_LV_SAB_MOSFET_163.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,RULE
+LVESD.1,"LV MOSFET used for ESD protection should be enclosured
+
+by ESD_MK, ESD_MK must enclose well pick-up implant",0
+LVESD.2*,"Poly Channel-length for each finger in multi-finger transistors
+
+must be same",
+LVESD.3 (a),Min. channel length for each finger (Recommended),0.3
+LVESD.3 (b),Max. channel length for each finger,0.5
+G.LVESD.4 (a)**,Recommended finger width for each finger,25
+LVESD.4 (b),Min. finger width for each finger,20
+LVESD.4 (c),Max. finger width for each finger,60
+G.LVESD.5 (a)**,"Recommended number of fingers share one pick-up ring in
+
+multi-finger transistors.",8
+LVESD.5 (b),"Max. number of fingers share one pick-up ring in multi-finger
+
+Transistors",16
+G.LVESD.6 (a)**,Recommended total finger width,200
+LVESD.6 (b),Min. total finger width,160
+LVESD.6 (c),Max. total finger width,720
+LVESD.7,"SAB should cover drain and source and overlap gate or cover
+
+drain only with rule LVESD.7(a) partly overlap poly gate",
+LVESD.7 (a),Min/max SAB overlap Poly gate,0.05
+G.LVESD.8 (a)**,"Recommeded at least one or nearest drain contact to gate edge space (DCGS)",2
+LVESD.8 (b),Min. drain contact to gate edge space (DCGS),1
+LVESD.8 (c),"Max. of at least one or nearest drain contact to gate edge space (DCGS)",4
+G_LVESD.10,"Recommended well tap COMP to active COMP space in
+
+channel length direction.",2
+LVESD.11,Source COMP must enclose by LVS_Source,0
+LVESD.12,LVS_Source must butt to Poly edge,0
+G.LVESD.13**,"Recommended at least one or nearest source contact to gate
+
+edge space (SCGS) when SAB cover drain-source over poly gate",0.7
+LVESD.13(a),"Min. source contact to gate edge space (SCGS) when SAB
+
+cover drain-source over poly gate",0.15
+LVESD.13(b),"Max. of at least one or nearest source contact to gate edge
+
+space (SCGS) when SAB cover drain-source over poly gate",1
+COLVESD.7,"Recommended/max. salicided block edge to at least one
+
+or nearest contact (CA)",0.22
+COLVESD.7(a),Min. salicided block edge to contact (CA),0.15
+
+================================================================================
+FICHIER: 58_HV_SAB_MOSFET_168.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\58_HV_SAB_MOSFET_168.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,RULE
+HVNESD.1,"HV NMOSFET used for ESD protection should be enclosured 
+
+by ESD_MK, ESD_MK must enclose well pick-up implant",0
+HVNESD.2*,"Poly Channel-length for each finger in multi-finger
+
+transistors must be same",
+G_HVNESD.3,Min. channel length for each finger (Recommended),0.8
+G.HVNESD.4 (a)**,Recommended finger width for each finger,25
+HVNESD.4 (b),Min. finger width for each finger,20
+HVNESD.4 (c),Max. finger width for each finger,60
+G.HVNESD.5(a)**,"Recommended number of fingers share one pick-up ring in
+
+multi-finger transistors.",12
+HVNESD.5 (b),"Max. number of fingers share one pick-up ring in multi-
+
+finger transistors",18
+G.HVNESD.6 (a)**,Recommended total finger width,300
+HVNESD.6(b),Min. total finger width,200
+HVNESD.6(c),Max. total finger width,720
+HVNESD.7,"SAB should cover drain and source and overlap gate or
+
+cover drain only with rule HVNESD.7(a) partly overlap poly Gate",
+HVNESD.7(a),Min/max SAB overlap Poly gate,0.05
+G.HVNESD.8 (a)**,"Recommended at least one or nearest drain contact to gate
+
+edge space (DCGS)",4
+HVNESD.8 (b),Min. drain contact to gate edge space (DCGS),1
+HVNESD.8 (c),"Max. at least one or nearest drain contact to gate edge space (DCGS)",4
+G_HVNESD.10,"Recommended well tap COMP to active COMP space in
+
+channel length direction.",1.5
+HVNESD.11,Source COMP must enclose by LVS_Source,0
+HVNESD.12,LVS_Source must butt to Poly edge,0
+G.HVNESD.13**,"Recommended at least one or nearest source contact to
+
+gate edge space (SCGS) when SAB cover drain-source over poly gate",0.5
+HVNESD.13 (a),"Min. source contact to gate edge space (SCGS) when SAB
+
+cover drain-source over poly gate",0.15
+HVNESD.13(b),"Max. at least one or nearest source contact to gate edge
+
+space (SCGS) when SAB cover drain-source over poly gate",1
+COHVNESD.7,"Recommended/max. salicided block edge to at least one
+
+or nearest contact (CA)",0.22
+COHVNESD.7(a),Min. salicided block edge to contact (CA),0.15
+
+================================================================================
+FICHIER: 59_HV2_SAB_MOSFET_170.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\59_HV2_SAB_MOSFET_170.csv
+================================================================================
+
+RULE NO.,DESCRIPTION,RULE
+HVPESD.1,"HV PMOSFET used for ESD protection should be enclosured
+ by ESD_MK, ESD_MK must enclose well pick-up implant",0
+HVPESD.2*,"Poly Channel-length for each finger in multi-finger
+
+transistors must be same",
+G_HVPESD.3,Min. channel length for each finger (Recommended),0.7
+G.HVPESD.4 (a)**,Recommended finger width for each finger,25
+HVPESD.4 (b),Min. finger width for each finger,20
+HVPESD.4 (c),Max. finger width for each finger,60
+G.HVPESD.5 (a)**,"Recommended number of fingers share one pick-up ring in
+
+multi-finger transistors.",18
+HVPESD.5(b),"Max. number of fingers share one pick-up ring in multi-
+
+finger transistors",24
+G.HVPESD.6(a)**,Recommended total finger width,450
+HVPESD.6(b),Min. total finger width,300
+HVPESD.6(c),Max. total finger width,720
+HVPESD.7,"SAB should cover drain and source and overlap gate or
+
+cover drain only with rule HVPESD.7(a) partly overlap poly Gate",
+HVPESD.7 (a),Min/max SAB overlap Poly gate,0.05
+G.HVPESD.8 (a)**,"Recommeded at least one or nearest drain contact to gate
+
+edge space (DCGS)",3
+HVPESD.8(b),Min. drain contact to gate edge space (DCGS),1
+HVPESD.8(c),"Max. at least one or nearest drain contact to gate edge space (DCGS)",4
+G_HVPESD.10,"Recommended NField well tap COMP to active COMP
+
+space in channel length direction.",2
+HVPESD.11,Source COMP must enclose by LVS_Source,0
+HVPESD.12,LVS_Source must butt to Poly edge,0
+G.HVPESD.13**,"Recommended at least one or nearest source contact to gate
+
+edge space (SCGS) when SAB cover drain-source over poly gate",0.5
+HVPESD.13(a),"Min. source contact to gate edge space (SCGS) when SAB
+
+cover drain-source over poly gate",0.15
+HVPESD.13(b),"Max. at least one or nearest source contact to gate edge space
+
+(SCGS) when SAB cover drain-source over poly gate",1
+COHVPESD.7,"Recommended/max. salicided block edge to at least one
+
+or nearest contact (CA)",0.22
+COHVPESD.7(a),Min. salicided block edge to contact (CA),0.15
+
+================================================================================
+FICHIER: 60_ESD_Performance_174.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\60_ESD_Performance_174.csv
+================================================================================
+
+ESD Parameter,Parameter Value (without ESD implant)
+Avalanche Breakdown Voltage (Vt1),~8.2V TLP Current (A)
+Snapback Holding voltage (Vsp),~4.4V
+Second Breakdown Current (It2),~9.25mA/um
+Second Breakdown Voltage (Vt2),~6.79V
+
+================================================================================
+FICHIER: 61_ESD2_Performance_175.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\61_ESD2_Performance_175.csv
+================================================================================
+
+ESD Parameter,Parameter Value
+Second Breakdown Current (It2),~27.5mA/um
+Second Breakdown Voltage (Vt2),~3.1V
+
+================================================================================
+FICHIER: 62_ESD3_Performance_176.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\62_ESD3_Performance_176.csv
+================================================================================
+
+ESD Parameter,Parameter Value
+Second Breakdown Current (It2),~33.3mA/um
+Second Breakdown Voltage (Vt2),~3.5V/6V
+
+================================================================================
+FICHIER: 63_ESD4_Performance_177.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\63_ESD4_Performance_177.csv
+================================================================================
+
+ESD Parameter,Parameter Value
+Second Breakdown Current (It2),~39.1mA/um
+Second Breakdown Voltage (Vt2),~3.7V
+
+================================================================================
+FICHIER: 64_ESD5_Performance_178.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\64_ESD5_Performance_178.csv
+================================================================================
+
+ESD Parameter,Parameter Value (without ESD implant)
+Avalanche Breakdown Voltage (Vt1),~10.7V
+Snapback Holding voltage (Vsp),~6.2V TLP Current (A)
+Second Breakdown Current (It2),~7mA/um
+Second Breakdown Voltage (Vt2),~8V
+
+================================================================================
+FICHIER: 65_ESD6_Performance_179.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\65_ESD6_Performance_179.csv
+================================================================================
+
+ESD Parameter,Parameter Value (without ESD implant)
+Avalanche Breakdown Voltage (Vt1),~9.7V
+Second Breakdown Current (It2),~5.3mA/um 
+Second Breakdown Voltage (Vt2),~14.1V
+
+================================================================================
+FICHIER: 66_ESD7_Performance_180.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\66_ESD7_Performance_180.csv
+================================================================================
+
+ESD Parameter,Parameter Value
+Second Breakdown Current (It2),~30mA/um
+Second Breakdown Voltage (Vt2),~6.7V
+
+================================================================================
+FICHIER: 67_ESD8_Performance_181.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\67_ESD8_Performance_181.csv
+================================================================================
+
+ESD Parameter,Parameter Value
+Second Breakdown Current (It2),~31mA/um
+Second Breakdown Voltage (Vt2),~6.9V
+
+================================================================================
+FICHIER: 68_ESD8_Metal_Slotting_183.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\68_ESD8_Metal_Slotting_183.csv
+================================================================================
+
+RULE NO.,DESCRIPTION ,"LAYOUT 
+RULE"
+MSLOT.1,Maximum metal width without slotting,30
+MSLOT.2,Minimum slot width (slot mark layers),2
+MSLOT.3,Slot length (slot mark layers),
+,a. Minimum,10
+,b. Maximum,250
+MSLOT.4,Slot space (slot mark layers),
+,a. Minimum,10
+,b. Maximum,30
+MSLOT.5,Minimum slot (slot mark layers) to metal edge spacing,10
+MSLOT.6,"For multiple slots that spans the metal width, slots should be staggered.",
+MSLOT.7,Minimum space from via-n to metal-n slot,0.2
+MSLOT.8,Minimum space from via-(n-1) / contact to  metal-n slot,0.2
+,(a) MetalTop area directly under the Pad,
+,(b) MIM bottom plate directly under FuseTop,
+,(c) MetalTop directly under FuseWindow_D,
+,(d) Metal3 area (for MIM top plate connection) directly enclosed by FuseTop,
+,(e) MetalTop area directly under UBM layers,
+,Minimum distance to these layers,5
+MSLOT.10,"Slot mark layer on the metal hole (same metal level,
+
+e.g. Metal1_Slot on the Metal1 hole) are not allowed",
+
+================================================================================
+FICHIER: 69_Device_List_184.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\69_Device_List_184.csv
+================================================================================
+
+No.,Device Name,Model Name,Description,Spec
+MOSFET,,,,
+,nfet_03v3,nfet_03v3,3.3V NMOS (Outside DNWELL),YI-141-SM064
+,nfet_03v3_dn,nfet_03v3,3.3V NMOS (Inside DNWELL),YI-141-SM064
+,pfet_03v3,pfet_03v3,3.3V PMOS (Outside DNWELL),YI-141-SM064
+,pfet_03v3_dn,pfet_03v3,3.3V PMOS (Inside DNWELL),YI-141-SM064
+,nfet_05v0,nfet_06v0,5V NMOS (Outside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,nfet_05v0_dn,nfet_06v0,5V NMOS (Inside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,pfet_05v0,pfet_06v0,5V PMOS (Outside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,pfet_05v0_dn,pfet_06v0,5V PMOS (Inside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,nfet_06v0,nfet_06v0,6V NMOS (Outside DNWELL),YI-141-SM064
+,nfet_06v0_dn,nfet_06v0,6V NMOS (Inside DNWELL),YI-141-SM064
+,pfet_06v0,pfet_06v0,6V PMOS (Outside DNWELL),YI-141-SM064
+,pfet_06v0_dn,pfet_06v0,6V PMOS (Inside DNWELL),YI-141-SM064
+,nfet_06v0_nvt,nfet_06v0_nvt,6V Native NMOS,YI-141-SM064
+,nfet_10v0_asym,nfet_10v0_asym,LD-NMOS (Asymmetrical),SM-BB-000149
+,pfet_10v0_asym,pfet_10v0_asym,LD-PMOS (Asymmetrical),SM-BB-000149
+BJT,,,,
+,npn_10p00x10p00,npn_10p00x10p00,"VNPN (Nplus-LVPWELL-DNWELL), emitter size 10um x 10um",YI-141-SM064
+,npn_05p00x05p00,npn_05p00x05p00,"VNPN (Nplus-LVPWELL-DNWELL), emitter size 5um x 5um",YI-141-SM064
+,npn_00p54x16p00,npn_00p54x16p00,"VNPN (Nplus-LVPWELL-DNWELL), emitter size 0p54um x 16um",YI-141-SM064
+,npn_00p54x08p00,npn_00p54x08p00,"VNPN (Nplus-LVPWELL-DNWELL), emitter size 0p54um x 8um",YI-141-SM064
+,npn_00p54x04p00,npn_00p54x04p00,"VNPN (Nplus-LVPWELL-DNWELL), emitter size 0p54um x 4um",YI-141-SM064
+,npn_00p54x02p00,npn_00p54x02p00,"VNPN (Nplus-LVPWELL-DNWELL), emitter size 0p54um x 2um",YI-141-SM064
+,pnp_10p00x10p00,pnp_10p00x10p00,"VPNP (Pplus-Nwell-Psub), emitter size 10um x 10um",YI-141-SM064
+,pnp_05p00x05p00,pnp_05p00x05p00,"VPNP (Pplus-Nwell-Psub), emitter size 5um x 5um",YI-141-SM064
+,pnp_10p00x00p42,pnp_10p00x00p42,"VPNP (Pplus-Nwell-Psub), emitter size 0p42um x 10um",YI-141-SM064
+,pnp_05p00x00p42,pnp_05p00x00p42,"VPNP (Pplus-Nwell-Psub), emitter size 0p42um x 5um",YI-141-SM064
+DIODE,,,,
+,diode_nd2ps_03v3,diode_nd2ps_03v3,3.3V N+/LVPWELL diode (Outside DNWELL),YI-141-SM064
+,diode_nd2ps_03v3_dn,diode_nd2ps_03v3,3.3V N+/LVPWELL diode (Inside DNWELL),YI-141-SM064
+,diode_nd2ps_06v0,diode_nd2ps_06v0,5V/6V N+/LVPWELL Diode (Outside DNWELL),YI-141-SM064
+,diode_nd2ps_06v0_dn,diode_nd2ps_06v0,5V/6V N+/LVPWELL Diode (Inside DNWELL),YI-141-SM064
+,diode_pd2nw_03v3,diode_pd2nw_03v3,3.3V  P+/Nwell diode (Outside DNWELL),YI-141-SM064
+,diode_pd2nw_03v3_dn,diode_pd2nw_03v3,3.3V  P+/Nwell diode (Inside DNWELL),YI-141-SM064
+,diode_pd2nw_06v0,diode_pd2nw_06v0,5V/6V P+/Nwell diode (Outside DNWELL),YI-141-SM064
+,diode_pd2nw_06v0_dn,diode_pd2nw_06v0,5V/6V P+/Nwell diode (Inside DNWELL),YI-141-SM064
+,diode_nw2ps_03v3,diode_nw2ps_03v3,3.3V Nwell/Psub diode,YI-141-SM064
+,diode_nw2ps_06v0,diode_nw2ps_06v0,5V/6V Nwell/Psub diode,YI-141-SM064
+,diode_pw2dw_03v3,diode_pw2dw,3.3V LVPWELL/DNWELL diode,YI-141-SM064
+,diode_pw2dw_06v0,diode_pw2dw,5V/6V LVPWELL/DNWELL diode,YI-141-SM064
+,diode_dw2ps_03v3,diode_dw2ps,3.3V DWENLL/Psub diode,YI-141-SM064
+,diode_dw2ps_06v0,diode_dw2ps,5V/6V DWENLL/Psub diode,YI-141-SM064
+,sc_diode,sc_diode,Schottky diode,YI-141-SM064
+RESISTOR,,,,
+,nplus_u,nplus_u,3-terminal unsalicided n+ diffusion resistor (Outside DNWELL),YI-141-SM064
+,nplus_u_dw,nplus_u,3-terminal unsalicided n+ diffusion resistor (Inside DNWELL),YI-141-SM064
+,pplus_u,pplus_u,3-terminal unsalicided P+ diffusion resistor (Outsdie DNWELL),YI-141-SM064
+,pplus_u_dw,pplus_u,3-terminal unsalicided P+ diffusion resistor (Inside DNWELL),YI-141-SM064
+,nplus_s,nplus_s,3-terminal salicided n+ diffusion resistor (Outside DNWELL),YI-141-SM064
+,nplus_s_dw,nplus_s,3-terminal salicided n+ diffusion resistor (Inside DNWELL),YI-141-SM064
+,pplus_s,pplus_s,3-terminal salicided P+ diffusion resistor (Outside DNWELL),YI-141-SM064
+,pplus_s_dw,pplus_s,3-terminal salicided P+ diffusion resistor (Inside DNWELL),YI-141-SM064
+,nwell,nwell,3-terminal Nwell resistor under STI (Outside DNWELL),YI-141-SM064
+,pwell,pwell,3-terminal LVPWELL resistor under STI (Inside DNWELL only),YI-141-SM064
+,npolyf_u,npolyf_u,3-terminal unsalicided n+ poly resistor (Outside DNWELL),YI-141-SM064
+,npolyf_u_dw,npolyf_u,3-terminal unsalicided n+ poly resistor (Inside DNWELL),YI-141-SM064
+,ppolyf_u,ppolyf_u,3-terminal unsalicided p+ poly resistor (Outside DNWELL),YI-141-SM064
+,ppolyf_u_dw,ppolyf_u,3-terminal unsalicided p+ poly resistor (Inside DNWELL),YI-141-SM064
+,npolyf_s,npolyf_s,3-terminal salicided n+ poly resistor (Outside DNWELL),YI-141-SM064
+,npolyf_s_dw,npolyf_s,3-terminal salicided n+ poly resistor (Inside DNWELL),YI-141-SM064
+,ppolyf_s,ppolyf_s,3-terminal salicided p+ poly resistor (Outside DNWELL),YI-141-SM064
+,ppolyf_s_dw,ppolyf_s,3-terminal salicided p+ poly resistor (Inside DNWELL),YI-141-SM064
+,ppolyf_u_1k,ppolyf_u_1k,"1k high-Rs p+ poly resistor (3.3V area, outside DNWELL)",YI-141-SM064
+,ppolyf_u_1k_dw,ppolyf_u_1k,"1k high-Rs p+ poly resistor (3.3V area, inside DNWELL)",YI-141-SM064
+,ppolyf_u_2k,ppolyf_u_2k,"2k high-Rs p+ poly resistor (3.3V area, outside DNWELL)",YI-141-SM064
+,ppolyf_u_2k_dw,ppolyf_u_2k,"2k high-Rs p+ poly resistor (3.3V area, inside DNWELL)",YI-141-SM064
+,ppolyf_u_3k,ppolyf_u_3k,"3k high-Rs p+ poly resistor (3.3V area, outside DNWELL)",YI-141-SM064
+,ppolyf_u_3k_dw,ppolyf_u_3k,"3k high-Rs p+ poly resistor (3.3V area, inside DNWELL)",YI-141-SM064
+,ppolyf_u_1k_6p0,ppolyf_u_1k_6p0,"1k high-Rs p+ poly resistor (5V/6V area, outside DNWELL)",YI-141-SM064
+,ppolyf_u_1k_6p0_dw,ppolyf_u_1k_6p0,"1k high-Rs p+ poly resistor (5V/6V area, inside DNWELL)",YI-141-SM064
+,ppolyf_u_2k_6p0,ppolyf_u_2k_6p0,"2k high-Rs p+ poly resistor (5V/6V area, outside DNWELL)",YI-141-SM064
+,ppolyf_u_2k_6p0_dw,ppolyf_u_2k_6p0,"2k high-Rs p+ poly resistor (5V/6V area, inside DNWELL)",YI-141-SM064
+,ppolyf_u_3k_6p0,ppolyf_u_3k,"3k high-Rs p+ poly resistor (5V/6V area, outside DNWELL)",YI-141-SM064
+,ppolyf_u_3k_6p0_dw,ppolyf_u_3k,"3k high-Rs p+ poly resistor (5V/6V area, inside DNWELL)",YI-141-SM064
+,rm1,rm1,2-terminal Metal 1 resistor,YI-141-SM064
+,rm2,rm2,2-terminal Metal 2 resistor,YI-141-SM064
+,rm3,rm3,2-terminal Metal 3 resistor,YI-141-SM064
+,tm6k,tm6k,2-terminal 6K Metal Top resistor,YI-141-SM064
+,tm9k,tm9k,2-terminal 9K Metal Top resistor,YI-141-SM064
+,tm11k,tm11k,2-terminal 11K Metal Top resistor,YI-141-SM064
+,tm30k,tm30k,2-terminal 30K Top Metal resistor,YI-141-SM064
+CAPACITOR (MIM),,,,
+,cap_mim_1p0fF,cap_mim_1p0fF,1.0fF/um2 MIM capacitor,YI-141-SM064
+,cap_mim_1p5fF,cap_mim_1p5fF,1.5fF/um2 MIM capacitor,YI-141-SM064
+,cap_cap_mim_2p0fF,cap_mim_2p0fF,2.0fF/um2 MIM capacitor,YI-141-SM064
+CAPACITOR (MOS),,,,
+,cap_nmos_03v3,cap_nmos_03v3,3.3V NMOS capacitor (Outside DNWELL),YI-141-SM064
+,cap_nmos_03v3_dn,cap_nmos_03v3,3.3V NMOS capacitor (Inside DNWELL),YI-141-SM064
+,cap_pmos_03v3,cap_pmos_03v3,3.3V PMOS capacitor (Outside DNWELL),YI-141-SM064
+,cap_pmos_03v3_dn,cap_pmos_03v3,3.3V PMOS capacitor (Inside DNWELL),YI-141-SM064
+,cap_nmos_06v0,cap_nmos_06v0,5V/6V NMOS capacitor (Outside DNWELL),YI-141-SM064
+,cap_nmos_06v0_dn,cap_nmos_06v0,5V/6V NMOS capacitor (inside DNWELL),YI-141-SM064
+,cap_pmos_06v0,cap_pmos_06v0,5V/6V PMOS capacitor (Outside DNWELL),YI-141-SM064
+,cap_pmos_06v0_dn,cap_pmos_06v0,5V/6V PMOS capacitor (Outside DNWELL),YI-141-SM064
+,cap_nmos_03v3_b,cap_nmos_03v3_b,3.3V NMOS capacitor (inside NWell),YI-141-SM064
+,cap_pmos_03v3_b,cap_pmos_03v3_b,3.3V PMOS capacitor (inside Psub),YI-141-SM064
+,,,,
+,cap_nmos_06v0_b,cap_nmos_06v0_b,5V/6V NMOS capacitor (inside NWell),YI-141-SM064
+,cap_pmos_06v0_b,cap_pmos_06v0_b,5V/6V PMOS capacitor (inside Psub),YI-141-SM064
+ESD (SAB MOSFET),,,,
+,nfet_03v3_dss,nfet_03v3_dss,3.3V SAB NMOS (Outside DNWELL),YI-141-SM064
+,nfet_03v3_dn_dss,nfet_03v3_dss,3.3V SAB NMOS (Inside DNWELL),YI-141-SM064
+,nfet_05v0_dss,nfet_06v0_dss,5V SAB NMOS (Outside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,nfet_05v0_dn_dss,nfet_06v0_dss,5V SAB NMOS (Inside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,nfet_06v0_dss,nfet_06v0_dss,6V SAB NMOS (Outside DNWELL),YI-141-SM064
+,nfet_06v0_dn_dss,nfet_06v0_dss,6V SAB NMOS (Inside DNWELL),YI-141-SM064
+,pfet_03v3_dss,pfet_03v3_dss,3.3V SAB PMOS (Outside DNWELL),YI-141-SM064
+,pfet_03v3_dn_dss,pfet_03v3_dss,3.3V SAB PMOS (Inside DNWELL),YI-141-SM064
+,pfet_05v0_dss,pfet_06v0_dss,5V SAB PMOS (Outside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,pfet_05v0_dn_dss,pfet_06v0_dss,5V SAB PMOS (Inside DNWELL) (with V5_XTOR mark layer),YI-141-SM064
+,pfet_06v0_dss,pfet_06v0_dss,6V SAB PMOS (Outside DNWELL),YI-141-SM064
+,pfet_06v0_dn_dss,pfet_06v0_dss,6V SAB PMOS (Inside DNWELL),YI-141-SM064
+eFuse,,,,
+,eFuse,efuse,Eletrically programmable fuse element,YI-141-SM064
+
+================================================================================
+FICHIER: 70_not_coded_rules_187.csv
+CHEMIN COMPLET: C:\Users\ltsawv5.LTSW2K\Documents\projects\perso\sky130_sram_macros-main\drc_player\physical_verification_gf180\design_manual\tables_clear\70_not_coded_rules_187.csv
+================================================================================
+
+ \* DN.Note1 ,- Both 3.3 and 6V transistors are not allowed in the same DNWELL
+ \* LPW.4 ,"- If LVPWELL is used as resistor, it must be coverd by RES_MK (for LVS purpose)"
+ \* NW.7 ,"- If Nwell is used as resistor, it must be covered by RES_MK (for LVS purpose)"
+ \* DF.1b,- Width with low sheet resistivity (guideline)
+ \* DF.15a ,"- NCOMP inside DNWELL and Dualgate, but outside LVPWELL can only be connected to 6V VDD"
+ \* DF.15b ,- NCOMP inside DNWELL but outside Dualgate and LVPWELL can only be connected to 3.3V VDD
+ \* DV.4 ,- Circuits covered by Dualgate layer will have 6V gate oxide for 6V operation
+ \* PL.3b,- Poly 2 space on active for low active sheet resistivity (guideline)
+ \* PL.10,- Maximum Poly2 current density
+ \* CO.6iii ,- Minimum metal 1 overlap of contact on all sides of min. contact resistance variation (guideline)
+ \* Vn.3iii ,- Minimum metal-n overlap of via-n on all sides for min. via-n resistance variation (guideline)
+ \* Vn.4iii ,- Minimum metal-(n+1) overlap of via-n on all sides for min. via-n resistance variation (guideline)
+ \* Vn.5, - Vian stack over contact is permitted (allowable rules)
+ \* CUP.4,- Omitted (Guidelines)
+ \* CUP.7a-b ,- Omitted (Guidelines)
+ \* PRES.8 ,- Maximum current density of poly resistor (mA/um)
+ \* HRES.11 ,- Maximum current density of poly resistor (mA/um)
+ \* LRES.8 ,- Maximum current density of poly resistor (mA/um)
+ \* MIM.12 ,"- Commented (not coded by default). Caught by LVS. If user wants to check, uncomment the section"
+ \* G.MIM, - There cannot be any sensitive matching analog circuitry underneath MIM (Guideline)
+ \* MIMTM.12 ,"- Commented (not coded by default). Caught by LVS. If user wants to check, uncomment the section"
+ \* G.MIMTM ,- There cannot be any sensitive matching analog circuitry underneath MIM (Guideline)
+ \* 10.6.2 ,- Matched pair layout guidelines
+ \* O.SB.13 ,- Min Salicide block overlap with poly2 = 0
+ \* O.SB.5b_MV ,- Min. space from salicide block to unrelated Poly2 on COMP = 0
+ \* O.SB.15b, - Min space from unsalicided Poly2 to unrelated Nplus/Pplus along Poly2 line = 0
+ \* 11.0,- SCRIBE LINE & GUARD RING GUIDELINES (Except Guard Ring design rule check)
+ \* GR.9,- GR.9 is partially coded. All Vias shall be put in a staggered row
+ \* GR.10,- There must be rows of contact in the seal ring area
+ \* 13.0,- RELIABILITY GUIDELINES (Except Latchup rules)
+ \* LU.7,- Guideline and not codeable
+ \* LU.8,- Guideline and not codeable
+ \* LU.9,- Guideline and not codeable
+ \* LU.10,- Guideline and not codeable
+ \* LVESD.2 ,- Poly Channel-length for each finger in multi-finger transistors must be same
+ \* HVNESD.2 ,- Poly Channel-length for each finger in multi-finger transistors must be same
+ \* HVPESD.2 ,- Poly Channel-length for each finger in multi-finger transistors must be same
+ \* 14.7.3.6 ,"- For multiple slots that spans the metal width, slots should be staggered"
+ \* DE.1,- Dummp COMP exclude and dummy poly/metal exclude layers shall be drawn only if necessary
+ \* DCF.2a, - Min/Max Adjustment placement Space between dummy COMP cells
+ \* DCF.3,- Stagger both X and Y direction = 1.6
+ \* DCF.7a ,- Space from dummy COMP in prime die including guard ring to scribe line = 8.0
+ \* DCF.7b ,- Space from dummy COMP in frame to edge of frame = 6
+ \* DCF.7c ,- Space from dummy COMP in frame to any frame cell except non-ET = 10.0
+ \* DCF.7d ,- Space from dummy COMP in SLM Etest pattens or SLM reliability test patterns to the boundary of test patterns = 6.0
+ \* DCF.9,- Space from dummp COMP to Pad (guideline)
+ \* DCF.10 ,- Remove truncated dummy squares
+ \* DPF.2a ,- Space between dummy Poly2
+ \* DPF.3,- Stagger both X and Y direction = 1.6
+ \* DPF.7,- Space from dummy Poly2 in prime die to scribe line = 25.7
+ \* DPF.10 ,- Remove truncated dummy squares
+ \* DM.2a ,- Min Dummy metal line space (for Layout) = 1.2
+ \* DM.9,- Do not use exact replicates of dummy metal fill patterns for consecutive metal layers to avoid dielectric and metal stress problems. (Offsets value: 0.5)
+ \* DM.10,- Offset between the Dummy metal of the same layers = 0.5
+
+================================================================================
+FIN DE LA CONCATENATION
+Nombre de fichiers traités: 85
+Nombre total de lignes: 2476
+================================================================================
