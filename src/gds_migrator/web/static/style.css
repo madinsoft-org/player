@@ -49,6 +49,7 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 .layer-option input { accent-color: #80aef7; }
 .layer-swatch { width: 10px; height: 10px; border-radius: 2px; }
 .constraints-heading { margin-top: 15px; }
+.constraint-controls { display: flex; align-items: center; gap: 8px; }
 .count { color: #95a4b8; font-size: 11px; }
 .hint { color: #8d9bae; font-size: 11px; line-height: 1.45; margin: 8px 0; }
 .constraint-list { max-height: 27vh; overflow: auto; }
@@ -70,8 +71,8 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 .layout-view { touch-action: none; cursor: grab; }
 .layout-view:active { cursor: grabbing; }
 .constraint-line { cursor: pointer; }
-.constraint-line.excluded { opacity: .28; stroke-dasharray: 5 4; }
-.constraint-line.selected { stroke: #fff !important; stroke-width: 4 !important; }
+.constraint-line.excluded { opacity: .28; }
+.constraint-line.selected { stroke: #fff !important; stroke-width: 2 !important; }
 .workspace-status { margin: 0; }
 @media (max-width: 1100px) {
   .workspace-grid { grid-template-columns: 230px minmax(0, 1fr); }

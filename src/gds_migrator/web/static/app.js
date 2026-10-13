@@ -7,6 +7,7 @@ const state = {
   after: null,
   edges: [],
   selectedEdgeId: null,
+  showConstraints: true,
   viewBox: { x: 0, y: 0, width: 1000, height: 700 },
 };
 
@@ -85,7 +86,7 @@ function drawLayout(svg, rectangles, edges = []) {
   }
 
   const edgeGroup = makeSvgElement("g");
-  for (const edge of edges.filter((item) =>
+  for (const edge of (state.showConstraints ? edges : []).filter((item) =>
     (item.source_layer < 0 || state.enabledLayers.has(item.source_layer))
     && (item.target_layer < 0 || state.enabledLayers.has(item.target_layer)))) {
     const line = makeSvgElement("line", {
@@ -94,7 +95,9 @@ function drawLayout(svg, rectangles, edges = []) {
       x2: x(edge.end.x),
       y2: y(edge.end.y),
       stroke: edge.axis === "x" ? "#ff9e58" : "#56c3bc",
-      "stroke-width": 2,
+      "stroke-width": 1,
+      "stroke-dasharray": "3 3",
+      "vector-effect": "non-scaling-stroke",
       class: `constraint-line${edge.excluded ? " excluded" : ""}${edge.id === state.selectedEdgeId ? " selected" : ""}`,
       "data-id": edge.id,
     });
@@ -135,6 +138,9 @@ function renderConstraints() {
   const list = byId("constraint-list");
   list.replaceChildren();
   byId("constraint-count").textContent = String(state.edges.length);
+  const visibilityButton = byId("toggle-constraints-button");
+  visibilityButton.textContent = state.showConstraints ? "Hide graph" : "Show graph";
+  visibilityButton.setAttribute("aria-pressed", String(state.showConstraints));
   for (const edge of state.edges) {
     const row = document.createElement("button");
     row.type = "button";
@@ -283,6 +289,12 @@ byId("migrate-button").addEventListener("click", async () => {
 byId("layers-all").addEventListener("click", () => {
   state.enabledLayers = new Set(state.layers.keys());
   renderLayers();
+  renderViews();
+});
+
+byId("toggle-constraints-button").addEventListener("click", () => {
+  state.showConstraints = !state.showConstraints;
+  renderConstraints();
   renderViews();
 });
 
