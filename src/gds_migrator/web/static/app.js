@@ -19,6 +19,13 @@ function setStatus(message, workspace = false) {
   byId(workspace ? "workspace-status" : "status").textContent = message;
 }
 
+function updateLayersToggleButton() {
+  const button = byId("layers-all");
+  if (!button) return;
+  const allEnabled = state.enabledLayers.size === state.layers.size;
+  button.textContent = allEnabled ? "All off" : "All on";
+}
+
 async function request(url, options = {}) {
   const response = await fetch(url, options);
   const contentType = response.headers.get("content-type") || "";
@@ -124,6 +131,7 @@ function renderLayers() {
     checkbox.addEventListener("change", () => {
       if (checkbox.checked) state.enabledLayers.add(layer.layer);
       else state.enabledLayers.delete(layer.layer);
+      updateLayersToggleButton();
       renderViews();
     });
     const swatch = document.createElement("span");
@@ -218,6 +226,7 @@ function populateProject(project) {
   state.project = project;
   state.layers = new Map(project.layers.map((layer) => [layer.layer, layer]));
   state.enabledLayers = new Set(project.layers.map((layer) => layer.layer));
+  updateLayersToggleButton();
   state.selectedCell = project.root_cells[0] || project.cells[project.cells.length - 1];
   state.after = null;
   byId("project-summary").textContent = `${project.technology.name} · grid ${project.technology.grid} nm`;
@@ -290,7 +299,13 @@ byId("migrate-button").addEventListener("click", async () => {
 });
 
 byId("layers-all").addEventListener("click", () => {
-  state.enabledLayers = new Set(state.layers.keys());
+  const allLayers = new Set(state.layers.keys());
+  if (state.enabledLayers.size === state.layers.size) {
+    state.enabledLayers = new Set();
+  } else {
+    state.enabledLayers = allLayers;
+  }
+  updateLayersToggleButton();
   renderLayers();
   renderViews();
 });
@@ -335,7 +350,7 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
     if (!anchor) return;
 
     const factor = event.deltaY < 0 ? 0.82 : 1.22;
-    const nextWidth = Math.max(80, Math.min(2500, state.viewBox.width * factor));
+    const nextWidth = state.viewBox.width * factor;
     const scale = nextWidth / state.viewBox.width;
     const nextHeight = state.viewBox.height * scale;
     const relativeX = (anchor.x - state.viewBox.x) / state.viewBox.width;
