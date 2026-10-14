@@ -9,6 +9,7 @@ const state = {
   selectedEdgeId: null,
   showConstraints: true,
   viewBox: { x: 0, y: 0, width: 1000, height: 700 },
+  dragMode: "pan",
 };
 
 const svgNamespace = "http://www.w3.org/2000/svg";
@@ -110,6 +111,7 @@ function drawLayout(svg, rectangles, edges = []) {
   svg.append(edgeGroup);
 }
 
+
 function renderLayers() {
   const list = byId("layer-list");
   list.replaceChildren();
@@ -194,6 +196,7 @@ async function loadSelectedCell() {
   const constraints = await request(`/api/sessions/${state.project.id}/constraints?cell=${encodeURIComponent(state.selectedCell)}`);
   state.edges = constraints.edges;
   state.selectedEdgeId = state.edges.some((edge) => edge.id === state.selectedEdgeId) ? state.selectedEdgeId : null;
+  updateZoomSelection(null, null, null, null);
   state.after = null;
   byId("before-caption").textContent = state.selectedCell;
   byId("after-caption").textContent = "Run migration to compare";
@@ -303,20 +306,43 @@ function resetView() {
   renderViews();
 }
 
+function setDragMode(mode) {
+  state.dragMode = mode;
+  const button = byId("pan-zoom-toggle");
+  const isPanMode = state.dragMode === "pan";
+  button.textContent = isPanMode ? "Pan mode" : "Zoom mode";
+  button.setAttribute("aria-pressed", String(isPanMode));
+
+  if (state.dragMode === "zoom") {
+    byId("before-view").classList.add("zoom-mode");
+    byId("after-view").classList.add("zoom-mode");
+  } else {
+    byId("before-view").classList.remove("zoom-mode");
+    byId("after-view").classList.remove("zoom-mode");
+  }
+
+  updateZoomSelection(null, null, null, null, null);
+}
+
+function toggleDragMode() {
+  setDragMode(state.dragMode === "pan" ? "zoom" : "pan");
+}
+
 for (const svg of [byId("before-view"), byId("after-view")]) {
   svg.addEventListener("wheel", (event) => {
     event.preventDefault();
-    const bounds = svg.getBoundingClientRect();
-    const relativeX = (event.clientX - bounds.left) / bounds.width;
-    const relativeY = (event.clientY - bounds.top) / bounds.height;
+    const anchor = svgPoint(svg, event.clientX, event.clientY);
+    if (!anchor) return;
+
     const factor = event.deltaY < 0 ? 0.82 : 1.22;
     const nextWidth = Math.max(80, Math.min(2500, state.viewBox.width * factor));
-    const nextHeight = nextWidth * 0.7;
-    const anchorX = state.viewBox.x + relativeX * state.viewBox.width;
-    const anchorY = state.viewBox.y + relativeY * state.viewBox.height;
+    const scale = nextWidth / state.viewBox.width;
+    const nextHeight = state.viewBox.height * scale;
+    const relativeX = (anchor.x - state.viewBox.x) / state.viewBox.width;
+    const relativeY = (anchor.y - state.viewBox.y) / state.viewBox.height;
     state.viewBox = {
-      x: anchorX - relativeX * nextWidth,
-      y: anchorY - relativeY * nextHeight,
+      x: anchor.x - relativeX * nextWidth,
+      y: anchor.y - relativeY * nextHeight,
       width: nextWidth,
       height: nextHeight,
     };
@@ -324,23 +350,110 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
   }, { passive: false });
 
   let dragOrigin = null;
+  let zoomStart = null;
+
   svg.addEventListener("pointerdown", (event) => {
-    dragOrigin = { x: event.clientX, y: event.clientY };
+    if (state.dragMode === "zoom") {
+      zoomStart = { x: event.clientX, y: event.clientY };
+      updateZoomSelection(svg, event.clientX, event.clientY, event.clientX, event.clientY);
+    } else {
+      dragOrigin = { x: event.clientX, y: event.clientY };
+    }
     svg.setPointerCapture(event.pointerId);
   });
   svg.addEventListener("pointermove", (event) => {
-    if (!dragOrigin) return;
-    const bounds = svg.getBoundingClientRect();
-    state.viewBox.x -= (event.clientX - dragOrigin.x) / bounds.width * state.viewBox.width;
-    state.viewBox.y -= (event.clientY - dragOrigin.y) / bounds.height * state.viewBox.height;
-    dragOrigin = { x: event.clientX, y: event.clientY };
-    renderViews();
+    if (state.dragMode === "zoom" && zoomStart) {
+      updateZoomSelection(svg, zoomStart.x, zoomStart.y, event.clientX, event.clientY);
+    } else if (dragOrigin) {
+      const current = svgPoint(svg, event.clientX, event.clientY);
+      const previous = svgPoint(svg, dragOrigin.x, dragOrigin.y);
+      if (!current || !previous) return;
+      state.viewBox.x -= current.x - previous.x;
+      state.viewBox.y -= current.y - previous.y;
+      dragOrigin = { x: event.clientX, y: event.clientY };
+      renderViews();
+    }
   });
-  svg.addEventListener("pointerup", () => { dragOrigin = null; });
-  svg.addEventListener("pointercancel", () => { dragOrigin = null; });
+  svg.addEventListener("pointerup", (event) => {
+    if (state.dragMode === "zoom" && zoomStart) {
+      if (Math.abs(event.clientX - zoomStart.x) > 5 && Math.abs(event.clientY - zoomStart.y) > 5) {
+        const start = svgPoint(svg, zoomStart.x, zoomStart.y);
+        const end = svgPoint(svg, event.clientX, event.clientY);
+        if (start && end) {
+          state.viewBox = {
+            x: Math.min(start.x, end.x),
+            y: Math.min(start.y, end.y),
+            width: Math.abs(end.x - start.x),
+            height: Math.abs(end.y - start.y),
+          };
+          renderViews();
+        }
+      }
+      updateZoomSelection(null, null, null, null, null);
+      zoomStart = null;
+    }
+    dragOrigin = null;
+  });
+  svg.addEventListener("pointercancel", () => {
+    dragOrigin = null;
+    zoomStart = null;
+    updateZoomSelection(null, null, null, null, null);
+  });
 }
 
 byId("reset-view-button").addEventListener("click", resetView);
+
+byId("pan-zoom-toggle").addEventListener("click", toggleDragMode);
+
+function svgPoint(svg, clientX, clientY) {
+  const screenMatrix = svg.getScreenCTM();
+  if (!screenMatrix) return null;
+  const point = svg.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  return point.matrixTransform(screenMatrix.inverse());
+}
+
+function updateZoomSelection(svg, startX, startY, endX, endY) {
+  const selections = [
+    [byId("before-view"), byId("before-selection")],
+    [byId("after-view"), byId("after-selection")],
+  ];
+
+  if (state.dragMode !== "zoom" || startX === null || !svg) {
+    for (const [, overlay] of selections) {
+      overlay.style.display = "none";
+    }
+    return;
+  }
+
+  const activeSelection = selections.find(([view]) => view === svg);
+  for (const [view, overlay] of selections) {
+    if (view !== svg) overlay.style.display = "none";
+  }
+  if (!activeSelection) return;
+
+  const sourceBounds = svg.getBoundingClientRect();
+  const x1 = (Math.min(startX, endX) - sourceBounds.left) / sourceBounds.width;
+  const y1 = (Math.min(startY, endY) - sourceBounds.top) / sourceBounds.height;
+  const x2 = (Math.max(startX, endX) - sourceBounds.left) / sourceBounds.width;
+  const y2 = (Math.max(startY, endY) - sourceBounds.top) / sourceBounds.height;
+
+  if ((x2 - x1) * sourceBounds.width <= 5 || (y2 - y1) * sourceBounds.height <= 5) {
+    activeSelection[1].style.display = "none";
+    return;
+  }
+
+  const [view, overlay] = activeSelection;
+  const viewBounds = view.getBoundingClientRect();
+  const panelBounds = view.parentElement.getBoundingClientRect();
+  overlay.style.left = `${viewBounds.left - panelBounds.left + x1 * viewBounds.width}px`;
+  overlay.style.top = `${viewBounds.top - panelBounds.top + y1 * viewBounds.height}px`;
+  overlay.style.width = `${(x2 - x1) * viewBounds.width}px`;
+  overlay.style.height = `${(y2 - y1) * viewBounds.height}px`;
+  overlay.style.display = "block";
+}
+
 
 byId("new-project-button").addEventListener("click", async () => {
   if (state.project) {
@@ -355,6 +468,7 @@ byId("new-project-button").addEventListener("click", async () => {
   state.after = null;
   state.edges = [];
   state.selectedEdgeId = null;
+  setDragMode("pan");
   resetView();
   byId("workspace").hidden = true;
   byId("upload-panel").hidden = false;

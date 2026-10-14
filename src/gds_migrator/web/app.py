@@ -29,7 +29,7 @@ from gds_migrator.technology.rules import TechnologyRules
 
 MAX_UPLOAD_BYTES = 100 * 1024 * 1024
 MAX_RENDER_SHAPES = 50_000
-_LAYER_SOURCE = re.compile(r"^\s*(-?\d+)\s*/\s*(\d+)(?:@\d+)?\s*$")
+_LAYER_SOURCE = re.compile(r"^\s*(?:(.*?)\s+)?(-?\d+)\s*/\s*(\d+)(?:@\d+)?\s*$")
 _COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
@@ -246,12 +246,13 @@ def _parse_layer_properties(path: Path) -> dict[int, dict[str, str]]:
             match = _LAYER_SOURCE.fullmatch(source)
             if match is None:
                 continue
-            layer = int(match.group(1))
+            layer = int(match.group(2))
             color = entry.findtext("fill-color", default="#778899")
             if not _COLOR.fullmatch(color):
                 raise ValueError(f"Invalid display color for layer {layer}: {color!r}.")
+            name = entry.findtext("name", default="").strip() or match.group(1) or f"Layer {layer}"
             properties[layer] = {
-                "name": entry.findtext("name", default=f"Layer {layer}"),
+                "name": name,
                 "color": color,
             }
         return properties

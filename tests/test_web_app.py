@@ -126,6 +126,11 @@ def test_gf180_simplified_upload_uses_layer_datatype_rules(tmp_path):
         assert response.status_code == 200, response.text
         project = response.json()
         try:
+            assert {
+                "layer": 34,
+                "name": "metal1_dummy",
+                "color": "#778899",
+            } in project["layers"]
             constraints = client.get(
                 f"/api/sessions/{project['id']}/constraints",
                 params={"cell": "TOP"},

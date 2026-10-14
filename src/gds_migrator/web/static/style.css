@@ -38,6 +38,8 @@ input[type="file"] { width: 100%; color: #aab5c5; }
 .status { min-height: 18px; color: #ffca85; font-size: 13px; margin: 13px 0 0; }
 .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .toolbar label { display: flex; align-items: center; gap: 9px; color: #aab5c5; font-size: 13px; }
+#pan-zoom-toggle[aria-pressed="true"] { background: #79a9f5; color: #101722; }
+#pan-zoom-toggle[aria-pressed="false"] { background: #252c37; color: #d5deeb; border-color: #3a4554; }
 select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; background: #1a2029; color: #e8edf4; padding: 8px; }
 .technology-strip { padding: 12px 0; color: #92a0b4; font-size: 12px; }
 .workspace-grid { display: grid; grid-template-columns: 265px minmax(0, 1fr); gap: 14px; min-height: 72vh; }
@@ -60,7 +62,7 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 .constraint-row .value { color: #a6b4c7; }
 .edge-details { margin: 10px 0; padding: 9px; min-height: 52px; background: #11161d; border-radius: 5px; color: #aeb9c8; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
 .views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; min-width: 0; }
-.layout-panel { min-width: 0; padding: 12px; display: flex; flex-direction: column; }
+.layout-panel { min-width: 0; padding: 12px; display: flex; flex-direction: column; position: relative; }
 .layout-panel .panel-heading { min-height: 28px; }
 .caption { display: block; padding-top: 3px; color: #8795a8; font-size: 10px; }
 .legend { color: #98a6b9; font-size: 10px; display: flex; align-items: center; gap: 5px; }
@@ -70,6 +72,20 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 .layout-view { width: 100%; height: 100%; min-height: 450px; flex: 1; background-color: #10151b; border-radius: 5px; }
 .layout-view { touch-action: none; cursor: grab; }
 .layout-view:active { cursor: grabbing; }
+.zoom-selection-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border: 1px dashed #ffffff;
+  background: transparent;
+  display: none;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+#pan-zoom-toggle { cursor: pointer; }
+.layout-view.zoom-mode { cursor: crosshair; }
 .constraint-line { cursor: pointer; }
 .constraint-line.excluded { opacity: .28; }
 .constraint-line.selected { stroke: #fff !important; stroke-width: 2 !important; }
