@@ -225,7 +225,12 @@ async function loadMigratedCell() {
 function populateProject(project) {
   state.project = project;
   state.layers = new Map(project.layers.map((layer) => [layer.layer, layer]));
-  state.enabledLayers = new Set(project.layers.map((layer) => layer.layer));
+  // Only enable layers that are present in the GDS file by default
+  if (project.gds_layers && project.gds_layers.length > 0) {
+    state.enabledLayers = new Set(project.gds_layers);
+  } else {
+    state.enabledLayers = new Set(project.layers.map((layer) => layer.layer));
+  }
   updateLayersToggleButton();
   state.selectedCell = project.root_cells[0] || project.cells[project.cells.length - 1];
   state.after = null;

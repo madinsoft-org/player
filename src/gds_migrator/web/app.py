@@ -312,6 +312,14 @@ def _project_layers(project: ProjectSession) -> list[dict[str, Any]]:
     return result
 
 
+def _gds_layers(project: ProjectSession) -> set[int]:
+    """Get the set of layer numbers that are actually present in the loaded GDS file."""
+    layers = set()
+    for cell in project.cells.values():
+        layers.update(rectangle.layer for rectangle in cell.rectangles if rectangle.layer >= 0)
+    return layers
+
+
 def _project_cell_bounds(
     cells: dict[str, Cell] | dict[str, MigratedCell],
     cell_name: str,
@@ -559,6 +567,7 @@ async def create_session(
         sessions[project_id] = project
         referenced_cells = {instance.cell_name for cell in cells.values() for instance in cell.instances}
         root_cells = [name for name in cells if name not in referenced_cells]
+        gds_layer_numbers = _gds_layers(project)
         return {
             "id": project_id,
             "source_name": project.source_name,
@@ -566,6 +575,7 @@ async def create_session(
             "root_cells": root_cells,
             "technology": {"name": technology_rules.name, "grid": technology_rules.grid},
             "layers": _project_layers(project),
+            "gds_layers": sorted(gds_layer_numbers),
         }
     except HTTPException:
         temporary_directory.cleanup()
@@ -580,6 +590,7 @@ def get_project(session_id: str) -> dict[str, Any]:
     project = _get_session(session_id)
     referenced_cells = {instance.cell_name for cell in project.cells.values() for instance in cell.instances}
     root_cells = [name for name in project.cells if name not in referenced_cells]
+    gds_layer_numbers = _gds_layers(project)
     return {
         "id": project.id,
         "source_name": project.source_name,
@@ -587,6 +598,7 @@ def get_project(session_id: str) -> dict[str, Any]:
         "root_cells": root_cells,
         "technology": {"name": project.technology.name, "grid": project.technology.grid},
         "layers": _project_layers(project),
+        "gds_layers": sorted(gds_layer_numbers),
         "has_migration": project.migrated is not None,
     }
 

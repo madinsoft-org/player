@@ -210,3 +210,56 @@ def test_invalid_layer_color_is_reported(tmp_path):
         )
     assert response.status_code == 422
     assert "Invalid display color" in response.json()["detail"]
+
+
+def test_gds_layers_are_returned_and_only_gds_layers_enabled_by_default(tmp_path):
+    """Test that gds_layers contains only layers from the GDS file, not from technology."""
+    layout_path = tmp_path / "layout.gds"
+    library = gdstk.Library(unit=1e-9, precision=1e-12)
+    cell = gdstk.Cell("TOP")
+    # Add rectangles on layers 1 and 2
+    cell.add(
+        gdstk.rectangle((0, 0), (5, 5), layer=1),
+        gdstk.rectangle((7, 0), (12, 5), layer=2),
+    )
+    library.add(cell)
+    library.write_gds(layout_path)
+
+    # Technology defines rules for layers 1, 2, AND 3 (but layer 3 is not in GDS)
+    technology = {
+        "name": "test-tech",
+        "grid": 1,
+        "min_width": {1: 1, 2: 1, 3: 1},  # Layer 3 is in tech but not in GDS
+        "min_spacing": [
+            {"layers": [1, 1], "value": 10},
+            {"layers": [2, 2], "value": 10},
+            {"layers": [3, 3], "value": 10},  # Layer 3 spacing rule
+        ],
+    }
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/sessions",
+            files={
+                "layout": ("layout.gds", layout_path.read_bytes(), "application/octet-stream"),
+                "technology": ("technology.json", json.dumps(technology).encode(), "application/json"),
+            },
+        )
+        assert response.status_code == 200, response.text
+        project = response.json()
+        try:
+            # All layers (1, 2, 3) should be in the layers list (from tech + gds)
+            layer_numbers = [l["layer"] for l in project["layers"]]
+            assert sorted(layer_numbers) == [1, 2, 3]
+            
+            # But gds_layers should only contain layers 1 and 2 (from GDS file)
+            assert project["gds_layers"] == [1, 2]
+            
+            # Verify that get_project also returns gds_layers
+            get_response = client.get(f"/api/sessions/{project['id']}")
+            assert get_response.status_code == 200
+            get_project = get_response.json()
+            assert get_project["gds_layers"] == [1, 2]
+        finally:
+            client.delete(f"/api/sessions/{project['id']}")
+            sessions.pop(project["id"], None)
