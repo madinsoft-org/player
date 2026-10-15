@@ -10,6 +10,8 @@ const state = {
   showConstraints: true,
   viewBox: { x: 0, y: 0, width: 1000, height: 700 },
   dragMode: "pan",
+  mergedPolygons: [],
+  showMerged: false,
 };
 
 const svgNamespace = "http://www.w3.org/2000/svg";
@@ -55,6 +57,51 @@ function boundsOf(rectangles) {
     ymin: Math.min(...rectangles.map((item) => item.ymin)),
     ymax: Math.max(...rectangles.map((item) => item.ymax)),
   };
+}
+
+function drawMergedPolygons(svg) {
+  if (!state.showMerged || !state.mergedPolygons.length) return;
+  
+  const width = 1000;
+  const height = 700;
+  svg.setAttribute("viewBox", `${state.viewBox.x} ${state.viewBox.y} ${state.viewBox.width} ${state.viewBox.height}`);
+  const bounds = boundsOf(state.before ? state.before.rectangles : []);
+  const spanX = Math.max(bounds.xmax - bounds.xmin, 1);
+  const spanY = Math.max(bounds.ymax - bounds.ymin, 1);
+  const padding = 0.06;
+  const scale = Math.min(width / spanX, height / spanY) * (1 - padding * 2);
+  const offsetX = (width - spanX * scale) / 2;
+  const offsetY = (height - spanY * scale) / 2;
+  const x = (value) => offsetX + (value - bounds.xmin) * scale;
+  const y = (value) => height - offsetY - (value - bounds.ymin) * scale;
+
+  // Draw merged polygons
+  for (const polyData of state.mergedPolygons) {
+    const layer = state.layers.get(polyData.layer);
+    const color = layer ? layer.color : "#ff00ff";
+    
+    // Create SVG path from polygon points
+    const points = polyData.points;
+    if (points.length < 2) continue;
+    
+    let pathData = `M ${x(points[0][0])} ${y(points[0][1])}`;
+    for (let i = 1; i < points.length; i++) {
+      pathData += ` L ${x(points[i][0])} ${y(points[i][1])}`;
+    }
+    pathData += " Z";
+    
+    const path = makeSvgElement("path", {
+      d: pathData,
+      fill: color,
+      "fill-opacity": "0.6",
+      stroke: color,
+      "stroke-width": 1.5,
+    });
+    const title = makeSvgElement("title");
+    title.textContent = `Merged polygon on layer ${polyData.layer}`;
+    path.append(title);
+    svg.append(path);
+  }
 }
 
 function drawLayout(svg, rectangles, edges = []) {
@@ -201,6 +248,8 @@ function selectEdge(id) {
 async function loadSelectedCell() {
   if (!state.project || !state.selectedCell) return;
   state.before = await request(`/api/sessions/${state.project.id}/layout?cell=${encodeURIComponent(state.selectedCell)}&version=before`);
+  state.mergedPolygons = [];
+  state.showMerged = false;
   const constraints = await request(`/api/sessions/${state.project.id}/constraints?cell=${encodeURIComponent(state.selectedCell)}`);
   state.edges = constraints.edges;
   state.selectedEdgeId = state.edges.some((edge) => edge.id === state.selectedEdgeId) ? state.selectedEdgeId : null;
@@ -234,6 +283,20 @@ function populateProject(project) {
   updateLayersToggleButton();
   state.selectedCell = project.root_cells[0] || project.cells[project.cells.length - 1];
   state.after = null;
+  state.mergedPolygons = [];
+  state.showMerged = false;
+  
+  // Populate merge layer selector
+  const mergeLayerSelect = byId("merge-layer-select");
+  if (mergeLayerSelect) {
+    mergeLayerSelect.replaceChildren();
+    for (const layer of project.layers) {
+      const option = document.createElement("option");
+      option.value = layer.layer;
+      option.textContent = `${layer.name} (${layer.layer})`;
+      mergeLayerSelect.append(option);
+    }
+  }
   byId("project-summary").textContent = `${project.technology.name} · grid ${project.technology.grid} nm`;
   byId("project-summary").hidden = false;
 
@@ -267,6 +330,35 @@ byId("cell-select").addEventListener("change", async (event) => {
   try {
     await loadSelectedCell();
     setStatus("");
+  } catch (error) {
+    setStatus(error.message, true);
+  }
+});
+
+byId("merge-button").addEventListener("click", async () => {
+  const layerSelect = byId("merge-layer-select");
+  const selectedLayer = layerSelect ? parseInt(layerSelect.value) : null;
+  
+  if (!state.project || !state.selectedCell || selectedLayer === null) {
+    setStatus("Please select a cell and a layer to merge.");
+    return;
+  }
+  
+  try {
+    const response = await request(
+      `/api/sessions/${state.project.id}/merge?cell=${encodeURIComponent(state.selectedCell)}&layer=${selectedLayer}`
+    );
+    
+    if (response.polygons && response.polygons.length > 0) {
+      state.mergedPolygons = response.polygons;
+      state.showMerged = true;
+      setStatus(`Merged ${response.count} polygon(s) on layer ${selectedLayer}.`, true);
+    } else {
+      state.mergedPolygons = [];
+      state.showMerged = false;
+      setStatus(response.message || "No polygons found on this layer.", true);
+    }
+    renderViews();
   } catch (error) {
     setStatus(error.message, true);
   }
@@ -318,6 +410,18 @@ byId("layers-all").addEventListener("click", () => {
 byId("toggle-constraints-button").addEventListener("click", () => {
   state.showConstraints = !state.showConstraints;
   renderConstraints();
+  renderViews();
+});
+
+byId("layers-all").addEventListener("click", () => {
+  const allLayers = new Set(state.layers.keys());
+  if (state.enabledLayers.size === state.layers.size) {
+    state.enabledLayers = new Set();
+  } else {
+    state.enabledLayers = allLayers;
+  }
+  updateLayersToggleButton();
+  renderLayers();
   renderViews();
 });
 

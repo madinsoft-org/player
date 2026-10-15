@@ -263,3 +263,70 @@ def test_gds_layers_are_returned_and_only_gds_layers_enabled_by_default(tmp_path
         finally:
             client.delete(f"/api/sessions/{project['id']}")
             sessions.pop(project["id"], None)
+
+
+def test_merge_layer_polygons(tmp_path):
+    """Test that polygons on a layer can be merged."""
+    layout_path = tmp_path / "layout.gds"
+    library = gdstk.Library(unit=1e-9, precision=1e-12)
+    cell = gdstk.Cell("TOP")
+    # Add multiple polygons on layer 1 that overlap
+    cell.add(
+        gdstk.rectangle((0, 0), (10, 10), layer=1),
+        gdstk.rectangle((5, 5), (15, 15), layer=1),  # Overlaps with first
+        gdstk.rectangle((20, 20), (30, 30), layer=1),  # Separate
+    )
+    library.add(cell)
+    library.write_gds(layout_path)
+
+    technology = {
+        "name": "test-tech",
+        "grid": 1,
+    }
+
+    with TestClient(app) as client:
+        # Create project
+        project = client.post(
+            "/api/sessions",
+            files={
+                "layout": ("layout.gds", layout_path.read_bytes(), "application/octet-stream"),
+                "technology": ("technology.json", json.dumps(technology).encode(), "application/json"),
+            },
+        ).json()
+        
+        try:
+            # Test merge on layer 1
+            response = client.get(
+                f"/api/sessions/{project['id']}/merge",
+                params={"cell": "TOP", "layer": 1}
+            )
+            
+            assert response.status_code == 200
+            data = response.json()
+            assert data["cell"] == "TOP"
+            assert data["layer"] == 1
+            assert data["count"] >= 1  # Should have at least 1 merged polygon
+            assert len(data["polygons"]) == data["count"]
+            
+            # Verify polygons have points
+            if data["polygons"]:
+                for poly in data["polygons"]:
+                    assert "points" in poly
+                    assert "layer" in poly
+                    assert len(poly["points"]) >= 3  # A polygon should have at least 3 points
+            
+            # Test merge on layer with no polygons
+            response = client.get(
+                f"/api/sessions/{project['id']}/merge",
+                params={"cell": "TOP", "layer": 999}
+            )
+            
+            assert response.status_code == 200
+            data = response.json()
+            assert data["count"] == 0
+            assert len(data["polygons"]) == 0
+            assert "message" in data
+            
+        finally:
+            client.delete(f"/api/sessions/{project['id']}")
+            sessions.pop(project["id"], None)

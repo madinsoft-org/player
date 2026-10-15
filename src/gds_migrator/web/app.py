@@ -603,6 +603,73 @@ def get_project(session_id: str) -> dict[str, Any]:
     }
 
 
+@app.get("/api/sessions/{session_id}/merge")
+def merge_layer_polygons(session_id: str, cell: str, layer: int) -> dict[str, Any]:
+    """Merge all polygons on a specific layer in a cell hierarchy.
+    
+    This performs a boolean union (OR) of all polygons on the specified layer,
+    returning the resulting merged polygons.
+    """
+    import gdstk
+    
+    project = _get_session(session_id)
+    if cell not in project.cells:
+        raise HTTPException(status_code=404, detail=f"Unknown cell: {cell!r}.")
+    
+    # Re-read the GDS file to get actual polygons
+    library = gdstk.read_gds(str(project.source_path))
+    
+    # Find the cell in the library
+    gdstk_cell = next((c for c in library.cells if c.name == cell), None)
+    if gdstk_cell is None:
+        raise HTTPException(status_code=404, detail=f"Cell {cell!r} not found in GDS file.")
+    
+    # Get all polygons from this cell and its hierarchy on the specified layer
+    # Use get_polygons with depth=None to get all hierarchy
+    layer_polygons = [p for p in gdstk_cell.get_polygons(depth=None) if p.layer == layer]
+    
+    if not layer_polygons:
+        return {
+            "cell": cell,
+            "layer": layer,
+            "polygons": [],
+            "message": f"No polygons found on layer {layer}",
+            "count": 0,
+        }
+    
+    # Perform boolean union on all polygons
+    try:
+        if len(layer_polygons) == 1:
+            merged_polygons = layer_polygons
+        else:
+            # Start with first polygon
+            result = layer_polygons[0]
+            # Union with each subsequent polygon
+            for i in range(1, len(layer_polygons)):
+                result = gdstk.boolean(result, layer_polygons[i], "or")[0]
+            merged_polygons = [result]
+    except Exception as e:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Could not merge polygons on layer {layer}: {str(e)}",
+        )
+    
+    # Convert polygons to a serializable format
+    polygons_data = []
+    for poly in merged_polygons:
+        polygons_data.append({
+            "points": [[float(p[0]), float(p[1])] for p in poly.points],
+            "layer": layer,
+        })
+    
+    return {
+        "cell": cell,
+        "layer": layer,
+        "polygons": polygons_data,
+        "count": len(merged_polygons),
+    }
+
+
 @app.get("/api/sessions/{session_id}/layout")
 def get_layout(session_id: str, cell: str, version: str = "before") -> dict[str, Any]:
     project = _get_session(session_id)
