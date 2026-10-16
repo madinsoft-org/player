@@ -261,9 +261,10 @@ function renderConstraints() {
   visibilityButton.setAttribute("aria-pressed", String(state.showConstraints));
   for (const type of ["width", "spacing", "overlap", "extension"]) {
     const groupEdges = state.edges.filter((edge) => edge.type === type);
-    const group = document.createElement("section");
+    const group = document.createElement("details");
     group.className = "constraint-group";
-    const heading = document.createElement("h3");
+    group.open = true;
+    const heading = document.createElement("summary");
     heading.className = "constraint-group-heading";
     heading.textContent = `${type} (${groupEdges.length})`;
     group.append(heading);
@@ -275,22 +276,41 @@ function renderConstraints() {
       group.append(emptyMessage);
     }
 
+    const edgesByRule = new Map();
     for (const edge of groupEdges) {
-      const row = document.createElement("button");
-      row.type = "button";
-      row.className = `constraint-row${edge.excluded ? " excluded" : ""}${edge.id === state.selectedEdgeId ? " selected" : ""}`;
-      row.setAttribute("data-id", edge.id);
-      const label = document.createElement("span");
-      const axis = document.createElement("span");
-      axis.className = "constraint-axis";
-      axis.textContent = edge.axis.toUpperCase();
-      label.append(axis, document.createTextNode(edge.kind.replaceAll("_", " ")));
-      const value = document.createElement("span");
-      value.className = "value";
-      value.textContent = `${edge.value} nm`;
-      row.append(label, value);
-      row.addEventListener("click", () => selectEdge(edge.id));
-      group.append(row);
+      const ruleId = edge.kind || "Unspecified";
+      if (!edgesByRule.has(ruleId)) edgesByRule.set(ruleId, []);
+      edgesByRule.get(ruleId).push(edge);
+    }
+    const ruleIds = [...edgesByRule.keys()].sort((left, right) =>
+      left.localeCompare(right, undefined, { numeric: true, sensitivity: "base" }));
+    for (const ruleId of ruleIds) {
+      const ruleEdges = edgesByRule.get(ruleId);
+      const ruleGroup = document.createElement("details");
+      ruleGroup.className = "constraint-rule-group";
+      const ruleHeading = document.createElement("summary");
+      ruleHeading.className = "constraint-rule-heading";
+      ruleHeading.textContent = `Rule ${ruleId} (${ruleEdges.length})`;
+      ruleGroup.append(ruleHeading);
+
+      for (const edge of ruleEdges) {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = `constraint-row${edge.excluded ? " excluded" : ""}${edge.id === state.selectedEdgeId ? " selected" : ""}`;
+        row.setAttribute("data-id", edge.id);
+        const label = document.createElement("span");
+        const axis = document.createElement("span");
+        axis.className = "constraint-axis";
+        axis.textContent = edge.axis.toUpperCase();
+        label.append(axis, document.createTextNode(edge.kind.replaceAll("_", " ")));
+        const value = document.createElement("span");
+        value.className = "value";
+        value.textContent = `${edge.value} nm`;
+        row.append(label, value);
+        row.addEventListener("click", () => selectEdge(edge.id));
+        ruleGroup.append(row);
+      }
+      group.append(ruleGroup);
     }
     list.append(group);
   }

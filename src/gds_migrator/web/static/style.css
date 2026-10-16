@@ -56,7 +56,13 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 .hint { color: #8d9bae; font-size: 11px; line-height: 1.45; margin: 8px 0; }
 .constraint-list { max-height: 27vh; overflow: auto; }
 .constraint-group + .constraint-group { margin-top: 8px; }
+.constraint-group-heading, .constraint-rule-heading { cursor: pointer; list-style: none; }
+.constraint-group-heading::-webkit-details-marker, .constraint-rule-heading::-webkit-details-marker { display: none; }
+.constraint-group-heading::before, .constraint-rule-heading::before { display: inline-block; margin-right: 8px; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 5px solid #718096; content: ""; }
+.constraint-group[open] > .constraint-group-heading::before, .constraint-rule-group[open] > .constraint-rule-heading::before { transform: rotate(90deg); }
 .constraint-group-heading { margin: 0; padding: 6px; color: #95a4b8; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.constraint-rule-group { padding-left: 12px; }
+.constraint-rule-heading { padding: 5px 4px; color: #b8c5d7; font-size: 11px; font-weight: 600; }
 .constraint-group-empty { margin: 0; padding: 4px 6px; color: #718096; font-size: 10px; }
 .constraint-row { width: 100%; display: flex; justify-content: space-between; border: 0; border-radius: 5px; background: transparent; color: #c6d0de; padding: 7px 6px; text-align: left; font-size: 11px; font-weight: 450; }
 .constraint-row:hover, .constraint-row.selected { background: #273343; }
