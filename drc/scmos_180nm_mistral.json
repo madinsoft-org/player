@@ -1,0 +1,1010 @@
+[
+  {
+    "id": "1.1",
+    "desc": "Min. N_WELL Width",
+    "layer1": "nwell",
+    "layer2": "nwell",
+    "type": "width",
+    "value": 10
+  },
+  {
+    "id": "1.2",
+    "desc": "Min. N_WELL Spacing between wells at different potential",
+    "layer1": "nwell",
+    "layer2": "nwell",
+    "type": "spacing",
+    "value": 9
+  },
+  {
+    "id": "1.3",
+    "desc": "Min. N_WELL Spacing between wells at same potential",
+    "layer1": "nwell",
+    "layer2": "nwell",
+    "type": "spacing",
+    "value": 6
+  },
+  {
+    "id": "1.4",
+    "desc": "Min. Spacing between wells of different type (if both are drawn)",
+    "layer1": "nwell",
+    "layer2": "pwell",
+    "type": "spacing",
+    "value": 0
+  },
+  {
+    "id": "17.1",
+    "desc": "Min. CAP_WELL Width",
+    "layer1": "capwell",
+    "layer2": "capwell",
+    "type": "width",
+    "value": 10
+  },
+  {
+    "id": "17.2",
+    "desc": "Min. CAP_WELL Spacing",
+    "layer1": "capwell",
+    "layer2": "capwell",
+    "type": "spacing",
+    "value": 9
+  },
+  {
+    "id": "17.3",
+    "desc": "Min. CAP_WELL Spacing to external Active",
+    "layer1": "capwell",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 5
+  },
+  {
+    "id": "17.4",
+    "desc": "Min. CAP_WELL Overlap of Active",
+    "layer1": "capwell",
+    "layer2": "active",
+    "type": "overlap",
+    "value": 5
+  },
+  {
+    "id": "18.1",
+    "desc": "Min. Linear Capacitor Width (poly over active in cap well)",
+    "layer1": "poly",
+    "layer2": "active",
+    "type": "width",
+    "value": 3
+  },
+  {
+    "id": "18.2",
+    "desc": "Min. Poly Extension of Active (linear capacitor)",
+    "layer1": "poly",
+    "layer2": "active",
+    "type": "extension",
+    "value": 2
+  },
+  {
+    "id": "18.3",
+    "desc": "Min. Active Overlap of Poly (linear capacitor)",
+    "layer1": "active",
+    "layer2": "poly",
+    "type": "overlap",
+    "value": 3
+  },
+  {
+    "id": "18.4",
+    "desc": "Min. Poly Contact Spacing to Active (linear capacitor)",
+    "layer1": "contact",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "18.5",
+    "desc": "Min. Active Contact Spacing to Poly (linear capacitor)",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 6
+  },
+  {
+    "id": "2.1",
+    "desc": "Min. Active Width",
+    "layer1": "active",
+    "layer2": "active",
+    "type": "width",
+    "value": 3
+  },
+  {
+    "id": "2.2",
+    "desc": "Min. Active Spacing",
+    "layer1": "active",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "2.3",
+    "desc": "Min. Source/Drain Active Spacing to Well edge",
+    "layer1": "active",
+    "layer2": "nwell",
+    "type": "spacing",
+    "value": 5
+  },
+  {
+    "id": "2.4",
+    "desc": "Min. Substrate/Well contact Active Spacing to Well edge",
+    "layer1": "active",
+    "layer2": "nwell",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "2.5",
+    "desc": "Min. Spacing between non-abutting Active of different implant",
+    "layer1": "active",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "24.1",
+    "desc": "Min. THICK_ACTIVE Width",
+    "layer1": "thickactive",
+    "layer2": "thickactive",
+    "type": "width",
+    "value": 4
+  },
+  {
+    "id": "24.2",
+    "desc": "Min. THICK_ACTIVE Spacing",
+    "layer1": "thickactive",
+    "layer2": "thickactive",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "24.3",
+    "desc": "Min. THICK_ACTIVE Overlap of Active",
+    "layer1": "thickactive",
+    "layer2": "active",
+    "type": "overlap",
+    "value": 4
+  },
+  {
+    "id": "24.4",
+    "desc": "Min. THICK_ACTIVE Spacing to external Active",
+    "layer1": "thickactive",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "24.5",
+    "desc": "Min. Poly Width in a THICK_ACTIVE gate",
+    "layer1": "poly",
+    "layer2": "thickactive",
+    "type": "width",
+    "value": 3
+  },
+  {
+    "id": "16.2",
+    "desc": "Min. Emitter Select Overlap of Contact (pbase, analog option)",
+    "layer1": "nplus",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 3
+  },
+  {
+    "id": "16.3",
+    "desc": "Min. Pbase Overlap of Emitter Select",
+    "layer1": "pbase",
+    "layer2": "nplus",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "16.4",
+    "desc": "Min. Spacing between Emitter Select and Base Select",
+    "layer1": "nplus",
+    "layer2": "pplus",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "16.5",
+    "desc": "Min. Pbase Overlap of Base Select",
+    "layer1": "pbase",
+    "layer2": "pplus",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "16.6",
+    "desc": "Min. Base Select Overlap of Contact",
+    "layer1": "pplus",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "16.7",
+    "desc": "Min. N_WELL Overlap of Pbase",
+    "layer1": "nwell",
+    "layer2": "pbase",
+    "type": "overlap",
+    "value": 6
+  },
+  {
+    "id": "16.8",
+    "desc": "Min. Spacing between Pbase and Collector Active",
+    "layer1": "pbase",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "16.9",
+    "desc": "Min. Collector Active Overlap of Contact",
+    "layer1": "active",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "16.10",
+    "desc": "Min. N_WELL Overlap of Collector Active",
+    "layer1": "nwell",
+    "layer2": "active",
+    "type": "overlap",
+    "value": 3
+  },
+  {
+    "id": "16.11",
+    "desc": "Min. Select Overlap of Collector Active",
+    "layer1": "nplus",
+    "layer2": "active",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "23.1",
+    "desc": "Min. POLY_CAP1 Width (lithographic; real capacitor greater than 12 lambda)",
+    "layer1": "polycap1",
+    "layer2": "polycap1",
+    "type": "width",
+    "value": 8
+  },
+  {
+    "id": "23.2",
+    "desc": "Min. POLY_CAP1 Spacing to POLY_CAP1 (neighboring capacitor)",
+    "layer1": "polycap1",
+    "layer2": "polycap1",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "23.3",
+    "desc": "Min. POLY_CAP1 Spacing to ACTIVE (all capacitors must be over field)",
+    "layer1": "polycap1",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 8
+  },
+  {
+    "id": "23.4",
+    "desc": "Min. POLY_CAP1 Overlap over POLY",
+    "layer1": "polycap1",
+    "layer2": "poly",
+    "type": "overlap",
+    "value": 3
+  },
+  {
+    "id": "23.5",
+    "desc": "Min. POLY_CAP1 Overlap over CONTACT",
+    "layer1": "polycap1",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "23.6",
+    "desc": "Min. POLY Overlap over CONTACT (in a capacitor only; 1 lambda elsewhere)",
+    "layer1": "poly",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "23.7",
+    "desc": "Min. POLY Spacing to CONTACT-to-POLY_CAP1",
+    "layer1": "poly",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "23.8",
+    "desc": "Min. unrelated METAL1 Spacing to POLY_CAP1",
+    "layer1": "metal1",
+    "layer2": "polycap1",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "23.9",
+    "desc": "Min. METAL2 Spacing to POLY_CAP1",
+    "layer1": "metal2",
+    "layer2": "polycap1",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "3.1",
+    "desc": "Min. Poly Width",
+    "layer1": "poly",
+    "layer2": "poly",
+    "type": "width",
+    "value": 2
+  },
+  {
+    "id": "3.2",
+    "desc": "Min. Poly Spacing over field",
+    "layer1": "poly",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "3.2a",
+    "desc": "Min. Poly Spacing over active",
+    "layer1": "poly",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "3.3",
+    "desc": "Min. Gate Extension of Active",
+    "layer1": "poly",
+    "layer2": "active",
+    "type": "extension",
+    "value": 2
+  },
+  {
+    "id": "3.4",
+    "desc": "Min. Active Extension of Poly",
+    "layer1": "active",
+    "layer2": "poly",
+    "type": "extension",
+    "value": 3
+  },
+  {
+    "id": "3.5",
+    "desc": "Min. Field Poly Spacing to Active",
+    "layer1": "poly",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 1
+  },
+  {
+    "id": "20.1",
+    "desc": "Min. Silicide Block Width",
+    "layer1": "sb",
+    "layer2": "sb",
+    "type": "width",
+    "value": 4
+  },
+  {
+    "id": "20.2",
+    "desc": "Min. Silicide Block Spacing",
+    "layer1": "sb",
+    "layer2": "sb",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "20.3",
+    "desc": "Min. SB Spacing to Contact (no contacts allowed inside SB)",
+    "layer1": "sb",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "20.4",
+    "desc": "Min. SB Spacing to external Active",
+    "layer1": "sb",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "20.5",
+    "desc": "Min. SB Spacing to external Poly",
+    "layer1": "sb",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "20.7",
+    "desc": "Min. Poly Width in resistor",
+    "layer1": "poly",
+    "layer2": "sb",
+    "type": "width",
+    "value": 5
+  },
+  {
+    "id": "20.8",
+    "desc": "Min. Spacing of Poly resistors (in a single SB region)",
+    "layer1": "poly",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 7
+  },
+  {
+    "id": "20.9",
+    "desc": "Min. SB Overlap of Poly or Active",
+    "layer1": "sb",
+    "layer2": "poly",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "20.10",
+    "desc": "Min. Poly or Active Overlap of SB",
+    "layer1": "poly",
+    "layer2": "sb",
+    "type": "overlap",
+    "value": 3
+  },
+  {
+    "id": "20.11",
+    "desc": "Min. SB Spacing to Poly (in a single active region)",
+    "layer1": "sb",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "4.1",
+    "desc": "Min. Select Spacing to channel of transistor (adequate source/drain width)",
+    "layer1": "select",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "4.2",
+    "desc": "Min. Select Overlap of Active",
+    "layer1": "select",
+    "layer2": "active",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "4.3",
+    "desc": "Min. Select Overlap of Contact",
+    "layer1": "select",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "4.4a",
+    "desc": "Min. Select Width (p+ to p+ or n+ to n+; P-select and N-select may be coincident but must not overlap)",
+    "layer1": "select",
+    "layer2": "select",
+    "type": "width",
+    "value": 2
+  },
+  {
+    "id": "4.4b",
+    "desc": "Min. Select Spacing (p+ to p+ or n+ to n+)",
+    "layer1": "select",
+    "layer2": "select",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "11.1",
+    "desc": "Min. Poly2 Width (for capacitor)",
+    "layer1": "poly2",
+    "layer2": "poly2",
+    "type": "width",
+    "value": 3
+  },
+  {
+    "id": "11.2",
+    "desc": "Min. Poly2 Spacing (for capacitor)",
+    "layer1": "poly2",
+    "layer2": "poly2",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "11.3",
+    "desc": "Min. Poly Overlap of Poly2 (capacitor)",
+    "layer1": "poly",
+    "layer2": "poly2",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "11.4",
+    "desc": "Min. Poly2 Spacing to Active or Well edge",
+    "layer1": "poly2",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "11.5",
+    "desc": "Min. Poly2 Spacing to Poly contact",
+    "layer1": "poly2",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "11.6",
+    "desc": "Min. Poly2 Spacing to unrelated Metal",
+    "layer1": "poly2",
+    "layer2": "metal1",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "12.1",
+    "desc": "Min. Poly2 Width (for transistor)",
+    "layer1": "poly2",
+    "layer2": "poly2",
+    "type": "width",
+    "value": 2
+  },
+  {
+    "id": "12.2",
+    "desc": "Min. Poly2 Spacing (for transistor)",
+    "layer1": "poly2",
+    "layer2": "poly2",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "12.3",
+    "desc": "Min. Electrode Gate Overlap of Active",
+    "layer1": "poly2",
+    "layer2": "active",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "12.4",
+    "desc": "Min. Poly2 Spacing to Active",
+    "layer1": "poly2",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 1
+  },
+  {
+    "id": "12.5",
+    "desc": "Min. Poly2 Spacing or Overlap of Poly",
+    "layer1": "poly2",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "12.6",
+    "desc": "Min. Poly2 Spacing to Poly or Active contact",
+    "layer1": "poly2",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "13.2",
+    "desc": "Min. Poly2 Contact Spacing",
+    "layer1": "contact",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "13.3",
+    "desc": "Min. Electrode Overlap of Contact (on capacitor)",
+    "layer1": "poly2",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 3
+  },
+  {
+    "id": "13.4",
+    "desc": "Min. Electrode Overlap of Contact (not on capacitor)",
+    "layer1": "poly2",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "13.5",
+    "desc": "Min. Poly2 Contact Spacing to Poly or Active",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "27.1",
+    "desc": "Min. High-Res Implant Width",
+    "layer1": "hires",
+    "layer2": "hires",
+    "type": "width",
+    "value": 4
+  },
+  {
+    "id": "27.2",
+    "desc": "Min. High-Res Implant Spacing",
+    "layer1": "hires",
+    "layer2": "hires",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "27.3",
+    "desc": "Min. HR Spacing to Contact (no contacts allowed inside HR)",
+    "layer1": "hires",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "27.4",
+    "desc": "Min. HR Spacing to external Active",
+    "layer1": "hires",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "27.5",
+    "desc": "Min. HR Spacing to external Poly2",
+    "layer1": "hires",
+    "layer2": "poly2",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "27.7",
+    "desc": "Min. Poly2 Width in resistor",
+    "layer1": "poly2",
+    "layer2": "hires",
+    "type": "width",
+    "value": 5
+  },
+  {
+    "id": "27.8",
+    "desc": "Min. Spacing of Poly2 resistors (in a single HR region)",
+    "layer1": "poly2",
+    "layer2": "poly2",
+    "type": "spacing",
+    "value": 7
+  },
+  {
+    "id": "27.9",
+    "desc": "Min. HR Overlap of Poly2",
+    "layer1": "hires",
+    "layer2": "poly2",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "5.2",
+    "desc": "Min. Poly Overlap of Contact (contact to poly)",
+    "layer1": "poly",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 1.5
+  },
+  {
+    "id": "5.3",
+    "desc": "Min. Poly Contact Spacing",
+    "layer1": "contact",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "5.4",
+    "desc": "Min. Poly Contact Spacing to gate of transistor",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "5.2b",
+    "desc": "Min. Poly Overlap of Contact (alternative rules)",
+    "layer1": "poly",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "5.5b",
+    "desc": "Min. Poly Contact Spacing to other Poly (alternative rules)",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "5.6b",
+    "desc": "Min. Poly Contact Spacing to Active, one contact (alternative rules)",
+    "layer1": "contact",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "5.7b",
+    "desc": "Min. Poly Contact Spacing to Active, many contacts (alternative rules)",
+    "layer1": "contact",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "6.2",
+    "desc": "Min. Active Overlap of Contact (contact to active)",
+    "layer1": "active",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 1.5
+  },
+  {
+    "id": "6.3",
+    "desc": "Min. Active Contact Spacing",
+    "layer1": "contact",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "6.4",
+    "desc": "Min. Active Contact Spacing to gate of transistor",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "6.2b",
+    "desc": "Min. Active Overlap of Contact (alternative rules)",
+    "layer1": "active",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "6.5b",
+    "desc": "Min. Active Contact Spacing to diffusion Active (alternative rules)",
+    "layer1": "contact",
+    "layer2": "active",
+    "type": "spacing",
+    "value": 5
+  },
+  {
+    "id": "6.6b",
+    "desc": "Min. Active Contact Spacing to field Poly, one contact (alternative rules)",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "6.7b",
+    "desc": "Min. Active Contact Spacing to field Poly, many contacts (alternative rules)",
+    "layer1": "contact",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "6.8b",
+    "desc": "Min. Active Contact Spacing to Poly contact (alternative rules)",
+    "layer1": "contact",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "7.1",
+    "desc": "Min. Metal1 Width",
+    "layer1": "metal1",
+    "layer2": "metal1",
+    "type": "width",
+    "value": 3
+  },
+  {
+    "id": "7.2",
+    "desc": "Min. Metal1 Spacing",
+    "layer1": "metal1",
+    "layer2": "metal1",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "7.3",
+    "desc": "Min. Metal1 Overlap of any Contact",
+    "layer1": "metal1",
+    "layer2": "contact",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "7.4",
+    "desc": "Min. Metal1 Spacing when either metal line is wider than 10 lambda",
+    "layer1": "metal1",
+    "layer2": "metal1",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "8.2",
+    "desc": "Min. Via1 Spacing",
+    "layer1": "via1",
+    "layer2": "via1",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "8.3",
+    "desc": "Min. Metal1 Overlap of Via1",
+    "layer1": "metal1",
+    "layer2": "via1",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "8.4",
+    "desc": "Min. Via1 Spacing to Contact (technology codes that do not allow stacked vias)",
+    "layer1": "via1",
+    "layer2": "contact",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "8.5",
+    "desc": "Min. Via1 Spacing to Poly or Active edge (technology codes that do not allow stacked vias)",
+    "layer1": "via1",
+    "layer2": "poly",
+    "type": "spacing",
+    "value": 2
+  },
+  {
+    "id": "9.1",
+    "desc": "Min. Metal2 Width",
+    "layer1": "metal2",
+    "layer2": "metal2",
+    "type": "width",
+    "value": 3
+  },
+  {
+    "id": "9.2",
+    "desc": "Min. Metal2 Spacing",
+    "layer1": "metal2",
+    "layer2": "metal2",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "9.3",
+    "desc": "Min. Metal2 Overlap of Via1",
+    "layer1": "metal2",
+    "layer2": "via1",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "9.4",
+    "desc": "Min. Metal2 Spacing when either metal line is wider than 10 lambda",
+    "layer1": "metal2",
+    "layer2": "metal2",
+    "type": "spacing",
+    "value": 6
+  },
+  {
+    "id": "14.2",
+    "desc": "Min. Via2 Spacing",
+    "layer1": "via2",
+    "layer2": "via2",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "14.3",
+    "desc": "Min. Metal2 Overlap of Via2",
+    "layer1": "metal2",
+    "layer2": "via2",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "15.1",
+    "desc": "Min. Metal3 Width (3 metal process)",
+    "layer1": "metal3",
+    "layer2": "metal3",
+    "type": "width",
+    "value": 6
+  },
+  {
+    "id": "15.2",
+    "desc": "Min. Metal3 Spacing (3 metal process)",
+    "layer1": "metal3",
+    "layer2": "metal3",
+    "type": "spacing",
+    "value": 4
+  },
+  {
+    "id": "15.3",
+    "desc": "Min. Metal3 Overlap of Via2 (3 metal process)",
+    "layer1": "metal3",
+    "layer2": "via2",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "15.4",
+    "desc": "Min. Metal3 Spacing when either metal line is wider than 10 lambda (3 metal process)",
+    "layer1": "metal3",
+    "layer2": "metal3",
+    "type": "spacing",
+    "value": 8
+  },
+  {
+    "id": "21.2",
+    "desc": "Min. Via3 Spacing (4 metal process)",
+    "layer1": "via3",
+    "layer2": "via3",
+    "type": "spacing",
+    "value": 3
+  },
+  {
+    "id": "21.3",
+    "desc": "Min. Metal3 Overlap of Via3 (4 metal process)",
+    "layer1": "metal3",
+    "layer2": "via3",
+    "type": "overlap",
+    "value": 1
+  },
+  {
+    "id": "22.1",
+    "desc": "Min. Metal4 Width (4 metal process)",
+    "layer1": "metal4",
+    "layer2": "metal4",
+    "type": "width",
+    "value": 6
+  },
+  {
+    "id": "22.2",
+    "desc": "Min. Metal4 Spacing (4 metal process)",
+    "layer1": "metal4",
+    "layer2": "metal4",
+    "type": "spacing",
+    "value": 6
+  },
+  {
+    "id": "22.3",
+    "desc": "Min. Metal4 Overlap of Via3 (4 metal process)",
+    "layer1": "metal4",
+    "layer2": "via3",
+    "type": "overlap",
+    "value": 2
+  },
+  {
+    "id": "22.4",
+    "desc": "Min. Metal4 Spacing when either metal line is wider than 10 lambda (4 metal process)",
+    "layer1": "metal4",
+    "layer2": "metal4",
+    "type": "spacing",
+    "value": 12
+  }
+]

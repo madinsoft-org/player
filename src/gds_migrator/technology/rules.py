@@ -8,7 +8,9 @@ extend :class:`TechnologyRules` as new rule types are needed rather than
 modeling every DRC rule upfront (YAGNI).
 """
 
+
 from __future__ import annotations
+
 
 import json
 import math
@@ -24,8 +26,10 @@ GF180_NM_PER_UM = 1000
 _LYP_LAYER_SOURCE = re.compile(r"(?:(?P<name>.+?)\s+)?(?P<layer>\d+)/(?P<datatype>\d+)@\d+")
 
 
+
 def read_klayout_layer_map(path: Path) -> dict[str, tuple[int, int]]:
     """Read named GDS layer/datatype pairs from a KLayout layer-properties file."""
+
     if path.suffix.lower() != ".lyp":
         raise ValueError(f"Expected a KLayout .lyp layer-properties file, got {path}")
     layers: dict[str, tuple[int, int]] = {}
@@ -67,6 +71,10 @@ class TechnologyRules:
         min_width: Minimum shape width per GDS layer, or layer/datatype pair.
         min_spacing: Minimum spacing keyed by an unordered pair of GDS layer
             identities.
+        min_extension: Minimum extension rules keyed by an ordered pair of GDS layer
+            identities (layer1 must extend layer2 by at least this amount).
+        min_overlap: Minimum overlap rules keyed by an unordered pair of GDS layer
+            identities.
         layers: Optional mapping from lower-case layer names to
             ``(GDS layer, datatype)`` pairs.
     """
@@ -75,6 +83,8 @@ class TechnologyRules:
     grid: int
     min_width: dict[LayerIdentity, int] = field(default_factory=dict)
     min_spacing: dict[SpacingKey, int] = field(default_factory=dict)
+    min_extension: dict[SpacingKey, int] = field(default_factory=dict)
+    min_overlap: dict[SpacingKey, int] = field(default_factory=dict)
     layers: dict[str, tuple[int, int]] = field(default_factory=dict)
 
     @staticmethod
@@ -108,6 +118,48 @@ class TechnologyRules:
                 return self.min_width[identity]
         return self.min_width.get(layer, 0)
 
+    def min_extension_for(
+        self,
+        layer_a: int,
+        layer_b: int,
+        datatype_a: int | None = None,
+        datatype_b: int | None = None,
+    ) -> int:
+        """Return the minimum extension rule (layer_a extends layer_b), or 0 if unset.
+        
+        Extension rules are directional: layer_a must extend beyond layer_b by at least
+        the returned value.
+        """
+        if datatype_a is not None and datatype_b is not None:
+            key = ((layer_a, datatype_a), (layer_b, datatype_b))
+            if key in self.min_extension:
+                return self.min_extension[key]
+        
+        key_with_dt = ((layer_a, 0), (layer_b, 0))
+        if key_with_dt in self.min_extension:
+            return self.min_extension[key_with_dt]
+        
+        return 0
+
+    def min_overlap_for(
+        self,
+        layer_a: int,
+        layer_b: int,
+        datatype_a: int | None = None,
+        datatype_b: int | None = None,
+    ) -> int:
+        """Return the minimum overlap rule between two layers, or 0 if unset."""
+        if datatype_a is not None and datatype_b is not None:
+            pair = self._spacing_key((layer_a, datatype_a), (layer_b, datatype_b))
+            if pair in self.min_overlap:
+                return self.min_overlap[pair]
+        
+        pair_with_dt = self._spacing_key((layer_a, 0), (layer_b, 0))
+        if pair_with_dt in self.min_overlap:
+            return self.min_overlap[pair_with_dt]
+        
+        return 0
+
     def snap_to_grid(self, value: int) -> int:
         """Round ``value`` to the nearest multiple of the manufacturing grid."""
         if self.grid <= 0:
@@ -139,11 +191,53 @@ class TechnologyRules:
         path = Path(path)
         data = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(data, list):
-            properties_path = layer_properties_path or path.with_name("gf180mcu.lyp")
-            layers = read_klayout_layer_map(properties_path)
-            return cls._from_gf180_simplified(data, layers)
+            if layer_properties_path is None:
+                parent_dir = path.parent
+                data_dir = path.parent / "data"
+                root_dir = path.parent.parent
+                stem = path.stem
+                
+                possible_lyp_files = []
+                for base_name in [
+                    stem,
+                    stem.replace("_gemini", "").replace("_simplified", ""),
+                    "gf180mcu",
+                    "scmos_180nm",
+                    "sky130A",
+                ]:
+                    possible_lyp_files.extend([
+                        parent_dir / (base_name + ".lyp"),
+                        data_dir / (base_name + ".lyp"),
+                        root_dir / "data" / (base_name + ".lyp"),
+                    ])
+                
+                for candidate in possible_lyp_files:
+                    if candidate.exists():
+                        layer_properties_path = candidate
+                        break
+                if layer_properties_path is None:
+                    raise ValueError(
+                        f"No .lyp layer properties file found for {path}. "
+                        f"Please provide layer_properties_path argument."
+                    )
+            layers = read_klayout_layer_map(layer_properties_path)
+            
+            layer_name_mapping = {}
+            if "scmos" in path.stem.lower():
+                layer_name_mapping = {
+                    "well": "nwell",
+                    "active": "diffusion",
+                    "n_well": "nwell",
+                }
+            
+            return cls._from_rule_catalog(
+                data,
+                layers,
+                technology_name=path.stem,
+                layer_name_mapping=layer_name_mapping,
+            )
         if not isinstance(data, dict):
-            raise ValueError("Technology JSON must contain an object or a GF180 rule list.")
+            raise ValueError("Technology JSON must contain an object or a rule list.")
 
         min_width = {int(layer): int(value) for layer, value in data.get("min_width", {}).items()}
         min_spacing: dict[SpacingKey, int] = {}
@@ -158,36 +252,70 @@ class TechnologyRules:
         )
 
     @classmethod
-    def _from_gf180_simplified(
+    def _from_rule_catalog(
         cls,
         data: list[dict[str, object]],
         layers: dict[str, tuple[int, int]],
+        *,
+        technology_name: str = "unknown",
+        grid_nm: int = GF180_GRID_NM,
+        layer_properties_path: Path | None = None,
+        default_unit: str = "um",
+        unit_to_nm: dict[str, int] | None = None,
+        default_bound: str = "minimum",
+        layer_name_mapping: dict[str, str] | None = None,
     ) -> "TechnologyRules":
+        """Load technology rules from a rule catalog JSON list.
+        
+        This is a generic function that can parse various rule catalog formats,
+        including GF180 simplified and SCMOS formats.
+        
+        Args:
+            data: List of rule entries from JSON
+            layers: Mapping from layer names to (GDS layer, datatype) tuples
+            technology_name: Name for the technology (default: "unknown")
+            grid_nm: Manufacturing grid in nanometers (default: GF180_GRID_NM)
+            layer_properties_path: Optional path to .lyp file for layer mapping
+            default_unit: Default unit if not specified in context (default: "um")
+            unit_to_nm: Conversion factors from units to nanometers
+            default_bound: Default bound type to filter (default: "minimum")
+            layer_name_mapping: Optional mapping from JSON layer names to .lyp layer names
+        """
+        if unit_to_nm is None:
+            unit_to_nm = {"um": GF180_NM_PER_UM, "nm": 1, "micron": GF180_NM_PER_UM, "microns": GF180_NM_PER_UM}
+        
+        if layer_name_mapping is None:
+            layer_name_mapping = {}
+        
         min_width: dict[LayerIdentity, int] = {}
         min_spacing: dict[SpacingKey, int] = {}
+        min_extension: dict[SpacingKey, int] = {}
+        min_overlap: dict[SpacingKey, int] = {}
         for index, entry in enumerate(data):
             if not isinstance(entry, dict):
-                raise ValueError(f"GF180 rule {index} must be an object")
-            if (
-                entry.get("type") not in {"width", "spacing"}
-            ):
+                raise ValueError(f"Rule {index} must be an object")
+            rule_type = entry.get("type")
+            if rule_type not in {"width", "spacing", "extension", "overlap"}:
                 continue
+            
             context = entry.get("context")
-            if not isinstance(context, dict):
-                raise ValueError(f"GF180 rule {index} must have an object 'context'")
-            if context.get("bound") != "minimum":
-                continue
-            if context.get("unit") != "um":
-                raise ValueError(f"GF180 rule {index} must express values in micrometers")
-
+            unit = default_unit
+            bound = default_bound
+            
+            if context is not None and isinstance(context, dict):
+                if context.get("bound") != default_bound:
+                    continue
+                unit = context.get("unit", default_unit)
+            
             layer1_value = entry.get("layer1")
             if not isinstance(layer1_value, str):
-                raise ValueError(f"GF180 rule {index} must have a string 'layer1'")
+                raise ValueError(f"Rule {index} must have a string 'layer1'")
             layer1_name = layer1_value.lower()
-            try:
-                layer1 = layers[layer1_name]
-            except KeyError as exc:
-                raise ValueError(f"Unknown GF180 layer name {layer1_name!r}") from exc
+            mapped_layer1_name = layer_name_mapping.get(layer1_name, layer1_name)
+            if mapped_layer1_name not in layers:
+                continue
+            layer1 = layers[mapped_layer1_name]
+            
             raw_value = entry.get("value")
             if (
                 isinstance(raw_value, bool)
@@ -195,31 +323,60 @@ class TechnologyRules:
                 or not math.isfinite(raw_value)
                 or raw_value < 0
             ):
-                raise ValueError(f"GF180 rule {index} must have a non-negative numeric value")
-            value = round(raw_value * GF180_NM_PER_UM)
-            rule_type = entry["type"]
+                raise ValueError(f"Rule {index} must have a non-negative numeric value")
+            
+            conversion_factor = unit_to_nm.get(unit, 1)
+            value = round(raw_value * conversion_factor)
+            
             if rule_type == "width":
                 min_width[layer1] = max(min_width.get(layer1, 0), value)
                 continue
 
             layer2_value = entry.get("layer2")
             if not isinstance(layer2_value, str):
-                raise ValueError(f"GF180 spacing rule {index} must have a string 'layer2'")
+                raise ValueError(f"Rule {index} ({rule_type}) must have a string 'layer2'")
             layer2_name = layer2_value.lower()
-            try:
-                layer2 = layers[layer2_name]
-            except KeyError as exc:
-                raise ValueError(f"Unknown GF180 layer name {layer2_name!r}") from exc
-            key = cls._spacing_key(layer1, layer2)
-            min_spacing[key] = max(min_spacing.get(key, 0), value)
+            mapped_layer2_name = layer_name_mapping.get(layer2_name, layer2_name)
+            if mapped_layer2_name not in layers:
+                continue
+            layer2 = layers[mapped_layer2_name]
+            
+            if rule_type == "spacing":
+                key = cls._spacing_key(layer1, layer2)
+                min_spacing[key] = max(min_spacing.get(key, 0), value)
+            elif rule_type == "extension":
+                key = (layer1, layer2)
+                min_extension[key] = max(min_extension.get(key, 0), value)
+            elif rule_type == "overlap":
+                key = cls._spacing_key(layer1, layer2)
+                min_overlap[key] = max(min_overlap.get(key, 0), value)
 
-        if not min_width and not min_spacing:
-            raise ValueError("GF180 rule catalog contains no minimum width or spacing rules")
+        if not min_width and not min_spacing and not min_extension and not min_overlap:
+            raise ValueError("Rule catalog contains no width, spacing, extension, or overlap rules")
 
         return cls(
-            name="gf180",
-            grid=GF180_GRID_NM,
+            name=technology_name,
+            grid=grid_nm,
             min_width=min_width,
             min_spacing=min_spacing,
+            min_extension=min_extension,
+            min_overlap=min_overlap,
             layers=layers,
+        )
+
+    @classmethod
+    def _from_gf180_simplified(
+        cls,
+        data: list[dict[str, object]],
+        layers: dict[str, tuple[int, int]],
+    ) -> "TechnologyRules":
+        """Parse GF180 simplified rule catalog (backwards compatibility)."""
+        return cls._from_rule_catalog(
+            data,
+            layers,
+            technology_name="gf180",
+            grid_nm=GF180_GRID_NM,
+            default_unit="um",
+            unit_to_nm={"um": GF180_NM_PER_UM},
+            default_bound="minimum",
         )
