@@ -1263,3 +1263,6 @@ gds-migrator-web
 
 
 ajoute la possibilité de selectionner une arrete d'un graphe de contrainte, cela le selection dans la liste des contraintes, ajoute le nom de la contrainte ainsi que les noms des deux layers. De la meme façon si on selection dans la liste selectionner la contrainte dans le graph en faisant un zoom dessus.
+bash: cd /home/patrick/projects/player && source .venv/bin/activate && python scripts/flatten_gds.py data/metal1.gds --output /tmp/metal1_flatten.gds --flatten-hierarchy 2>&1 | head -50
+
+python scripts/flatten_gds.py data/nand.gds
