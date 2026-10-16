@@ -95,6 +95,8 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 
 #pan-zoom-toggle { cursor: pointer; }
 .layout-view.zoom-mode { cursor: crosshair; }
+.layout-polygon { cursor: pointer; }
+.layout-polygon.selected { stroke: #fff !important; stroke-width: 2 !important; }
 .constraint-line { cursor: pointer; }
 .constraint-line.excluded { opacity: .28; }
 .constraint-line.selected { stroke: #fff !important; stroke-width: 2 !important; }

@@ -7,6 +7,9 @@ const state = {
   after: null,
   edges: [],
   selectedEdgeId: null,
+  selectedPolygonId: null,
+  constraintGraphLoading: false,
+  cellLoadId: 0,
   showConstraints: true,
   viewBox: { x: 0, y: 0, width: 1000, height: 700 },
   dragMode: "pan",
@@ -183,7 +186,9 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
       "fill-opacity": "0.45",
       stroke: color,
       "stroke-width": 0.8,
+      class: `layout-polygon${polygon.id === state.selectedPolygonId ? " selected" : ""}`,
     });
+    shape.setAttribute("data-polygon-id", polygon.id);
     const title = makeSvgElement("title");
     title.textContent = `${polygon.id} · layer ${polygon.layer}`;
     shape.append(title);
@@ -218,6 +223,7 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
       "stroke-width": 10,
       "vector-effect": "non-scaling-stroke",
       "pointer-events": "stroke",
+      class: "constraint-hit-area",
       "data-id": edge.id,
     });
     edgeGroup.append(hitArea);
@@ -255,12 +261,33 @@ function renderLayers() {
 function renderConstraints() {
   const list = byId("constraint-list");
   list.replaceChildren();
-  byId("constraint-count").textContent = String(state.edges.length);
+  const selectedPolygon = (state.before?.polygons || []).find(
+    (polygon) => polygon.id === state.selectedPolygonId,
+  );
+  const polygonShapeId = selectedPolygon?.id.startsWith(`${state.selectedCell}/`)
+    ? selectedPolygon.id.slice(state.selectedCell.length + 1)
+    : selectedPolygon?.id;
+  const filteredEdges = selectedPolygon
+    ? state.edges.filter(
+        (edge) => edge.source_rect === polygonShapeId
+          || edge.target_rect === polygonShapeId
+          || edge.source_rect === selectedPolygon.id
+          || edge.target_rect === selectedPolygon.id,
+      )
+    : state.edges;
+  byId("constraint-count").textContent = String(filteredEdges.length);
   const visibilityButton = byId("toggle-constraints-button");
   visibilityButton.textContent = state.showConstraints ? "Hide graph" : "Show graph";
   visibilityButton.setAttribute("aria-pressed", String(state.showConstraints));
+  if (state.constraintGraphLoading) {
+    const loadingMessage = document.createElement("p");
+    loadingMessage.className = "constraint-group-empty";
+    loadingMessage.textContent = "Building constraint graph…";
+    list.append(loadingMessage);
+    return;
+  }
   for (const type of ["width", "spacing", "overlap", "extension"]) {
-    const groupEdges = state.edges.filter((edge) => edge.type === type);
+    const groupEdges = filteredEdges.filter((edge) => edge.type === type);
     const group = document.createElement("details");
     group.className = "constraint-group";
     group.open = true;
@@ -375,6 +402,13 @@ function scrollConstraintIntoView(id) {
   }
 }
 
+function selectPolygon(id) {
+  state.selectedPolygonId = id;
+  state.selectedEdgeId = null;
+  renderConstraints();
+  renderViews();
+}
+
 function selectEdge(id) {
   state.selectedEdgeId = id;
   const edge = state.edges.find((item) => item.id === id);
@@ -386,19 +420,41 @@ function selectEdge(id) {
 
 async function loadSelectedCell() {
   if (!state.project || !state.selectedCell) return;
-  state.before = await request(`/api/sessions/${state.project.id}/layout?cell=${encodeURIComponent(state.selectedCell)}&version=before`);
+  const cell = state.selectedCell;
+  const projectId = state.project.id;
+  const loadId = ++state.cellLoadId;
+  state.selectedPolygonId = null;
+  const layout = await request(
+    `/api/sessions/${projectId}/layout?cell=${encodeURIComponent(cell)}&version=before`,
+  );
+  if (loadId !== state.cellLoadId) return;
+  state.before = layout;
   state.mergedPolygons = [];
   state.showMerged = false;
-  const constraints = await request(`/api/sessions/${state.project.id}/constraints?cell=${encodeURIComponent(state.selectedCell)}`);
-  state.edges = constraints.edges;
-  state.selectedEdgeId = state.edges.some((edge) => edge.id === state.selectedEdgeId) ? state.selectedEdgeId : null;
+  state.edges = [];
+  state.selectedEdgeId = null;
   updateZoomSelection(null, null, null, null);
   state.after = null;
   byId("before-caption").textContent = state.selectedCell;
   byId("after-caption").textContent = "Run migration to compare";
   byId("download-link").hidden = true;
+  state.constraintGraphLoading = true;
   renderConstraints();
   renderViews();
+  await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+  if (loadId !== state.cellLoadId) return;
+  try {
+    const constraints = await request(
+      `/api/sessions/${projectId}/constraints?cell=${encodeURIComponent(cell)}`,
+    );
+    if (loadId === state.cellLoadId) state.edges = constraints.edges;
+  } finally {
+    if (loadId === state.cellLoadId) {
+      state.constraintGraphLoading = false;
+      renderConstraints();
+      renderViews();
+    }
+  }
 }
 
 async function loadMigratedCell() {
@@ -608,13 +664,18 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
   let pointerStart = null;
 
   svg.addEventListener("pointerdown", (event) => {
-    const edgeTarget = event.target instanceof Element
-      ? event.target.closest(".constraint-line, [data-id]")
+    const target = event.target instanceof Element ? event.target : null;
+    const edgeTarget = target
+      ? target.closest(".constraint-line, .constraint-hit-area")
+      : null;
+    const polygonTarget = svg.id === "before-view" && target
+      ? target.closest(".layout-polygon")
       : null;
     pointerStart = {
       x: event.clientX,
       y: event.clientY,
       edgeId: event.button === 0 ? edgeTarget?.getAttribute("data-id") : null,
+      polygonId: event.button === 0 ? polygonTarget?.getAttribute("data-polygon-id") : null,
     };
     if (state.dragMode === "zoom") {
       zoomStart = { x: event.clientX, y: event.clientY };
@@ -656,10 +717,11 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
       zoomStart = null;
     }
     if (
-      pointerStart?.edgeId
+      (pointerStart?.edgeId || pointerStart?.polygonId)
       && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) <= 5
     ) {
-      selectEdge(pointerStart.edgeId);
+      if (pointerStart.polygonId) selectPolygon(pointerStart.polygonId);
+      else selectEdge(pointerStart.edgeId);
     }
     pointerStart = null;
     dragOrigin = null;
