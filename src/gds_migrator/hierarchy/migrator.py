@@ -15,7 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 
 from gds_migrator.constraints.plane_sweep import Rectangle
-from gds_migrator.constraints.solver import solve_layout
+from gds_migrator.constraints.solver import solve_layout_with_polygons
 from gds_migrator.geometry.transforms import Point
 from gds_migrator.hierarchy.model import Cell, Instance, Polygon
 from gds_migrator.hierarchy.traversal import topological_order
@@ -76,6 +76,7 @@ def _migrate_cell(
     excluded_constraint_ids: set[str] | None = None,
 ) -> MigratedCell:
     own_ids = {rect.id for rect in cell.rectangles}
+    own_ids.update(polygon.id for polygon in cell.polygons)
     macro_rects: list[Rectangle] = []
     for instance in cell.instances:
         if instance.id in own_ids:
@@ -89,9 +90,10 @@ def _migrate_cell(
     all_rects = [*cell.rectangles, *macro_rects]
     rigid_widths = {rect.id: rect.xmax - rect.xmin for rect in macro_rects}
     rigid_heights = {rect.id: rect.ymax - rect.ymin for rect in macro_rects}
-    migrated_rects = solve_layout(
+    migrated_rects, migrated_polygons = solve_layout_with_polygons(
         all_rects,
         tech,
+        polygons=cell.polygons,
         rigid_widths=rigid_widths,
         rigid_heights=rigid_heights,
         excluded_constraint_ids=excluded_constraint_ids,
@@ -99,12 +101,6 @@ def _migrate_cell(
     migrated_by_id = {rect.id: rect for rect in migrated_rects}
 
     new_own_rectangles = tuple(migrated_by_id[rect.id] for rect in cell.rectangles)
-    original_rectangles = {rect.id: rect for rect in cell.rectangles}
-    migrated_polygons = tuple(
-        _migrate_polygon(polygon, original_rectangles[polygon.id], migrated_by_id[polygon.id])
-        for polygon in cell.polygons
-    )
-
     new_instances = []
     for instance in cell.instances:
         original = next(r for r in macro_rects if r.id == instance.id)
@@ -113,43 +109,22 @@ def _migrate_cell(
         new_transform = replace(instance.transform, origin=instance.transform.origin + delta)
         new_instances.append(replace(instance, transform=new_transform))
 
-    if not all_rects:
+    migrated_points = [point for polygon in migrated_polygons for point in polygon.points]
+    if not all_rects and not migrated_points:
         xmin = xmax = ymin = ymax = 0.0
     else:
-        xmin = min(rect.xmin for rect in migrated_rects)
-        xmax = max(rect.xmax for rect in migrated_rects)
-        ymin = min(rect.ymin for rect in migrated_rects)
-        ymax = max(rect.ymax for rect in migrated_rects)
+        xmin = min([rect.xmin for rect in migrated_rects] + [point.x for point in migrated_points])
+        xmax = max([rect.xmax for rect in migrated_rects] + [point.x for point in migrated_points])
+        ymin = min([rect.ymin for rect in migrated_rects] + [point.y for point in migrated_points])
+        ymax = max([rect.ymax for rect in migrated_rects] + [point.y for point in migrated_points])
 
     return MigratedCell(
         name=cell.name,
         rectangles=new_own_rectangles,
-        polygons=migrated_polygons,
+        polygons=tuple(migrated_polygons),
         instances=tuple(new_instances),
         xmin=xmin,
         xmax=xmax,
         ymin=ymin,
         ymax=ymax,
     )
-
-
-def _migrate_polygon(polygon: Polygon, original: Rectangle, migrated: Rectangle) -> Polygon:
-    """Apply the solved bounding-box scale and translation to a polygon outline."""
-    original_width = original.xmax - original.xmin
-    original_height = original.ymax - original.ymin
-    migrated_width = migrated.xmax - migrated.xmin
-    migrated_height = migrated.ymax - migrated.ymin
-
-    def map_coordinate(value: float, old_min: float, old_size: float, new_min: float, new_size: float) -> float:
-        if old_size == 0:
-            return value + new_min - old_min
-        return new_min + (value - old_min) * new_size / old_size
-
-    points = tuple(
-        Point(
-            map_coordinate(point.x, original.xmin, original_width, migrated.xmin, migrated_width),
-            map_coordinate(point.y, original.ymin, original_height, migrated.ymin, migrated_height),
-        )
-        for point in polygon.points
-    )
-    return replace(polygon, points=points)

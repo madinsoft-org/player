@@ -74,11 +74,14 @@ comparison, and download of the migrated GDSII file. Exclusions are held only
 for the lifetime of the in-memory project session.
 
 The reader and migrated GDS output retain polygon outlines and datatypes.
-Spacing and width constraints, however, are still generated from each
-polygon's axis-aligned bounding rectangle; non-rectilinear outlines are not
-decomposed into segments for exact polygon-to-polygon spacing. The viewer
-displays these constraint rectangles. Uploads are limited to 100 MB per file,
-and the viewer limits flattened cell views to 50,000 rectangles.
+The constraint sweep uses polygon boundary segments and their endpoint
+coordinates rather than treating each polygon's bounding rectangle as its
+geometry. Spacing constraints use Manhattan X/Y projections of those
+segments, not Euclidean segment-to-segment distances. Polygon width
+constraints use the exact X/Y extrema of their vertices. The viewer still
+displays axis-aligned bounds for polygons.
+Uploads are limited to 100 MB per file, and the viewer limits flattened cell
+views to 50,000 shapes.
 
 ## Documented design-rule catalogs
 

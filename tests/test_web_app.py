@@ -64,8 +64,11 @@ def test_upload_constraints_toggle_migration_and_download(tmp_path):
                 params={"cell": "TOP", "version": "after"},
             )
             assert layout_response.status_code == 200
-            rectangles = sorted(layout_response.json()["rectangles"], key=lambda item: item["xmin"])
-            assert rectangles[1]["xmin"] == 7
+            polygons = sorted(
+                layout_response.json()["polygons"],
+                key=lambda item: min(point["x"] for point in item["points"]),
+            )
+            assert min(point["x"] for point in polygons[1]["points"]) == 7
 
             download_response = client.get(f"/api/sessions/{session_id}/download")
             assert download_response.status_code == 200
@@ -73,6 +76,53 @@ def test_upload_constraints_toggle_migration_and_download(tmp_path):
         finally:
             client.delete(f"/api/sessions/{session_id}")
             sessions.pop(session_id, None)
+
+
+def test_layout_endpoint_returns_polygon_vertices_before_and_after_migration(tmp_path):
+    layout_path = tmp_path / "polygon-layout.gds"
+    library = gdstk.Library(unit=1e-9, precision=1e-12)
+    cell = gdstk.Cell("TOP")
+    cell.add(gdstk.Polygon([(0, 0), (10, 0), (8, 5), (0, 5)], layer=2, datatype=4))
+    library.add(cell)
+    library.write_gds(layout_path)
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/sessions",
+            files={
+                "layout": ("polygon-layout.gds", layout_path.read_bytes(), "application/octet-stream"),
+                "technology": ("technology.json", b'{"name":"test","grid":1}', "application/json"),
+            },
+        )
+        assert response.status_code == 200, response.text
+        session_id = response.json()["id"]
+        try:
+            before = client.get(
+                f"/api/sessions/{session_id}/layout",
+                params={"cell": "TOP", "version": "before"},
+            )
+            assert before.status_code == 200
+            before_data = before.json()
+            assert before_data["rectangles"] == []
+            assert before_data["polygons"][0]["layer"] == 2
+            assert before_data["polygons"][0]["datatype"] == 4
+            assert [(point["x"], point["y"]) for point in before_data["polygons"][0]["points"]] == [
+                (0, 0),
+                (10, 0),
+                (8, 5),
+                (0, 5),
+            ]
+
+            migration = client.post(f"/api/sessions/{session_id}/migrate")
+            assert migration.status_code == 200, migration.text
+            after = client.get(
+                f"/api/sessions/{session_id}/layout",
+                params={"cell": "TOP", "version": "after"},
+            )
+            assert after.status_code == 200
+            assert after.json()["polygons"] == before_data["polygons"]
+        finally:
+            client.delete(f"/api/sessions/{session_id}")
 
 
 def test_layer_properties_file_is_loaded_and_used(tmp_path):

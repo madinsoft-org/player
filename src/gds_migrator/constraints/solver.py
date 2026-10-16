@@ -5,10 +5,20 @@ simplex fallback for simultaneous/diagonal 2D constraints.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+from typing import TYPE_CHECKING
 
 from gds_migrator.constraints.graph import ConstraintGraph, InfeasibleConstraintsError
-from gds_migrator.constraints.plane_sweep import Rectangle, generate_axis_constraints
+from gds_migrator.constraints.plane_sweep import (
+    Rectangle,
+    _get_polygon_sweep_levels,
+    generate_axis_constraints,
+    prepare_polygons_for_sweep,
+)
+from gds_migrator.geometry.transforms import Point
 from gds_migrator.technology.rules import TechnologyRules
+
+if TYPE_CHECKING:
+    from gds_migrator.hierarchy.model import Polygon
 
 
 def solve_layout(
@@ -30,21 +40,49 @@ def solve_layout(
         excluded_constraint_ids: Optional IDs of generated constraints to
             omit for this solve.
     """
-    x_positions = _solve_axis(
+    migrated_rectangles, _ = solve_layout_with_polygons(
         rectangles,
         tech,
+        rigid_widths=rigid_widths,
+        rigid_heights=rigid_heights,
+        excluded_constraint_ids=excluded_constraint_ids,
+    )
+    return migrated_rectangles
+
+
+def solve_layout_with_polygons(
+    rectangles: list[Rectangle],
+    tech: TechnologyRules,
+    polygons: list[Polygon] | None = None,
+    rigid_widths: dict[str, float] | None = None,
+    rigid_heights: dict[str, float] | None = None,
+    excluded_constraint_ids: set[str] | None = None,
+) -> tuple[list[Rectangle], list[Polygon]]:
+    """Solve a layout while preserving and moving polygon vertices."""
+    from gds_migrator.hierarchy.model import Polygon
+
+    source_polygons = polygons or []
+    x_sweep_levels = _get_polygon_sweep_levels(source_polygons, rectangles, "x")
+    y_sweep_levels = _get_polygon_sweep_levels(source_polygons, rectangles, "y")
+    polygons = prepare_polygons_for_sweep(source_polygons, rectangles)
+    x_positions = _solve_axis(
+        rectangles,
+        polygons,
+        tech,
         axis="x",
+        polygon_sweep_levels=x_sweep_levels,
         rigid_sizes=rigid_widths,
         excluded_constraint_ids=excluded_constraint_ids,
     )
     y_positions = _solve_axis(
         rectangles,
+        polygons,
         tech,
         axis="y",
+        polygon_sweep_levels=y_sweep_levels,
         rigid_sizes=rigid_heights,
         excluded_constraint_ids=excluded_constraint_ids,
     )
-
     migrated = []
     for rect in rectangles:
         migrated.append(
@@ -56,23 +94,76 @@ def solve_layout(
                 ymax=tech.snap_to_grid(y_positions[f"{rect.id}:hi"]),
             )
         )
-    return migrated
+    migrated_polygons = []
+    for polygon in polygons:
+        points = _remove_collinear_points(tuple(
+            Point(
+                x_positions[f"{polygon.id}:p{index}:x"],
+                y_positions[f"{polygon.id}:p{index}:y"],
+            )
+            for index in range(len(polygon.points))
+        ))
+        migrated_polygons.append(
+            Polygon(
+                id=polygon.id,
+                layer=polygon.layer,
+                datatype=polygon.datatype,
+                points=tuple(
+                    Point(tech.snap_to_grid(point.x), tech.snap_to_grid(point.y))
+                    for point in points
+                ),
+            )
+        )
+    return migrated, migrated_polygons
 
 
 def _solve_axis(
     rectangles: list[Rectangle],
+    polygons: list[Polygon],
     tech: TechnologyRules,
     axis: str,
+    polygon_sweep_levels: list[float],
     rigid_sizes: dict[str, float] | None,
     excluded_constraint_ids: set[str] | None,
 ) -> dict[str, float]:
-    graph = generate_axis_constraints(rectangles, tech, axis, rigid_sizes=rigid_sizes)
+    graph = generate_axis_constraints(
+        rectangles,
+        tech,
+        axis,
+        rigid_sizes=rigid_sizes,
+        polygons=polygons,
+        polygons_prepared=True,
+        polygon_sweep_levels=polygon_sweep_levels,
+    )
     initial_positions: dict[str, float] = {}
     for rect in rectangles:
         lo, hi = (rect.xmin, rect.xmax) if axis == "x" else (rect.ymin, rect.ymax)
         initial_positions[f"{rect.id}:lo"] = lo
         initial_positions[f"{rect.id}:hi"] = hi
+    for polygon in polygons:
+        for index, point in enumerate(polygon.points):
+            initial_positions[f"{polygon.id}:p{index}:x"] = point.x
+            initial_positions[f"{polygon.id}:p{index}:y"] = point.y
     return graph.solve(initial_positions, excluded_constraint_ids=excluded_constraint_ids)
+
+
+def _remove_collinear_points(points: tuple[Point, ...]) -> tuple[Point, ...]:
+    simplified = list(points)
+    changed = True
+    while changed and len(simplified) > 3:
+        changed = False
+        for index, current in enumerate(simplified):
+            previous = simplified[index - 1]
+            following = simplified[(index + 1) % len(simplified)]
+            cross_product = (
+                (current.x - previous.x) * (following.y - current.y)
+                - (current.y - previous.y) * (following.x - current.x)
+            )
+            if abs(cross_product) <= 1e-9:
+                simplified.pop(index)
+                changed = True
+                break
+    return tuple(simplified)
 
 
 @dataclass(frozen=True)

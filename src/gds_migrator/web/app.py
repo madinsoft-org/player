@@ -21,7 +21,7 @@ from gds_migrator.constraints.graph import ConstraintGraph
 from gds_migrator.constraints.plane_sweep import Rectangle, generate_axis_constraints
 from gds_migrator.geometry.transforms import Point, Transform
 from gds_migrator.hierarchy.migrator import MigratedCell, migrate_hierarchy
-from gds_migrator.hierarchy.model import Cell
+from gds_migrator.hierarchy.model import Cell, Polygon
 from gds_migrator.hierarchy.traversal import topological_order
 from gds_migrator.io.gdsii_reader import read_library
 from gds_migrator.io.gdsii_writer import write_library
@@ -337,9 +337,9 @@ def _project_layers(project: ProjectSession) -> list[dict[str, Any]]:
 def _gds_layer_datatypes(project: ProjectSession) -> dict[int, set[int]]:
     layer_datatypes: dict[int, set[int]] = {}
     for cell in project.cells.values():
-        for rectangle in cell.rectangles:
-            if rectangle.layer >= 0:
-                layer_datatypes.setdefault(rectangle.layer, set()).add(rectangle.datatype)
+        for shape in [*cell.rectangles, *cell.polygons]:
+            if shape.layer >= 0:
+                layer_datatypes.setdefault(shape.layer, set()).add(shape.datatype)
     return layer_datatypes
 
 
@@ -362,6 +362,16 @@ def _project_cell_bounds(
         (rectangle.xmin, rectangle.xmax, rectangle.ymin, rectangle.ymax)
         for rectangle in cell.rectangles
     ]
+    bounds.extend(
+        (
+            min(point.x for point in polygon.points),
+            max(point.x for point in polygon.points),
+            min(point.y for point in polygon.points),
+            max(point.y for point in polygon.points),
+        )
+        for polygon in cell.polygons
+        if polygon.points
+    )
     for instance in cell.instances:
         child_bounds = _project_cell_bounds(cells, instance.cell_name, current_stack)
         corners = [
@@ -445,12 +455,59 @@ def _flatten_rectangles(
     return rectangles
 
 
+def _flatten_polygons(
+    cells: dict[str, Cell] | dict[str, MigratedCell],
+    cell_name: str,
+    transform: Transform = Transform(),
+    path: tuple[str, ...] = (),
+    stack: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    current_stack = set() if stack is None else stack
+    if cell_name in current_stack:
+        raise ValueError(f"Cycle detected while flattening cell {cell_name!r}.")
+    current_stack.add(cell_name)
+    cell = cells[cell_name]
+    current_path = (*path, cell_name)
+    polygons = [
+        {
+            "id": "/".join(current_path) + "/" + polygon.id,
+            "layer": polygon.layer,
+            "datatype": polygon.datatype,
+            "points": [
+                {
+                    "x": transformed.x,
+                    "y": transformed.y,
+                }
+                for transformed in (transform.apply(point) for point in polygon.points)
+            ],
+        }
+        for polygon in cell.polygons
+    ]
+    if len(polygons) > MAX_RENDER_SHAPES:
+        raise ValueError(f"Layout exceeds the {MAX_RENDER_SHAPES:,}-shape viewer limit.")
+    for instance in cell.instances:
+        polygons.extend(
+            _flatten_polygons(
+                cells,
+                instance.cell_name,
+                transform.compose(instance.transform),
+                (*current_path, instance.id),
+                current_stack,
+            )
+        )
+        if len(polygons) > MAX_RENDER_SHAPES:
+            raise ValueError(f"Layout exceeds the {MAX_RENDER_SHAPES:,}-shape viewer limit.")
+    current_stack.remove(cell_name)
+    return polygons
+
+
 def _cell_constraint_rectangles(
     project: ProjectSession,
     cell_name: str,
-) -> tuple[list[Rectangle], dict[str, float], dict[str, float]]:
+) -> tuple[list[Rectangle], list[Polygon], dict[str, float], dict[str, float]]:
     cell = project.cells[cell_name]
     rectangles = list(cell.rectangles)
+    polygons = list(cell.polygons)
     rigid_widths: dict[str, float] = {}
     rigid_heights: dict[str, float] = {}
     for instance in cell.instances:
@@ -480,7 +537,7 @@ def _cell_constraint_rectangles(
         )
         rigid_widths[instance.id] = xmax - xmin
         rigid_heights[instance.id] = ymax - ymin
-    return rectangles, rigid_widths, rigid_heights
+    return rectangles, polygons, rigid_widths, rigid_heights
 
 
 def _get_layer_name(project: ProjectSession, layer: int) -> str:
@@ -501,8 +558,23 @@ def _get_layer_name(project: ProjectSession, layer: int) -> str:
 
 
 def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str, Any]]:
-    rectangles, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name)
+    rectangles, polygons, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name)
     rectangles_by_id = {rectangle.id: rectangle for rectangle in rectangles}
+    rectangles_by_id.update(
+        {
+            polygon.id: Rectangle(
+                id=polygon.id,
+                layer=polygon.layer,
+                datatype=polygon.datatype,
+                xmin=min(point.x for point in polygon.points),
+                xmax=max(point.x for point in polygon.points),
+                ymin=min(point.y for point in polygon.points),
+                ymax=max(point.y for point in polygon.points),
+            )
+            for polygon in polygons
+            if polygon.points
+        }
+    )
     edges: list[dict[str, Any]] = []
     for axis, rigid_sizes in (("x", rigid_widths), ("y", rigid_heights)):
         graph: ConstraintGraph = generate_axis_constraints(
@@ -510,8 +582,13 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
             project.technology,
             axis,
             rigid_sizes=rigid_sizes,
+            polygons=polygons,
         )
+        seen_constraint_ids: set[str] = set()
         for index, (upstream, downstream, value) in enumerate(graph.edges):
+            if graph.edge_ids[index] in seen_constraint_ids:
+                continue
+            seen_constraint_ids.add(graph.edge_ids[index])
             metadata = graph.edge_metadata[index]
             constraint_type = {
                 "minimum_width": "width",
@@ -744,9 +821,15 @@ def get_layout(session_id: str, cell: str, version: str = "before") -> dict[str,
         cells = project.cells
     try:
         rectangles = _flatten_rectangles(cells, cell)
+        polygons = _flatten_polygons(cells, cell)
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
-    return {"cell": cell, "version": version, "rectangles": rectangles}
+    if len(rectangles) + len(polygons) > MAX_RENDER_SHAPES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Layout exceeds the {MAX_RENDER_SHAPES:,}-shape viewer limit.",
+        )
+    return {"cell": cell, "version": version, "rectangles": rectangles, "polygons": polygons}
 
 
 @app.get("/api/sessions/{session_id}/constraints")

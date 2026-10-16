@@ -7,7 +7,6 @@ from pathlib import Path
 
 import gdstk
 
-from gds_migrator.constraints.plane_sweep import Rectangle
 from gds_migrator.geometry.transforms import Point, Transform
 from gds_migrator.hierarchy.model import Cell, Instance, Polygon
 
@@ -29,18 +28,6 @@ def read_library(path: Path) -> dict[str, Cell]:
             )
             for index, polygon in enumerate(gdstk_cell.polygons)
         ]
-        rectangles = [
-            Rectangle(
-                id=polygon.id,
-                layer=polygon.layer,
-                xmin=min(point.x for point in polygon.points),
-                xmax=max(point.x for point in polygon.points),
-                ymin=min(point.y for point in polygon.points),
-                ymax=max(point.y for point in polygon.points),
-                datatype=polygon.datatype,
-            )
-            for polygon in polygons
-        ]
         instances = [
             Instance(
                 id=f"{gdstk_cell.name}:ref{index}",
@@ -56,7 +43,6 @@ def read_library(path: Path) -> dict[str, Cell]:
         ]
         cells[gdstk_cell.name] = Cell(
             name=gdstk_cell.name,
-            rectangles=rectangles,
             polygons=polygons,
             instances=instances,
         )

@@ -48,22 +48,38 @@ function makeSvgElement(name, attributes = {}) {
   return element;
 }
 
-function boundsOf(rectangles) {
-  if (!rectangles.length) {
+function boundsOf(rectangles, polygons = []) {
+  const bounds = [
+    ...rectangles.map((item) => ({
+      xmin: item.xmin,
+      xmax: item.xmax,
+      ymin: item.ymin,
+      ymax: item.ymax,
+    })),
+    ...polygons
+      .filter((polygon) => polygon.points.length)
+      .map((polygon) => ({
+        xmin: Math.min(...polygon.points.map((point) => point.x)),
+        xmax: Math.max(...polygon.points.map((point) => point.x)),
+        ymin: Math.min(...polygon.points.map((point) => point.y)),
+        ymax: Math.max(...polygon.points.map((point) => point.y)),
+      })),
+  ];
+  if (!bounds.length) {
     return { xmin: -1, xmax: 1, ymin: -1, ymax: 1 };
   }
   return {
-    xmin: Math.min(...rectangles.map((item) => item.xmin)),
-    xmax: Math.max(...rectangles.map((item) => item.xmax)),
-    ymin: Math.min(...rectangles.map((item) => item.ymin)),
-    ymax: Math.max(...rectangles.map((item) => item.ymax)),
+    xmin: Math.min(...bounds.map((item) => item.xmin)),
+    xmax: Math.max(...bounds.map((item) => item.xmax)),
+    ymin: Math.min(...bounds.map((item) => item.ymin)),
+    ymax: Math.max(...bounds.map((item) => item.ymax)),
   };
 }
 
-function layoutProjection(rectangles) {
+function layoutProjection(rectangles, polygons = []) {
   const width = 1000;
   const height = 700;
-  const bounds = boundsOf(rectangles);
+  const bounds = boundsOf(rectangles, polygons);
   const spanX = Math.max(bounds.xmax - bounds.xmin, 1);
   const spanY = Math.max(bounds.ymax - bounds.ymin, 1);
   const scale = Math.min(width / spanX, height / spanY) * 0.88;
@@ -121,9 +137,9 @@ function drawMergedPolygons(svg) {
   }
 }
 
-function drawLayout(svg, rectangles, edges = []) {
+function drawLayout(svg, rectangles, polygons = [], edges = []) {
   svg.replaceChildren();
-  const projection = layoutProjection(rectangles);
+  const projection = layoutProjection(rectangles, polygons);
   svg.setAttribute("viewBox", `${state.viewBox.x} ${state.viewBox.y} ${state.viewBox.width} ${state.viewBox.height}`);
   const { x, y } = projection;
 
@@ -148,6 +164,28 @@ function drawLayout(svg, rectangles, edges = []) {
     });
     const title = makeSvgElement("title");
     title.textContent = `${rectangle.id} · layer ${rectangle.layer}`;
+    shape.append(title);
+    svg.append(shape);
+  }
+
+  for (const polygon of polygons.filter((item) => state.enabledLayers.has(item.layer))) {
+    if (polygon.points.length < 3) continue;
+    const layer = state.layers.get(polygon.layer);
+    const color = layer
+      ? (layer.datatype_colors[String(polygon.datatype)] || layer.color)
+      : "#778899";
+    const pathData = polygon.points
+      .map((point, index) => `${index === 0 ? "M" : "L"} ${x(point.x)} ${y(point.y)}`)
+      .join(" ") + " Z";
+    const shape = makeSvgElement("path", {
+      d: pathData,
+      fill: color,
+      "fill-opacity": "0.45",
+      stroke: color,
+      "stroke-width": 0.8,
+    });
+    const title = makeSvgElement("title");
+    title.textContent = `${polygon.id} · layer ${polygon.layer}`;
     shape.append(title);
     svg.append(shape);
   }
@@ -278,14 +316,14 @@ function renderConstraints() {
 
 function renderViews() {
   if (!state.before) return;
-  drawLayout(byId("before-view"), state.before.rectangles, state.edges);
-  if (state.after) drawLayout(byId("after-view"), state.after.rectangles);
+  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], state.edges);
+  if (state.after) drawLayout(byId("after-view"), state.after.rectangles, state.after.polygons || []);
   else byId("after-view").replaceChildren();
 }
 
 function zoomToEdge(edge) {
   if (!edge || !state.before || !edge.start || !edge.end) return;
-  const { x, y } = layoutProjection(state.before.rectangles);
+  const { x, y } = layoutProjection(state.before.rectangles, state.before.polygons || []);
   const startX = x(edge.start.x);
   const endX = x(edge.end.x);
   const startY = y(edge.start.y);
