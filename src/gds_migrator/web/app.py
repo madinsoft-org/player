@@ -517,8 +517,8 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
                 "minimum_width": "width",
                 "fixed_footprint": "width",
                 "minimum_spacing": "spacing",
-                "overlap": "overlap",
-                "extension": "extension",
+                "minimum_overlap": "overlap",
+                "minimum_extension": "extension",
             }[metadata["kind"]]
             source = rectangles_by_id[metadata["source_rect"]]
             target = rectangles_by_id[metadata["target_rect"]]
