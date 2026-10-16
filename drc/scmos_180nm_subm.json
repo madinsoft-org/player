@@ -1,0 +1,127 @@
+{
+  "name": "scmos-180nm-subm",
+  "grid": 50,
+  "source": {
+    "document": "scmos.pdf",
+    "revision": "8.00",
+    "technology": "SCN6M_SUBM",
+    "lambda_um": 0.1,
+    "value_unit": "nm",
+    "notes": [
+      "Values are converted from lambda to nanometers using 1 lambda = 100 nm.",
+      "The grid is half-lambda (50 nm), as required by SCMOS submissions.",
+      "Conditional spacings are represented by their strictest value for each mapped layer pair.",
+      "Only minimum width and spacing rules supported by TechnologyRules are included; overlap, enclosure, and process-specific advisory rules are omitted."
+    ]
+  },
+  "layers": {
+    "25": "nwell",
+    "41": "diffusion",
+    "42": "poly",
+    "43": "contact",
+    "44": "metal1",
+    "45": "via1",
+    "46": "metal2",
+    "49": "metal4",
+    "50": "via3",
+    "51": "metal5",
+    "61": "pad",
+    "62": "overglass"
+  },
+  "min_width": {
+    "25": 1200,
+    "41": 300,
+    "42": 200,
+    "43": 200,
+    "44": 300,
+    "45": 200,
+    "46": 300,
+    "49": 300,
+    "50": 200,
+    "51": 300
+  },
+  "min_spacing": [
+    {
+      "layers": [25, 25],
+      "value": 1800,
+      "source_rules": ["1.2"]
+    },
+    {
+      "layers": [41, 25],
+      "value": 600,
+      "source_rules": ["2.3"]
+    },
+    {
+      "layers": [41, 41],
+      "value": 400,
+      "source_rules": ["2.5"]
+    },
+    {
+      "layers": [42, 41],
+      "value": 300,
+      "source_rules": ["3.2.a"]
+    },
+    {
+      "layers": [42, 42],
+      "value": 300,
+      "source_rules": ["3.2"]
+    },
+    {
+      "layers": [43, 41],
+      "value": 500,
+      "source_rules": ["6.5.b"]
+    },
+    {
+      "layers": [43, 42],
+      "value": 500,
+      "source_rules": ["5.5.b"]
+    },
+    {
+      "layers": [43, 43],
+      "value": 300,
+      "source_rules": ["5.3", "6.3"]
+    },
+    {
+      "layers": [44, 44],
+      "value": 600,
+      "source_rules": ["7.4"]
+    },
+    {
+      "layers": [45, 45],
+      "value": 300,
+      "source_rules": ["8.2"]
+    },
+    {
+      "layers": [46, 46],
+      "value": 600,
+      "source_rules": ["9.4"]
+    },
+    {
+      "layers": [49, 49],
+      "value": 600,
+      "source_rules": ["22.4"]
+    },
+    {
+      "layers": [50, 50],
+      "value": 300,
+      "source_rules": ["21.2"]
+    },
+    {
+      "layers": [51, 51],
+      "value": 600,
+      "source_rules": ["26.4"]
+    }
+  ],
+  "minimum_width_source_rules": {
+    "25": ["1.1"],
+    "41": ["2.1"],
+    "42": ["3.1"],
+    "43": ["5.1", "6.1"],
+    "44": ["7.1"],
+    "45": ["8.1"],
+    "46": ["9.1"],
+    "49": ["22.1"],
+    "50": ["21.1"],
+    "51": ["26.1"]
+  }
+}

@@ -21,7 +21,7 @@ LayerIdentity = int | tuple[int, int]
 SpacingKey = tuple[LayerIdentity, LayerIdentity]
 GF180_GRID_NM = 5
 GF180_NM_PER_UM = 1000
-_LYP_LAYER_SOURCE = re.compile(r"(.+?)\s+(\d+)/(\d+)@\d+")
+_LYP_LAYER_SOURCE = re.compile(r"(?:(?P<name>.+?)\s+)?(?P<layer>\d+)/(?P<datatype>\d+)@\d+")
 
 
 def read_klayout_layer_map(path: Path) -> dict[str, tuple[int, int]]:
@@ -29,11 +29,16 @@ def read_klayout_layer_map(path: Path) -> dict[str, tuple[int, int]]:
     if path.suffix.lower() != ".lyp":
         raise ValueError(f"Expected a KLayout .lyp layer-properties file, got {path}")
     layers: dict[str, tuple[int, int]] = {}
-    for source in ET.parse(path).iter("source"):
-        match = _LYP_LAYER_SOURCE.fullmatch(source.text or "")
+    for properties in ET.parse(path).iter("properties"):
+        source = properties.findtext("source")
+        match = _LYP_LAYER_SOURCE.fullmatch(source or "")
         if match is not None:
-            name, layer, datatype = match.groups()
-            layers[name.lower()] = (int(layer), int(datatype))
+            name = (match.group("name") or properties.findtext("name") or "").strip()
+            if name:
+                layers[name.lower()] = (
+                    int(match.group("layer")),
+                    int(match.group("datatype")),
+                )
     if not layers:
         raise ValueError(f"No named GDS layers found in {path}")
     return layers

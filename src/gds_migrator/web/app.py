@@ -41,7 +41,7 @@ class ProjectSession:
     source_name: str
     cells: dict[str, Cell]
     technology: TechnologyRules
-    layer_properties: dict[int, dict[str, str]] = field(default_factory=dict)
+    layer_properties: dict[int | tuple[int, int], dict[str, str]] = field(default_factory=dict)
     excluded_constraint_ids: set[str] = field(default_factory=set)
     migrated: dict[str, MigratedCell] | None = None
     output_path: Path | None = None
@@ -237,21 +237,22 @@ def _load_technology_rules(
     return TechnologyRules.from_json(path, layer_properties_path)
 
 
-def _parse_layer_properties(path: Path) -> dict[int, dict[str, str]]:
+def _parse_layer_properties(path: Path) -> dict[int | tuple[int, int], dict[str, str]]:
     if path.suffix.lower() == ".lyp":
         root = ElementTree.parse(path).getroot()
-        properties: dict[int, dict[str, str]] = {}
+        properties: dict[int | tuple[int, int], dict[str, str]] = {}
         for entry in root.findall(".//properties"):
             source = entry.findtext("source", default="")
             match = _LAYER_SOURCE.fullmatch(source)
             if match is None:
                 continue
             layer = int(match.group(2))
+            datatype = int(match.group(3))
             color = entry.findtext("fill-color", default="#778899")
             if not _COLOR.fullmatch(color):
                 raise ValueError(f"Invalid display color for layer {layer}: {color!r}.")
             name = entry.findtext("name", default="").strip() or match.group(1) or f"Layer {layer}"
-            properties[layer] = {
+            properties[(layer, datatype)] = {
                 "name": name,
                 "color": color,
             }
@@ -297,27 +298,54 @@ def _project_layers(project: ProjectSession) -> list[dict[str, Any]]:
             layers.add(layer_a_number)
         if layer_b_number >= 0:
             layers.add(layer_b_number)
-    for cell in project.cells.values():
-        layers.update(rectangle.layer for rectangle in cell.rectangles if rectangle.layer >= 0)
+    gds_layer_datatypes = _gds_layer_datatypes(project)
+    layers.update(gds_layer_datatypes)
     result = []
     for layer in sorted(layers):
-        properties = project.layer_properties.get(layer, {})
-        result.append(
-            {
-                "layer": layer,
-                "name": properties.get("name", f"Layer {layer}"),
-                "color": properties.get("color", "#778899"),
-            }
-        )
+        datatypes = sorted(gds_layer_datatypes.get(layer, set()))
+        generic_properties = project.layer_properties.get(layer, {})
+        datatype_properties = {
+            datatype: project.layer_properties.get((layer, datatype), {})
+            for datatype in datatypes
+        }
+        properties = datatype_properties.get(datatypes[0], {}) if datatypes else {}
+        properties = properties or generic_properties
+        if not properties and not datatypes:
+            properties = next(
+                (
+                    value
+                    for identity, value in sorted(project.layer_properties.items(), key=lambda item: repr(item[0]))
+                    if isinstance(identity, tuple) and identity[0] == layer
+                ),
+                {},
+            )
+        result.append({
+            "layer": layer,
+            "name": properties.get("name", f"Layer {layer}"),
+            "color": properties.get("color", "#778899"),
+            "datatype_colors": {
+                str(datatype): datatype_properties[datatype].get(
+                    "color",
+                    generic_properties.get("color", "#778899"),
+                )
+                for datatype in datatypes
+            },
+        })
     return result
+
+
+def _gds_layer_datatypes(project: ProjectSession) -> dict[int, set[int]]:
+    layer_datatypes: dict[int, set[int]] = {}
+    for cell in project.cells.values():
+        for rectangle in cell.rectangles:
+            if rectangle.layer >= 0:
+                layer_datatypes.setdefault(rectangle.layer, set()).add(rectangle.datatype)
+    return layer_datatypes
 
 
 def _gds_layers(project: ProjectSession) -> set[int]:
     """Get the set of layer numbers that are actually present in the loaded GDS file."""
-    layers = set()
-    for cell in project.cells.values():
-        layers.update(rectangle.layer for rectangle in cell.rectangles if rectangle.layer >= 0)
-    return layers
+    return set(_gds_layer_datatypes(project))
 
 
 def _project_cell_bounds(

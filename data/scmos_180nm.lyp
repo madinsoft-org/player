@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-properties>
+ <!-- SCMOS 180nm Layer Properties for KLayout -->
+ <!-- Based on Electric/SCMOS 180nm technology used in SRAMgenerator project -->
+ <!-- Colors inspired by gf180mcu.lyp for consistent visualization -->
+
+ <!-- Layer 25: nwell -->
+ <properties>
+  <frame-color>#3f3f3c</frame-color>
+  <fill-color>#3f3f3c</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I5</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>contact</name>
+  <source>25/0@1</source>
+ </properties>
+
+ <!-- Layer 41: diffusion (ndiff/pdiff) -->
+ <properties>
+  <frame-color>#67392f</frame-color>
+  <fill-color>#67392f</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I5</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>nwell</name>
+  <source>41/0@1</source>
+ </properties>
+
+ <!-- Layer 42: poly -->
+ <properties>
+  <frame-color>#718e2d</frame-color>
+  <fill-color>#718e2d</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I3</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>pwell</name>
+  <source>42/0@1</source>
+ </properties>
+
+ <!-- Layer 43: contact -->
+ <properties>
+  <frame-color>#cdc16b</frame-color>
+  <fill-color>#cdc16b</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I9</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>diffusion</name>
+  <source>43/0@1</source>
+ </properties>
+
+ <!-- Layer 44: metal1 -->
+ <properties>
+  <frame-color>#f9bd46</frame-color>
+  <fill-color>#f9bd46</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I3</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>metal1</name>
+  <source>44/0@1</source>
+ </properties>
+
+ <!-- Layer 45: via1 -->
+ <properties>
+  <frame-color>#5a68c2</frame-color>
+  <fill-color>#5a68c2</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I9</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>via1</name>
+  <source>45/0@1</source>
+ </properties>
+
+ <!-- Layer 46: metal2 -->
+ <properties>
+  <frame-color>#80317c</frame-color>
+  <fill-color>#80317c</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I9</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>poly</name>
+  <source>46/0@1</source>
+ </properties>
+
+ <!-- Layer 49: metal4 -->
+ <properties>
+  <frame-color>#67392f</frame-color>
+  <fill-color>#67392f</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I5</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>metal4</name>
+  <source>49/0@1</source>
+ </properties>
+
+ <!-- Layer 50: via3 -->
+ <properties>
+  <frame-color>#a7b1d1</frame-color>
+  <fill-color>#a7b1d1</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I5</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>via3</name>
+  <source>50/0@1</source>
+ </properties>
+
+ <!-- Layer 51: metal5 -->
+ <properties>
+  <frame-color>#53e2e8</frame-color>
+  <fill-color>#53e2e8</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I5</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>metal5</name>
+  <source>51/0@1</source>
+ </properties>
+
+ <!-- Layer 61: pad -->
+ <properties>
+  <frame-color>#3acb88</frame-color>
+  <fill-color>#3acb88</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I3</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>pad</name>
+  <source>61/0@1</source>
+ </properties>
+
+ <!-- Layer 62: overglass -->
+ <properties>
+  <frame-color>#1437ff</frame-color>
+  <fill-color>#1437ff</fill-color>
+  <frame-brightness>0</frame-brightness>
+  <fill-brightness>0</fill-brightness>
+  <dither-pattern>I9</dither-pattern>
+  <line-style/>
+  <valid>true</valid>
+  <visible>true</visible>
+  <transparent>false</transparent>
+  <width>1</width>
+  <marked>false</marked>
+  <xfill>false</xfill>
+  <animation>0</animation>
+  <name>overglass</name>
+  <source>62/0@1</source>
+ </properties>
+
+</layer-properties>

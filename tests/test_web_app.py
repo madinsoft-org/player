@@ -79,13 +79,21 @@ def test_layer_properties_file_is_loaded_and_used(tmp_path):
     layer_file = (
         "layers.lyp",
         b"<layer-properties><properties><fill-color>#123456</fill-color>"
-        b"<name>metal one</name><source>1/0@1</source></properties></layer-properties>",
+        b"<name>metal one</name><source>1/0@1</source></properties>"
+        b"<properties><fill-color>#654321</fill-color>"
+        b"<name>metal one dummy</name><source>1/4@1</source></properties></layer-properties>",
         "application/xml",
     )
     with TestClient(app) as client:
         project = _create_project(client, tmp_path, layer_file)
         try:
-            assert {"layer": 1, "name": "metal one", "color": "#123456"} in project["layers"]
+            layer = next(layer for layer in project["layers"] if layer["layer"] == 1)
+            assert layer == {
+                "layer": 1,
+                "name": "metal one",
+                "color": "#123456",
+                "datatype_colors": {"0": "#123456"},
+            }
         finally:
             client.delete(f"/api/sessions/{project['id']}")
 

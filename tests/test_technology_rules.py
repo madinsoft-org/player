@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from gds_migrator.technology.rules import TechnologyRules
+from gds_migrator.technology.rules import TechnologyRules, read_klayout_layer_map
 from gds_migrator.technology.skywater import load_sky130_minimal
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +46,22 @@ def test_from_gf180_simplified_uses_layer_and_datatype_mapping() -> None:
     assert tech.layers["metal1_slot"] == (34, 3)
     assert tech.min_width_for(12, 0) > 0
     assert tech.min_spacing_for(12, 12, 0, 0) > 0
+
+
+def test_read_klayout_layer_map_uses_separate_layer_names(tmp_path: Path) -> None:
+    layer_path = tmp_path / "layers.lyp"
+    layer_path.write_text(
+        "<layer-properties>"
+        "<properties><name>nwell</name><source>25/0@1</source></properties>"
+        "<properties><name>metal1</name><source>44/0@1</source></properties>"
+        "</layer-properties>",
+        encoding="utf-8",
+    )
+
+    assert read_klayout_layer_map(layer_path) == {
+        "nwell": (25, 0),
+        "metal1": (44, 0),
+    }
 
 
 def test_from_gf180_simplified_keeps_strictest_minimum_per_gds_identity(

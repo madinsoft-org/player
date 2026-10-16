@@ -24,8 +24,9 @@ function setStatus(message, workspace = false) {
 function updateLayersToggleButton() {
   const button = byId("layers-all");
   if (!button) return;
-  const allEnabled = state.enabledLayers.size === state.layers.size;
+  const allEnabled = state.layers.size > 0 && state.enabledLayers.size === state.layers.size;
   button.textContent = allEnabled ? "All off" : "All on";
+  button.disabled = state.layers.size === 0;
 }
 
 async function request(url, options = {}) {
@@ -129,9 +130,13 @@ function drawLayout(svg, rectangles, edges = []) {
       y: top,
       width: Math.max(0.8, (rectangle.xmax - rectangle.xmin) * scale),
       height: Math.max(0.8, (rectangle.ymax - rectangle.ymin) * scale),
-      fill: layer ? layer.color : "#778899",
+      fill: layer
+        ? (layer.datatype_colors[String(rectangle.datatype)] || layer.color)
+        : "#778899",
       "fill-opacity": "0.45",
-      stroke: layer ? layer.color : "#778899",
+      stroke: layer
+        ? (layer.datatype_colors[String(rectangle.datatype)] || layer.color)
+        : "#778899",
       "stroke-width": 0.8,
     });
     const title = makeSvgElement("title");
@@ -273,13 +278,17 @@ async function loadMigratedCell() {
 
 function populateProject(project) {
   state.project = project;
-  state.layers = new Map(project.layers.map((layer) => [layer.layer, layer]));
-  // Only enable layers that are present in the GDS file by default
-  if (project.gds_layers && project.gds_layers.length > 0) {
-    state.enabledLayers = new Set(project.gds_layers);
-  } else {
-    state.enabledLayers = new Set(project.layers.map((layer) => layer.layer));
-  }
+  const gdsLayers = new Set(
+    Array.isArray(project.gds_layers)
+      ? project.gds_layers
+      : project.layers.map((layer) => layer.layer),
+  );
+  state.layers = new Map(
+    project.layers
+      .filter((layer) => gdsLayers.has(layer.layer))
+      .map((layer) => [layer.layer, layer]),
+  );
+  state.enabledLayers = new Set(state.layers.keys());
   updateLayersToggleButton();
   state.selectedCell = project.root_cells[0] || project.cells[project.cells.length - 1];
   state.after = null;
@@ -290,7 +299,7 @@ function populateProject(project) {
   const mergeLayerSelect = byId("merge-layer-select");
   if (mergeLayerSelect) {
     mergeLayerSelect.replaceChildren();
-    for (const layer of project.layers) {
+    for (const layer of state.layers.values()) {
       const option = document.createElement("option");
       option.value = layer.layer;
       option.textContent = `${layer.name} (${layer.layer})`;
@@ -304,7 +313,7 @@ function populateProject(project) {
   selector.replaceChildren();
   for (const cell of project.cells) selector.add(new Option(cell, cell));
   selector.value = state.selectedCell;
-  byId("technology-strip").textContent = `${project.cells.length} cells · ${project.layers.length} layers · ${project.source_name || "GDSII layout"}`;
+  byId("technology-strip").textContent = `${project.cells.length} cells · ${state.layers.size} layers · ${project.source_name || "GDSII layout"}`;
   byId("upload-panel").hidden = true;
   byId("workspace").hidden = false;
   renderLayers();
@@ -396,11 +405,10 @@ byId("migrate-button").addEventListener("click", async () => {
 });
 
 byId("layers-all").addEventListener("click", () => {
-  const allLayers = new Set(state.layers.keys());
   if (state.enabledLayers.size === state.layers.size) {
     state.enabledLayers = new Set();
   } else {
-    state.enabledLayers = allLayers;
+    state.enabledLayers = new Set(state.layers.keys());
   }
   updateLayersToggleButton();
   renderLayers();
@@ -410,18 +418,6 @@ byId("layers-all").addEventListener("click", () => {
 byId("toggle-constraints-button").addEventListener("click", () => {
   state.showConstraints = !state.showConstraints;
   renderConstraints();
-  renderViews();
-});
-
-byId("layers-all").addEventListener("click", () => {
-  const allLayers = new Set(state.layers.keys());
-  if (state.enabledLayers.size === state.layers.size) {
-    state.enabledLayers = new Set();
-  } else {
-    state.enabledLayers = allLayers;
-  }
-  updateLayersToggleButton();
-  renderLayers();
   renderViews();
 });
 
