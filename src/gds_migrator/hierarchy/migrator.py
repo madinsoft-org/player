@@ -17,7 +17,7 @@ from dataclasses import dataclass, field, replace
 from gds_migrator.constraints.plane_sweep import Rectangle
 from gds_migrator.constraints.solver import solve_layout
 from gds_migrator.geometry.transforms import Point
-from gds_migrator.hierarchy.model import Cell, Instance
+from gds_migrator.hierarchy.model import Cell, Instance, Polygon
 from gds_migrator.hierarchy.traversal import topological_order
 from gds_migrator.technology.rules import TechnologyRules
 
@@ -41,6 +41,7 @@ class MigratedCell:
     xmax: float = 0.0
     ymin: float = 0.0
     ymax: float = 0.0
+    polygons: tuple[Polygon, ...] = field(default_factory=tuple)
 
 
 def migrate_hierarchy(
@@ -98,6 +99,11 @@ def _migrate_cell(
     migrated_by_id = {rect.id: rect for rect in migrated_rects}
 
     new_own_rectangles = tuple(migrated_by_id[rect.id] for rect in cell.rectangles)
+    original_rectangles = {rect.id: rect for rect in cell.rectangles}
+    migrated_polygons = tuple(
+        _migrate_polygon(polygon, original_rectangles[polygon.id], migrated_by_id[polygon.id])
+        for polygon in cell.polygons
+    )
 
     new_instances = []
     for instance in cell.instances:
@@ -118,9 +124,32 @@ def _migrate_cell(
     return MigratedCell(
         name=cell.name,
         rectangles=new_own_rectangles,
+        polygons=migrated_polygons,
         instances=tuple(new_instances),
         xmin=xmin,
         xmax=xmax,
         ymin=ymin,
         ymax=ymax,
     )
+
+
+def _migrate_polygon(polygon: Polygon, original: Rectangle, migrated: Rectangle) -> Polygon:
+    """Apply the solved bounding-box scale and translation to a polygon outline."""
+    original_width = original.xmax - original.xmin
+    original_height = original.ymax - original.ymin
+    migrated_width = migrated.xmax - migrated.xmin
+    migrated_height = migrated.ymax - migrated.ymin
+
+    def map_coordinate(value: float, old_min: float, old_size: float, new_min: float, new_size: float) -> float:
+        if old_size == 0:
+            return value + new_min - old_min
+        return new_min + (value - old_min) * new_size / old_size
+
+    points = tuple(
+        Point(
+            map_coordinate(point.x, original.xmin, original_width, migrated.xmin, migrated_width),
+            map_coordinate(point.y, original.ymin, original_height, migrated.ymin, migrated_height),
+        )
+        for point in polygon.points
+    )
+    return replace(polygon, points=points)

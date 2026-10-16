@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import Protocol, Sequence
 
 from gds_migrator.constraints.plane_sweep import Rectangle
-from gds_migrator.geometry.transforms import Transform
+from gds_migrator.geometry.transforms import Point, Transform
 
 
 @dataclass(frozen=True)
@@ -26,6 +26,16 @@ class Instance:
     transform: Transform
 
 
+@dataclass(frozen=True)
+class Polygon:
+    """A polygon outline retained from GDSII alongside its constraint bounds."""
+
+    id: str
+    layer: int
+    points: tuple[Point, ...]
+    datatype: int = 0
+
+
 class HierarchyNode(Protocol):
     """Anything with placed instances, satisfied by both `Cell` and `MigratedCell`."""
 
@@ -39,3 +49,4 @@ class Cell:
     name: str
     rectangles: list[Rectangle] = field(default_factory=list)
     instances: list[Instance] = field(default_factory=list)
+    polygons: list[Polygon] = field(default_factory=list)

@@ -20,13 +20,24 @@ def write_library(migrated: dict[str, MigratedCell], output_path: Path, unit: fl
     for name in order:
         migrated_cell = migrated[name]
         gdstk_cell = gdstk.Cell(name)
+        polygon_ids = {polygon.id for polygon in migrated_cell.polygons}
         for rect in migrated_cell.rectangles:
+            if rect.id in polygon_ids:
+                continue
             gdstk_cell.add(
                 gdstk.rectangle(
                     (rect.xmin, rect.ymin),
                     (rect.xmax, rect.ymax),
                     layer=rect.layer,
                     datatype=rect.datatype,
+                )
+            )
+        for polygon in migrated_cell.polygons:
+            gdstk_cell.add(
+                gdstk.Polygon(
+                    [(point.x, point.y) for point in polygon.points],
+                    layer=polygon.layer,
+                    datatype=polygon.datatype,
                 )
             )
         for instance in migrated_cell.instances:

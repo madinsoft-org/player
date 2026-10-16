@@ -73,10 +73,12 @@ constraint exclusions, zoom and pan, hierarchical migration, before/after
 comparison, and download of the migrated GDSII file. Exclusions are held only
 for the lifetime of the in-memory project session.
 
-The viewer displays the axis-aligned bounding rectangles used by the current
-migration model; non-rectilinear polygon outlines and GDSII datatypes are not
-retained by that model. Uploads are limited to 100 MB per file, and the viewer
-limits flattened cell views to 50,000 rectangles.
+The reader and migrated GDS output retain polygon outlines and datatypes.
+Spacing and width constraints, however, are still generated from each
+polygon's axis-aligned bounding rectangle; non-rectilinear outlines are not
+decomposed into segments for exact polygon-to-polygon spacing. The viewer
+displays these constraint rectangles. Uploads are limited to 100 MB per file,
+and the viewer limits flattened cell views to 50,000 rectangles.
 
 ## Documented design-rule catalogs
 
