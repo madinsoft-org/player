@@ -60,6 +60,22 @@ function boundsOf(rectangles) {
   };
 }
 
+function layoutProjection(rectangles) {
+  const width = 1000;
+  const height = 700;
+  const bounds = boundsOf(rectangles);
+  const spanX = Math.max(bounds.xmax - bounds.xmin, 1);
+  const spanY = Math.max(bounds.ymax - bounds.ymin, 1);
+  const scale = Math.min(width / spanX, height / spanY) * 0.88;
+  const offsetX = (width - spanX * scale) / 2;
+  const offsetY = (height - spanY * scale) / 2;
+  return {
+    scale,
+    x: (value) => offsetX + (value - bounds.xmin) * scale,
+    y: (value) => height - offsetY - (value - bounds.ymin) * scale,
+  };
+}
+
 function drawMergedPolygons(svg) {
   if (!state.showMerged || !state.mergedPolygons.length) return;
   
@@ -107,18 +123,9 @@ function drawMergedPolygons(svg) {
 
 function drawLayout(svg, rectangles, edges = []) {
   svg.replaceChildren();
-  const width = 1000;
-  const height = 700;
+  const projection = layoutProjection(rectangles);
   svg.setAttribute("viewBox", `${state.viewBox.x} ${state.viewBox.y} ${state.viewBox.width} ${state.viewBox.height}`);
-  const bounds = boundsOf(rectangles);
-  const spanX = Math.max(bounds.xmax - bounds.xmin, 1);
-  const spanY = Math.max(bounds.ymax - bounds.ymin, 1);
-  const padding = 0.06;
-  const scale = Math.min(width / spanX, height / spanY) * (1 - padding * 2);
-  const offsetX = (width - spanX * scale) / 2;
-  const offsetY = (height - spanY * scale) / 2;
-  const x = (value) => offsetX + (value - bounds.xmin) * scale;
-  const y = (value) => height - offsetY - (value - bounds.ymin) * scale;
+  const { x, y } = projection;
 
   const visible = rectangles.filter((rectangle) => state.enabledLayers.has(rectangle.layer));
   for (const rectangle of visible) {
@@ -128,8 +135,8 @@ function drawLayout(svg, rectangles, edges = []) {
     const shape = makeSvgElement("rect", {
       x: left,
       y: top,
-      width: Math.max(0.8, (rectangle.xmax - rectangle.xmin) * scale),
-      height: Math.max(0.8, (rectangle.ymax - rectangle.ymin) * scale),
+      width: Math.max(0.8, (rectangle.xmax - rectangle.xmin) * projection.scale),
+      height: Math.max(0.8, (rectangle.ymax - rectangle.ymin) * projection.scale),
       fill: layer
         ? (layer.datatype_colors[String(rectangle.datatype)] || layer.color)
         : "#778899",
@@ -162,9 +169,20 @@ function drawLayout(svg, rectangles, edges = []) {
       "data-id": edge.id,
     });
     const title = makeSvgElement("title");
-    title.textContent = `${edge.axis.toUpperCase()} ${edge.kind.replaceAll("_", " ")}: ${edge.value}`;
+    title.textContent = `${edge.axis.toUpperCase()} ${edge.kind.replaceAll("_", " ")}: ${edge.value} nm · ${edge.source_layer_name || `Layer ${edge.source_layer}`} → ${edge.target_layer_name || `Layer ${edge.target_layer}`}`;
     line.append(title);
-    line.addEventListener("click", () => selectEdge(edge.id));
+    const hitArea = makeSvgElement("line", {
+      x1: x(edge.start.x),
+      y1: y(edge.start.y),
+      x2: x(edge.end.x),
+      y2: y(edge.end.y),
+      stroke: "transparent",
+      "stroke-width": 10,
+      "vector-effect": "non-scaling-stroke",
+      "pointer-events": "stroke",
+      "data-id": edge.id,
+    });
+    edgeGroup.append(hitArea);
     edgeGroup.append(line);
   }
   svg.append(edgeGroup);
@@ -203,21 +221,40 @@ function renderConstraints() {
   const visibilityButton = byId("toggle-constraints-button");
   visibilityButton.textContent = state.showConstraints ? "Hide graph" : "Show graph";
   visibilityButton.setAttribute("aria-pressed", String(state.showConstraints));
-  for (const edge of state.edges) {
-    const row = document.createElement("button");
-    row.type = "button";
-    row.className = `constraint-row${edge.excluded ? " excluded" : ""}${edge.id === state.selectedEdgeId ? " selected" : ""}`;
-    const label = document.createElement("span");
-    const axis = document.createElement("span");
-    axis.className = "constraint-axis";
-    axis.textContent = edge.axis.toUpperCase();
-    label.append(axis, document.createTextNode(edge.kind.replaceAll("_", " ")));
-    const value = document.createElement("span");
-    value.className = "value";
-    value.textContent = `${edge.value} nm`;
-    row.append(label, value);
-    row.addEventListener("click", () => selectEdge(edge.id));
-    list.append(row);
+  for (const type of ["width", "spacing", "overlap", "extension"]) {
+    const groupEdges = state.edges.filter((edge) => edge.type === type);
+    const group = document.createElement("section");
+    group.className = "constraint-group";
+    const heading = document.createElement("h3");
+    heading.className = "constraint-group-heading";
+    heading.textContent = `${type} (${groupEdges.length})`;
+    group.append(heading);
+
+    if (groupEdges.length === 0) {
+      const emptyMessage = document.createElement("p");
+      emptyMessage.className = "constraint-group-empty";
+      emptyMessage.textContent = "No constraints";
+      group.append(emptyMessage);
+    }
+
+    for (const edge of groupEdges) {
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = `constraint-row${edge.excluded ? " excluded" : ""}${edge.id === state.selectedEdgeId ? " selected" : ""}`;
+      row.setAttribute("data-id", edge.id);
+      const label = document.createElement("span");
+      const axis = document.createElement("span");
+      axis.className = "constraint-axis";
+      axis.textContent = edge.axis.toUpperCase();
+      label.append(axis, document.createTextNode(edge.kind.replaceAll("_", " ")));
+      const value = document.createElement("span");
+      value.className = "value";
+      value.textContent = `${edge.value} nm`;
+      row.append(label, value);
+      row.addEventListener("click", () => selectEdge(edge.id));
+      group.append(row);
+    }
+    list.append(group);
   }
 
   const edge = state.edges.find((item) => item.id === state.selectedEdgeId);
@@ -229,7 +266,9 @@ function renderConstraints() {
     toggleButton.textContent = "Exclude constraint";
   } else {
     const valueLabel = edge.kind === "fixed_footprint" ? "fixed size" : `${edge.value} nm minimum`;
-    details.textContent = `${edge.axis.toUpperCase()} · ${edge.kind.replaceAll("_", " ")} · ${valueLabel} · ${edge.source_rect} → ${edge.target_rect} · layers ${edge.source_layer}/${edge.target_layer}${edge.excluded ? " · excluded" : ""}`;
+    const sourceLayerName = edge.source_layer_name || `Layer ${edge.source_layer}`;
+    const targetLayerName = edge.target_layer_name || `Layer ${edge.target_layer}`;
+    details.textContent = `Constraint: ${edge.kind.replaceAll("_", " ")} · ${edge.axis.toUpperCase()} · ${valueLabel} · ${edge.source_rect} → ${edge.target_rect} · Layers: ${sourceLayerName} → ${targetLayerName}${edge.excluded ? " · excluded" : ""}`;
     toggleButton.disabled = !edge.removable;
     toggleButton.textContent = edge.removable
       ? (edge.excluded ? "Restore constraint" : "Exclude constraint")
@@ -244,10 +283,47 @@ function renderViews() {
   else byId("after-view").replaceChildren();
 }
 
+function zoomToEdge(edge) {
+  if (!edge || !state.before || !edge.start || !edge.end) return;
+  const { x, y } = layoutProjection(state.before.rectangles);
+  const startX = x(edge.start.x);
+  const endX = x(edge.end.x);
+  const startY = y(edge.start.y);
+  const endY = y(edge.end.y);
+  const padding = Math.max(Math.abs(endX - startX), Math.abs(endY - startY)) * 0.2 + 12;
+  const centerX = (startX + endX) / 2;
+  const centerY = (startY + endY) / 2;
+  const view = byId("before-view");
+  const aspectRatio = view.clientHeight > 0 ? view.clientWidth / view.clientHeight : 1000 / 700;
+  let width = Math.max(Math.abs(endX - startX) + padding * 2, 24);
+  let height = Math.max(Math.abs(endY - startY) + padding * 2, 24);
+  if (width / height < aspectRatio) width = height * aspectRatio;
+  else height = width / aspectRatio;
+  state.viewBox = {
+    x: centerX - width / 2,
+    y: centerY - height / 2,
+    width,
+    height,
+  };
+}
+
+function scrollConstraintIntoView(id) {
+  const list = byId("constraint-list");
+  if (!list) return;
+
+  const selectedRow = list.querySelector(`.constraint-row[data-id="${id}"]`);
+  if (selectedRow) {
+    selectedRow.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
 function selectEdge(id) {
   state.selectedEdgeId = id;
+  const edge = state.edges.find((item) => item.id === id);
+  if (edge) zoomToEdge(edge);
   renderConstraints();
   renderViews();
+  if (edge) scrollConstraintIntoView(id);
 }
 
 async function loadSelectedCell() {
@@ -471,8 +547,17 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
 
   let dragOrigin = null;
   let zoomStart = null;
+  let pointerStart = null;
 
   svg.addEventListener("pointerdown", (event) => {
+    const edgeTarget = event.target instanceof Element
+      ? event.target.closest(".constraint-line, [data-id]")
+      : null;
+    pointerStart = {
+      x: event.clientX,
+      y: event.clientY,
+      edgeId: event.button === 0 ? edgeTarget?.getAttribute("data-id") : null,
+    };
     if (state.dragMode === "zoom") {
       zoomStart = { x: event.clientX, y: event.clientY };
       updateZoomSelection(svg, event.clientX, event.clientY, event.clientX, event.clientY);
@@ -512,11 +597,19 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
       updateZoomSelection(null, null, null, null, null);
       zoomStart = null;
     }
+    if (
+      pointerStart?.edgeId
+      && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) <= 5
+    ) {
+      selectEdge(pointerStart.edgeId);
+    }
+    pointerStart = null;
     dragOrigin = null;
   });
   svg.addEventListener("pointercancel", () => {
     dragOrigin = null;
     zoomStart = null;
+    pointerStart = null;
     updateZoomSelection(null, null, null, null, null);
   });
 }

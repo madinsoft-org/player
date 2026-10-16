@@ -5,37 +5,7 @@
     "layer1": "dnwell",
     "layer2": "dnwell",
     "type": "width",
-    "value": 1.7,
-    "context": {
-      "unit": "um",
-      "bound": "minimum",
-      "value_column": "LAYOUT",
-      "condition": "Min. DNWELL Width",
-      "table_notes": [
-        "DN = DNWELL"
-      ]
-    },
-    "source": {
-      "csv": "physical_verification_gf180\\design_manual\\tables_clear\\11_DNWELL28.csv",
-      "record": 3,
-      "line_end": 3,
-      "rule_id": "DN.1",
-      "manual": [
-        "physical_verification_gf180\\design_manual\\drm_07_03.rst"
-      ],
-      "references": [
-        {
-          "path": "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dnwell.rb",
-          "line": 32,
-          "role": "Related rule reference; not value equivalence."
-        },
-        {
-          "path": "gf180mcuA\\libs.tech\\magic\\gf180mcuA.tech",
-          "line": 2517,
-          "role": "Related rule reference; not value equivalence."
-        }
-      ]
-    }
+    "value": 1.7
   },
   {
     "id": "DN.2a",
@@ -43,36 +13,14 @@
     "layer1": "dnwell",
     "layer2": "dnwell",
     "type": "spacing",
-    "value": 2.5,
-    "context": {
-      "unit": "um",
-      "bound": "minimum",
-      "value_column": "LAYOUT",
-      "condition": "Min. DNWELL Space (Equi-potential), Merge if the space is less than",
-      "table_notes": [
-        "DN = DNWELL"
-      ]
-    },
-    "source": {
-      "csv": "physical_verification_gf180\\design_manual\\tables_clear\\11_DNWELL28.csv",
-      "record": 4,
-      "line_end": 4,
-      "rule_id": "DN.2a",
-      "manual": [
-        "physical_verification_gf180\\design_manual\\drm_07_03.rst"
-      ],
-      "references": [
-        {
-          "path": "gf180mcuA\\libs.tech\\klayout\\tech\\drc\\rule_decks\\dnwell.rb",
-          "line": 39,
-          "role": "Related rule reference; not value equivalence."
-        },
-        {
-          "path": "gf180mcuA\\libs.tech\\magic\\gf180mcuA.tech",
-          "line": 2518,
-          "role": "Related rule reference; not value equivalence."
-        }
-      ]
-    }
-  }
+    "value": 2.5
+  },
+  {
+    "id": "DF.4b",
+    "desc": "Min. DNWELL overlap of NCOMP well tap",
+    "layer1": "dnwell",
+    "layer2": "comp",
+    "type": "overlap",
+    "value": 0.66
+  }  
 ]

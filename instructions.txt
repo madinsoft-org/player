@@ -1262,3 +1262,4 @@ gds-migrator-web
 491 1064
 
 
+ajoute la possibilité de selectionner une arrete d'un graphe de contrainte, cela le selection dans la liste des contraintes, ajoute le nom de la contrainte ainsi que les noms des deux layers. De la meme façon si on selection dans la liste selectionner la contrainte dans le graph en faisant un zoom dessus.

@@ -483,6 +483,23 @@ def _cell_constraint_rectangles(
     return rectangles, rigid_widths, rigid_heights
 
 
+def _get_layer_name(project: ProjectSession, layer: int) -> str:
+    """Get the name of a layer from layer properties."""
+    if layer < 0:
+        return "Instance"
+
+    properties = project.layer_properties.get(layer, {})
+    if properties.get("name"):
+        return properties["name"]
+
+    for identity, props in project.layer_properties.items():
+        if isinstance(identity, tuple) and identity[0] == layer:
+            if props.get("name"):
+                return props["name"]
+
+    return f"Layer {layer}"
+
+
 def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str, Any]]:
     rectangles, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name)
     rectangles_by_id = {rectangle.id: rectangle for rectangle in rectangles}
@@ -496,6 +513,13 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
         )
         for index, (upstream, downstream, value) in enumerate(graph.edges):
             metadata = graph.edge_metadata[index]
+            constraint_type = {
+                "minimum_width": "width",
+                "fixed_footprint": "width",
+                "minimum_spacing": "spacing",
+                "overlap": "overlap",
+                "extension": "extension",
+            }[metadata["kind"]]
             source = rectangles_by_id[metadata["source_rect"]]
             target = rectangles_by_id[metadata["target_rect"]]
             if metadata["kind"] == "minimum_width":
@@ -515,18 +539,25 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
             else:
                 start = ((source.xmin + source.xmax) / 2, source.ymax)
                 end = ((target.xmin + target.xmax) / 2, target.ymin)
+
+            source_layer = metadata["source_layer"]
+            target_layer = metadata["target_layer"]
+
             edges.append(
                 {
                     "id": graph.edge_ids[index],
                     "axis": axis,
                     "kind": metadata["kind"],
+                    "type": constraint_type,
                     "upstream": upstream,
                     "downstream": downstream,
                     "value": value,
                     "source_rect": metadata["source_rect"],
                     "target_rect": metadata["target_rect"],
-                    "source_layer": metadata["source_layer"],
-                    "target_layer": metadata["target_layer"],
+                    "source_layer": source_layer,
+                    "target_layer": target_layer,
+                    "source_layer_name": _get_layer_name(project, source_layer),
+                    "target_layer_name": _get_layer_name(project, target_layer),
                     "removable": metadata["kind"] != "fixed_footprint",
                     "start": {"x": start[0], "y": start[1]},
                     "end": {"x": end[0], "y": end[1]},
