@@ -75,6 +75,10 @@ class TechnologyRules:
             identities (layer1 must extend layer2 by at least this amount).
         min_overlap: Minimum overlap rules keyed by an unordered pair of GDS layer
             identities.
+        rule_id_width: Mapping from layer identity to rule ID for width rules.
+        rule_id_spacing: Mapping from spacing key to rule ID for spacing rules.
+        rule_id_extension: Mapping from extension key to rule ID for extension rules.
+        rule_id_overlap: Mapping from overlap key to rule ID for overlap rules.
         layers: Optional mapping from lower-case layer names to
             ``(GDS layer, datatype)`` pairs.
     """
@@ -85,6 +89,10 @@ class TechnologyRules:
     min_spacing: dict[SpacingKey, int] = field(default_factory=dict)
     min_extension: dict[SpacingKey, int] = field(default_factory=dict)
     min_overlap: dict[SpacingKey, int] = field(default_factory=dict)
+    rule_id_width: dict[LayerIdentity, str] = field(default_factory=dict)
+    rule_id_spacing: dict[SpacingKey, str] = field(default_factory=dict)
+    rule_id_extension: dict[SpacingKey, str] = field(default_factory=dict)
+    rule_id_overlap: dict[SpacingKey, str] = field(default_factory=dict)
     layers: dict[str, tuple[int, int]] = field(default_factory=dict)
 
     @staticmethod
@@ -159,6 +167,61 @@ class TechnologyRules:
             return self.min_overlap[pair_with_dt]
         
         return 0
+
+    def rule_id_for_width(self, layer: int, datatype: int | None = None) -> str | None:
+        """Return the rule ID for the width rule of a layer, or None if unset."""
+        if datatype is not None:
+            identity = (layer, datatype)
+            if identity in self.rule_id_width:
+                return self.rule_id_width[identity]
+        return self.rule_id_width.get(layer, None)
+
+    def rule_id_for_spacing(
+        self,
+        layer_a: int,
+        layer_b: int,
+        datatype_a: int | None = None,
+        datatype_b: int | None = None,
+    ) -> str | None:
+        """Return the rule ID for the spacing rule between two layers, or None if unset."""
+        if datatype_a is not None and datatype_b is not None:
+            pair = self._spacing_key((layer_a, datatype_a), (layer_b, datatype_b))
+            if pair in self.rule_id_spacing:
+                return self.rule_id_spacing[pair]
+        return self.rule_id_spacing.get(self._spacing_key(layer_a, layer_b), None)
+
+    def rule_id_for_overlap(
+        self,
+        layer_a: int,
+        layer_b: int,
+        datatype_a: int | None = None,
+        datatype_b: int | None = None,
+    ) -> str | None:
+        """Return the rule ID for the overlap rule between two layers, or None if unset."""
+        if datatype_a is not None and datatype_b is not None:
+            pair = self._spacing_key((layer_a, datatype_a), (layer_b, datatype_b))
+            if pair in self.rule_id_overlap:
+                return self.rule_id_overlap[pair]
+        return self.rule_id_overlap.get(self._spacing_key(layer_a, layer_b), None)
+
+    def rule_id_for_extension(
+        self,
+        layer_a: int,
+        layer_b: int,
+        datatype_a: int | None = None,
+        datatype_b: int | None = None,
+    ) -> str | None:
+        """Return the rule ID for the extension rule (layer_a extends layer_b), or None if unset."""
+        if datatype_a is not None and datatype_b is not None:
+            key = ((layer_a, datatype_a), (layer_b, datatype_b))
+            if key in self.rule_id_extension:
+                return self.rule_id_extension[key]
+        
+        key_with_dt = ((layer_a, 0), (layer_b, 0))
+        if key_with_dt in self.rule_id_extension:
+            return self.rule_id_extension[key_with_dt]
+        
+        return None
 
     def snap_to_grid(self, value: int) -> int:
         """Round ``value`` to the nearest multiple of the manufacturing grid."""
@@ -291,6 +354,10 @@ class TechnologyRules:
         min_spacing: dict[SpacingKey, int] = {}
         min_extension: dict[SpacingKey, int] = {}
         min_overlap: dict[SpacingKey, int] = {}
+        rule_id_width: dict[LayerIdentity, str] = {}
+        rule_id_spacing: dict[SpacingKey, str] = {}
+        rule_id_extension: dict[SpacingKey, str] = {}
+        rule_id_overlap: dict[SpacingKey, str] = {}
         for index, entry in enumerate(data):
             if not isinstance(entry, dict):
                 raise ValueError(f"Rule {index} must be an object")
@@ -328,8 +395,11 @@ class TechnologyRules:
             conversion_factor = unit_to_nm.get(unit, 1)
             value = round(raw_value * conversion_factor)
             
+            rule_id = str(entry.get("id", ""))
+            
             if rule_type == "width":
                 min_width[layer1] = max(min_width.get(layer1, 0), value)
+                rule_id_width[layer1] = rule_id or rule_id_width.get(layer1, "")
                 continue
 
             layer2_value = entry.get("layer2")
@@ -344,12 +414,15 @@ class TechnologyRules:
             if rule_type == "spacing":
                 key = cls._spacing_key(layer1, layer2)
                 min_spacing[key] = max(min_spacing.get(key, 0), value)
+                rule_id_spacing[key] = rule_id or rule_id_spacing.get(key, "")
             elif rule_type == "extension":
                 key = (layer1, layer2)
                 min_extension[key] = max(min_extension.get(key, 0), value)
+                rule_id_extension[key] = rule_id or rule_id_extension.get(key, "")
             elif rule_type == "overlap":
                 key = cls._spacing_key(layer1, layer2)
                 min_overlap[key] = max(min_overlap.get(key, 0), value)
+                rule_id_overlap[key] = rule_id or rule_id_overlap.get(key, "")
 
         if not min_width and not min_spacing and not min_extension and not min_overlap:
             raise ValueError("Rule catalog contains no width, spacing, extension, or overlap rules")
@@ -361,6 +434,10 @@ class TechnologyRules:
             min_spacing=min_spacing,
             min_extension=min_extension,
             min_overlap=min_overlap,
+            rule_id_width=rule_id_width,
+            rule_id_spacing=rule_id_spacing,
+            rule_id_extension=rule_id_extension,
+            rule_id_overlap=rule_id_overlap,
             layers=layers,
         )
 

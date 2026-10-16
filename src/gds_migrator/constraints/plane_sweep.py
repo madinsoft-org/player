@@ -84,6 +84,7 @@ def generate_axis_constraints(
             rect.id,
             tech.min_width_for(rect.layer, rect.datatype),
         )
+        rule_id = tech.rule_id_for_width(rect.layer, rect.datatype) if not is_rigid else None
         if size > 0:
             kind = "fixed_footprint" if is_rigid else "minimum_width"
             graph.add_constraint(
@@ -101,6 +102,7 @@ def generate_axis_constraints(
                     "source_datatype": rect.datatype,
                     "target_datatype": rect.datatype,
                     "rule_value": size,
+                    "rule_id": rule_id,
                 },
             )
 
@@ -133,6 +135,12 @@ def generate_axis_constraints(
                 rect.datatype,
                 other.datatype,
             )
+            spacing_rule_id = tech.rule_id_for_spacing(
+                rect.layer,
+                other.layer,
+                rect.datatype,
+                other.datatype,
+            ) if spacing > 0 else None
             if spacing > 0 and ortho_overlaps:
                 if other_hi <= rect_lo:
                     upstream = f"{other.id}:hi"
@@ -152,6 +160,7 @@ def generate_axis_constraints(
                             "source_datatype": other.datatype,
                             "target_datatype": rect.datatype,
                             "rule_value": spacing,
+                            "rule_id": spacing_rule_id,
                         },
                     )
             
@@ -162,6 +171,12 @@ def generate_axis_constraints(
                 rect.datatype,
                 other.datatype,
             )
+            overlap_rule_id = tech.rule_id_for_overlap(
+                rect.layer,
+                other.layer,
+                rect.datatype,
+                other.datatype,
+            ) if overlap > 0 else None
             if overlap > 0 and ortho_overlaps:
                 # Check if rectangles overlap on the swept axis
                 axis_overlaps = _overlaps(rect_lo, rect_hi, other_lo, other_hi)
@@ -184,6 +199,7 @@ def generate_axis_constraints(
                             "source_datatype": other.datatype,
                             "target_datatype": rect.datatype,
                             "rule_value": overlap,
+                            "rule_id": overlap_rule_id,
                         },
                     )
                     # Ensure other extends far enough into rect
@@ -204,6 +220,7 @@ def generate_axis_constraints(
                             "source_datatype": rect.datatype,
                             "target_datatype": other.datatype,
                             "rule_value": overlap,
+                            "rule_id": overlap_rule_id,
                         },
                     )
             
@@ -214,12 +231,26 @@ def generate_axis_constraints(
                 rect.datatype,
                 other.datatype,
             )
+            ext_rect_other_rule_id = tech.rule_id_for_extension(
+                rect.layer,
+                other.layer,
+                rect.datatype,
+                other.datatype,
+            ) if ext_rect_other > 0 else None
+            
             ext_other_rect = tech.min_extension_for(
                 other.layer,
                 rect.layer,
                 other.datatype,
                 rect.datatype,
             )
+            ext_other_rect_rule_id = tech.rule_id_for_extension(
+                other.layer,
+                rect.layer,
+                other.datatype,
+                rect.datatype,
+            ) if ext_other_rect > 0 else None
+            
             if (ext_rect_other > 0 or ext_other_rect > 0) and ortho_overlaps:
                 if ext_rect_other > 0:
                     # rect must extend other: rect must start before or at other and end after other
@@ -241,6 +272,7 @@ def generate_axis_constraints(
                             "source_datatype": rect.datatype,
                             "target_datatype": other.datatype,
                             "rule_value": ext_rect_other,
+                            "rule_id": ext_rect_other_rule_id,
                             "extension_direction": "start",
                         },
                     )
@@ -262,6 +294,7 @@ def generate_axis_constraints(
                             "source_datatype": other.datatype,
                             "target_datatype": rect.datatype,
                             "rule_value": ext_rect_other,
+                            "rule_id": ext_rect_other_rule_id,
                             "extension_direction": "end",
                         },
                     )
@@ -285,6 +318,7 @@ def generate_axis_constraints(
                             "source_datatype": other.datatype,
                             "target_datatype": rect.datatype,
                             "rule_value": ext_other_rect,
+                            "rule_id": ext_other_rect_rule_id,
                             "extension_direction": "start",
                         },
                     )
@@ -306,6 +340,7 @@ def generate_axis_constraints(
                             "source_datatype": rect.datatype,
                             "target_datatype": other.datatype,
                             "rule_value": ext_other_rect,
+                            "rule_id": ext_other_rect_rule_id,
                             "extension_direction": "end",
                         },
                     )

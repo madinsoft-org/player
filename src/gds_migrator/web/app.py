@@ -547,7 +547,7 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
                 {
                     "id": graph.edge_ids[index],
                     "axis": axis,
-                    "kind": metadata["kind"],
+                    "kind": metadata.get("rule_id") or metadata["kind"],
                     "type": constraint_type,
                     "upstream": upstream,
                     "downstream": downstream,
