@@ -1,4 +1,10 @@
-from gds_migrator.constraints.plane_sweep import Rectangle, generate_axis_constraints
+import pytest
+
+from gds_migrator.constraints.plane_sweep import (
+    Rectangle,
+    generate_axis_constraints,
+    prepare_polygons_for_sweep,
+)
 from gds_migrator.geometry.transforms import Point
 from gds_migrator.hierarchy.model import Polygon
 from gds_migrator.technology.rules import TechnologyRules
@@ -107,6 +113,122 @@ def test_polygon_overlap_rules_create_constraints_from_cross_sections() -> None:
     assert len(overlap_edges) == 2
     assert all(edge[2] == 3 for edge, _ in overlap_edges)
     assert all(metadata["rule_id"] == "overlap-1" for _, metadata in overlap_edges)
+
+
+@pytest.mark.parametrize("axis", ["x", "y"])
+@pytest.mark.parametrize("use_polygons", [False, True])
+@pytest.mark.parametrize("reverse_winding", [False, True])
+def test_overlap_pairs_boundaries_with_same_outward_normal(
+    axis: str, use_polygons: bool, reverse_winding: bool,
+) -> None:
+    outer = Rectangle("outer", 2, 0, 20, 0, 20, datatype=4)
+    inner = Rectangle("inner", 1, 5, 15, 5, 15)
+    tech = TechnologyRules(
+        name="test", grid=1,
+        min_overlap={((2, 4), (1, 0)): 3},
+        rule_id_overlap={((2, 4), (1, 0)): "outer-overlap"},
+    )
+    polygons = [
+        Polygon(
+            id=rect.id, layer=rect.layer, datatype=rect.datatype,
+            points=tuple(reversed(points)) if reverse_winding else points,
+        )
+        for rect in (outer, inner)
+        for points in [(
+            Point(rect.xmin, rect.ymin), Point(rect.xmax, rect.ymin),
+            Point(rect.xmax, rect.ymax), Point(rect.xmin, rect.ymax),
+        )]
+    ]
+    graph = generate_axis_constraints(
+        [] if use_polygons else [outer, inner], tech, axis,
+        polygons=polygons if use_polygons else None,
+    )
+    metadata = [
+        item for item in graph.edge_metadata
+        if item["kind"] == "minimum_overlap"
+    ]
+    assert metadata
+    coordinate = "x" if axis == "x" else "y"
+    other_coordinate = "y" if axis == "x" else "x"
+    assert {
+        (item["start"][coordinate], item["end"][coordinate])
+        for item in metadata
+    } == {(0, 5), (15, 20)}
+    for item in metadata:
+        assert item["source_rect"] == "outer"
+        assert item["target_rect"] == "inner"
+        assert item["rule_id"] == "outer-overlap"
+        assert item["start"][other_coordinate] == item["end"][other_coordinate]
+    if use_polygons:
+        positions = {
+            f"{polygon.id}:p{index}:{axis}": getattr(point, coordinate)
+            for polygon in prepare_polygons_for_sweep(polygons)
+            for index, point in enumerate(polygon.points)
+        }
+    else:
+        positions = {
+            f"{rect.id}:{side}": value
+            for rect in (outer, inner)
+            for side, value in (
+                ("lo", rect.xmin if axis == "x" else rect.ymin),
+                ("hi", rect.xmax if axis == "x" else rect.ymax),
+            )
+        }
+    assert {
+        (positions[upstream], positions[downstream])
+        for upstream, downstream, _ in graph.edges
+    } == {(0, 5), (15, 20)}
+    solved = graph.solve(positions)
+    assert all(solved[end] - solved[start] >= 3 for start, end, _ in graph.edges)
+
+
+@pytest.mark.parametrize("reverse_winding", [False, True])
+def test_overlap_uses_local_concave_boundary_not_shape_bounds(
+    reverse_winding: bool,
+) -> None:
+    points = (
+        Point(0, 0), Point(20, 0), Point(20, 8),
+        Point(8, 8), Point(8, 20), Point(0, 20),
+    )
+    outer = Polygon(
+        id="outer", layer=1,
+        points=tuple(reversed(points)) if reverse_winding else points,
+    )
+    inner = Polygon(
+        id="inner", layer=2,
+        points=(Point(2, 10), Point(6, 10), Point(6, 16), Point(2, 16)),
+    )
+    tech = TechnologyRules(
+        name="test", grid=1, min_overlap={((1, 0), (2, 0)): 3},
+    )
+    graph = generate_axis_constraints([], tech, "x", polygons=[outer, inner])
+    assert {
+        (item["start"]["x"], item["end"]["x"])
+        for item in graph.edge_metadata
+    } == {(0, 2), (6, 8)}
+    positions = {
+        f"{polygon.id}:p{index}:x": point.x
+        for polygon in prepare_polygons_for_sweep([outer, inner])
+        for index, point in enumerate(polygon.points)
+    }
+    solved = graph.solve(positions)
+    assert all(solved[end] - solved[start] >= 3 for start, end, _ in graph.edges)
+
+
+@pytest.mark.parametrize("axis", ["x", "y"])
+@pytest.mark.parametrize("offset", [(20, 0), (0, 20), (20, 20)])
+def test_overlap_does_not_pair_disjoint_shapes(
+    axis: str, offset: tuple[int, int],
+) -> None:
+    tech = TechnologyRules(
+        name="test", grid=1, min_overlap={((1, 0), (2, 0)): 3},
+    )
+    rectangles = [
+        Rectangle("first", 1, 0, 10, 0, 10),
+        Rectangle("second", 2, offset[0], offset[0] + 10, offset[1], offset[1] + 10),
+    ]
+    graph = generate_axis_constraints(rectangles, tech, axis)
+    assert not graph.edges
 
 
 def test_polygon_extension_rules_create_directional_constraints() -> None:

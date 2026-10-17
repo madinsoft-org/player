@@ -19,6 +19,39 @@ def test_min_spacing_is_symmetric_in_layer_order() -> None:
     assert tech.min_spacing_for(2, 1) == 30
 
 
+def test_overlap_rules_preserve_direction_and_datatype(tmp_path: Path) -> None:
+    rules_path = tmp_path / "rules.json"
+    rules_path.write_text(json.dumps([
+        {
+            "id": "outer-overlap", "type": "overlap",
+            "layer1": "outer", "layer2": "inner", "value": 0.003,
+        },
+        {
+            "id": "reverse-overlap", "type": "overlap",
+            "layer1": "inner", "layer2": "outer", "value": 0.002,
+        },
+        {
+            "id": "weaker-overlap", "type": "overlap",
+            "layer1": "outer", "layer2": "inner", "value": 0.001,
+        },
+    ]), encoding="utf-8")
+    layer_path = tmp_path / "layers.lyp"
+    layer_path.write_text(
+        "<layer-properties>"
+        "<properties><source>outer 2/4@1</source></properties>"
+        "<properties><source>inner 1/0@1</source></properties>"
+        "</layer-properties>", encoding="utf-8",
+    )
+    tech = TechnologyRules.from_json(rules_path, layer_path)
+
+    assert tech.min_overlap_for(2, 1, 4, 0) == 3
+    assert tech.min_overlap_for(1, 2, 0, 4) == 2
+    assert tech.min_overlap_for(2, 1, 0, 0) == 0
+    assert tech.rule_id_for_overlap(2, 1, 4, 0) == "outer-overlap"
+    assert tech.rule_id_for_overlap(1, 2, 0, 4) == "reverse-overlap"
+    assert tech.rule_id_for_overlap(2, 1, 0, 0) is None
+
+
 def test_from_json_round_trip(tmp_path: Path) -> None:
     data = {
         "name": "demo",

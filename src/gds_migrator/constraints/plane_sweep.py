@@ -329,64 +329,34 @@ def generate_axis_constraints(
                         },
                     )
             
-            # Overlap constraint: rectangles must overlap by at least overlap_value on the swept axis
-            overlap = tech.min_overlap_for(
-                rect.layer,
-                other.layer,
-                rect.datatype,
-                other.datatype,
-            )
-            overlap_rule_id = tech.rule_id_for_overlap(
-                rect.layer,
-                other.layer,
-                rect.datatype,
-                other.datatype,
-            ) if overlap > 0 else None
-            if overlap > 0 and ortho_overlaps:
-                # Check if rectangles overlap on the swept axis
-                axis_overlaps = _overlaps(rect_lo, rect_hi, other_lo, other_hi)
-                if axis_overlaps:
-                    # Ensure rect extends far enough into other
-                    upstream = f"{other.id}:lo"
-                    downstream = f"{rect.id}:hi"
-                    graph.add_constraint(
-                        upstream,
-                        downstream,
-                        overlap,
-                        constraint_id=_constraint_id(axis, "overlap", upstream, downstream),
-                        metadata={
-                            "kind": "minimum_overlap",
-                            "axis": axis,
-                            "source_rect": other.id,
-                            "target_rect": rect.id,
-                            "source_layer": other.layer,
-                            "target_layer": rect.layer,
-                            "source_datatype": other.datatype,
-                            "target_datatype": rect.datatype,
-                            "rule_value": overlap,
-                            "rule_id": overlap_rule_id,
-                        },
+            if ortho_overlaps and _overlaps(rect_lo, rect_hi, other_lo, other_hi):
+                for source, target in ((other, rect), (rect, other)):
+                    overlap = tech.min_overlap_for(
+                        source.layer, target.layer, source.datatype, target.datatype,
                     )
-                    # Ensure other extends far enough into rect
-                    upstream = f"{rect.id}:lo"
-                    downstream = f"{other.id}:hi"
-                    graph.add_constraint(
-                        upstream,
-                        downstream,
-                        overlap,
-                        constraint_id=_constraint_id(axis, "overlap", upstream, downstream),
-                        metadata={
-                            "kind": "minimum_overlap",
-                            "axis": axis,
-                            "source_rect": rect.id,
-                            "target_rect": other.id,
-                            "source_layer": rect.layer,
-                            "target_layer": other.layer,
-                            "source_datatype": rect.datatype,
-                            "target_datatype": other.datatype,
-                            "rule_value": overlap,
-                            "rule_id": overlap_rule_id,
-                        },
+                    if overlap <= 0:
+                        continue
+                    source_lo, source_hi = _axis_bounds(source, axis)
+                    target_lo, target_hi = _axis_bounds(target, axis)
+                    _add_overlap_constraints(
+                        graph, axis=axis, source=source, target=target,
+                        source_interval=(
+                            (source_lo, f"{source.id}:lo"),
+                            (source_hi, f"{source.id}:hi"),
+                        ),
+                        target_interval=(
+                            (target_lo, f"{target.id}:lo"),
+                            (target_hi, f"{target.id}:hi"),
+                        ),
+                        orthogonal_coordinate=(
+                            max(ortho_lo, other_ortho_lo)
+                            + min(ortho_hi, other_ortho_hi)
+                        ) / 2,
+                        value=overlap,
+                        rule_id=tech.rule_id_for_overlap(
+                            source.layer, target.layer,
+                            source.datatype, target.datatype,
+                        ),
                     )
             
             # Extension constraints: rect must extend other or other must extend rect
@@ -574,53 +544,35 @@ def generate_axis_constraints(
                 first_shape = shape_segments[first_id]
                 for second_id in shape_ids[first_index + 1 :]:
                     second_shape = shape_segments[second_id]
-                    first_intervals = cross_sections[first_id]
-                    second_intervals = cross_sections[second_id]
-
-                    overlap = tech.min_overlap_for(
-                        first_shape.layer,
-                        second_shape.layer,
-                        first_shape.datatype,
-                        second_shape.datatype,
-                    )
-                    if overlap > 0:
-                        for first_interval in first_intervals:
-                            for second_interval in second_intervals:
+                    for source_shape, target_shape in (
+                        (first_shape, second_shape),
+                        (second_shape, first_shape),
+                    ):
+                        overlap = tech.min_overlap_for(
+                            source_shape.layer, target_shape.layer,
+                            source_shape.datatype, target_shape.datatype,
+                        )
+                        if overlap <= 0:
+                            continue
+                        for source_interval in cross_sections[source_shape.shape_id]:
+                            for target_interval in cross_sections[target_shape.shape_id]:
                                 if not (
-                                    first_interval[0][0] < second_interval[1][0]
-                                    and second_interval[0][0] < first_interval[1][0]
+                                    source_interval[0][0] < target_interval[1][0]
+                                    and target_interval[0][0] < source_interval[1][0]
                                 ):
                                     continue
-                                _add_segment_constraint(
+                                _add_overlap_constraints(
                                     graph,
                                     axis=axis,
-                                    kind="minimum_overlap",
-                                    upstream=first_interval[0][1],
-                                    downstream=second_interval[1][1],
+                                    source_interval=source_interval,
+                                    target_interval=target_interval,
+                                    orthogonal_coordinate=orthogonal_coordinate,
                                     value=overlap,
-                                    source=first_shape,
-                                    target=second_shape,
+                                    source=source_shape,
+                                    target=target_shape,
                                     rule_id=tech.rule_id_for_overlap(
-                                        first_shape.layer,
-                                        second_shape.layer,
-                                        first_shape.datatype,
-                                        second_shape.datatype,
-                                    ),
-                                )
-                                _add_segment_constraint(
-                                    graph,
-                                    axis=axis,
-                                    kind="minimum_overlap",
-                                    upstream=second_interval[0][1],
-                                    downstream=first_interval[1][1],
-                                    value=overlap,
-                                    source=second_shape,
-                                    target=first_shape,
-                                    rule_id=tech.rule_id_for_overlap(
-                                        second_shape.layer,
-                                        first_shape.layer,
-                                        second_shape.datatype,
-                                        first_shape.datatype,
+                                        source_shape.layer, target_shape.layer,
+                                        source_shape.datatype, target_shape.datatype,
                                     ),
                                 )
 
@@ -838,7 +790,7 @@ def _cross_section_intervals(
     segments: list[Segment],
     axis: str,
     orthogonal_coordinate: float,
-) -> dict[str, list[tuple[float, str]]]:
+) -> dict[str, list[tuple[tuple[float, str], tuple[float, str]]]]:
     crossings: dict[str, list[tuple[float, str]]] = {}
     for segment in segments:
         start_orth, end_orth = (
@@ -869,6 +821,36 @@ def _cross_section_intervals(
     return intervals
 
 
+def _add_overlap_constraints(
+    graph: ConstraintGraph,
+    *,
+    axis: str,
+    source: Rectangle | Segment,
+    target: Rectangle | Segment,
+    source_interval: tuple[tuple[float, str], tuple[float, str]],
+    target_interval: tuple[tuple[float, str], tuple[float, str]],
+    orthogonal_coordinate: float,
+    value: float,
+    rule_id: str | None,
+) -> None:
+    # Interval lows face outward in the negative axis direction; highs in positive.
+    for upstream, downstream in (
+        (source_interval[0], target_interval[0]),
+        (target_interval[1], source_interval[1]),
+    ):
+        points = tuple(
+            Point(coordinate, orthogonal_coordinate)
+            if axis == "x" else Point(orthogonal_coordinate, coordinate)
+            for coordinate, _ in (upstream, downstream)
+        )
+        _add_segment_constraint(
+            graph, axis=axis, kind="minimum_overlap",
+            upstream=upstream[1], downstream=downstream[1], value=value,
+            source=source, target=target, rule_id=rule_id,
+            measurement=(points[0], points[1]),
+        )
+
+
 def _add_segment_constraint(
     graph: ConstraintGraph,
     *,
@@ -877,9 +859,10 @@ def _add_segment_constraint(
     upstream: str,
     downstream: str,
     value: float,
-    source: Segment,
-    target: Segment,
+    source: Rectangle | Segment,
+    target: Rectangle | Segment,
     rule_id: str | None,
+    measurement: tuple[Point, Point] | None = None,
 ) -> None:
     graph.add_constraint(
         upstream,
@@ -889,13 +872,17 @@ def _add_segment_constraint(
         metadata={
             "kind": kind,
             "axis": axis,
-            "source_rect": source.shape_id,
-            "target_rect": target.shape_id,
+            "source_rect": source.shape_id if isinstance(source, Segment) else source.id,
+            "target_rect": target.shape_id if isinstance(target, Segment) else target.id,
             "source_layer": source.layer,
             "target_layer": target.layer,
             "source_datatype": source.datatype,
             "target_datatype": target.datatype,
             "rule_value": value,
             "rule_id": rule_id,
+            **({
+                "start": {"x": measurement[0].x, "y": measurement[0].y},
+                "end": {"x": measurement[1].x, "y": measurement[1].y},
+            } if measurement is not None else {}),
         },
     )

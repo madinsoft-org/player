@@ -599,7 +599,10 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
             }[metadata["kind"]]
             source = rectangles_by_id[metadata["source_rect"]]
             target = rectangles_by_id[metadata["target_rect"]]
-            if metadata["kind"] == "minimum_width":
+            if metadata["kind"] == "minimum_overlap":
+                start = (metadata["start"]["x"], metadata["start"]["y"])
+                end = (metadata["end"]["x"], metadata["end"]["y"])
+            elif metadata["kind"] == "minimum_width":
                 start = (
                     ((source.xmin + source.xmax) / 2, source.ymin)
                     if axis == "y"

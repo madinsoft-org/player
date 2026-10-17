@@ -140,6 +140,22 @@ function drawMergedPolygons(svg) {
   }
 }
 
+const CUT_LAYER_PATTERN = /contact|via|cut/i;
+
+function isCutLayer(layerNumber) {
+  const layer = state.layers.get(layerNumber);
+  return Boolean(layer && CUT_LAYER_PATTERN.test(layer.name || ""));
+}
+
+// Cut layers (contacts, vias) are drawn last so they stay on top and remain selectable.
+function visiblePolygons(polygons) {
+  const visible = polygons.filter((item) => state.enabledLayers.has(item.layer) && item.points.length >= 3);
+  return [
+    ...visible.filter((item) => !isCutLayer(item.layer)),
+    ...visible.filter((item) => isCutLayer(item.layer)),
+  ];
+}
+
 function drawLayout(svg, rectangles, polygons = [], edges = []) {
   svg.replaceChildren();
   const projection = layoutProjection(rectangles, polygons);
@@ -171,7 +187,7 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
     svg.append(shape);
   }
 
-  for (const polygon of polygons.filter((item) => state.enabledLayers.has(item.layer))) {
+  for (const polygon of visiblePolygons(polygons)) {
     if (polygon.points.length < 3) continue;
     const layer = state.layers.get(polygon.layer);
     const color = layer
@@ -258,16 +274,14 @@ function renderLayers() {
   }
 }
 
-function renderConstraints() {
-  const list = byId("constraint-list");
-  list.replaceChildren();
+function polygonConstraints() {
   const selectedPolygon = (state.before?.polygons || []).find(
     (polygon) => polygon.id === state.selectedPolygonId,
   );
   const polygonShapeId = selectedPolygon?.id.startsWith(`${state.selectedCell}/`)
     ? selectedPolygon.id.slice(state.selectedCell.length + 1)
     : selectedPolygon?.id;
-  const filteredEdges = selectedPolygon
+  return selectedPolygon
     ? state.edges.filter(
         (edge) => edge.source_rect === polygonShapeId
           || edge.target_rect === polygonShapeId
@@ -275,6 +289,12 @@ function renderConstraints() {
           || edge.target_rect === selectedPolygon.id,
       )
     : state.edges;
+}
+
+function renderConstraints() {
+  const list = byId("constraint-list");
+  list.replaceChildren();
+  const filteredEdges = polygonConstraints();
   byId("constraint-count").textContent = String(filteredEdges.length);
   const visibilityButton = byId("toggle-constraints-button");
   visibilityButton.textContent = state.showConstraints ? "Hide graph" : "Show graph";
@@ -315,6 +335,7 @@ function renderConstraints() {
       const ruleEdges = edgesByRule.get(ruleId);
       const ruleGroup = document.createElement("details");
       ruleGroup.className = "constraint-rule-group";
+      ruleGroup.open = ruleEdges.some((item) => item.id === state.selectedEdgeId);
       const ruleHeading = document.createElement("summary");
       ruleHeading.className = "constraint-rule-heading";
       ruleHeading.textContent = `Rule ${ruleId} (${ruleEdges.length})`;
@@ -342,7 +363,7 @@ function renderConstraints() {
     list.append(group);
   }
 
-  const edge = state.edges.find((item) => item.id === state.selectedEdgeId);
+  const edge = filteredEdges.find((item) => item.id === state.selectedEdgeId);
   const details = byId("edge-details");
   const toggleButton = byId("toggle-edge-button");
   if (!edge) {
@@ -353,7 +374,7 @@ function renderConstraints() {
     const valueLabel = edge.kind === "fixed_footprint" ? "fixed size" : `${edge.value} nm minimum`;
     const sourceLayerName = edge.source_layer_name || `Layer ${edge.source_layer}`;
     const targetLayerName = edge.target_layer_name || `Layer ${edge.target_layer}`;
-    details.textContent = `Constraint: ${edge.kind.replaceAll("_", " ")} · ${edge.axis.toUpperCase()} · ${valueLabel} · ${edge.source_rect} → ${edge.target_rect} · Layers: ${sourceLayerName} → ${targetLayerName}${edge.excluded ? " · excluded" : ""}`;
+    details.textContent = `Constraint: ${edge.kind.replaceAll("_", " ")} · Type: ${edge.type} · ${edge.axis.toUpperCase()} · ${valueLabel} · ${edge.source_rect} → ${edge.target_rect} · Layers: ${sourceLayerName} → ${targetLayerName}${edge.excluded ? " · excluded" : ""}`;
     toggleButton.disabled = !edge.removable;
     toggleButton.textContent = edge.removable
       ? (edge.excluded ? "Restore constraint" : "Exclude constraint")
@@ -363,7 +384,7 @@ function renderConstraints() {
 
 function renderViews() {
   if (!state.before) return;
-  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], state.edges);
+  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], polygonConstraints());
   if (state.after) drawLayout(byId("after-view"), state.after.rectangles, state.after.polygons || []);
   else byId("after-view").replaceChildren();
 }
@@ -737,6 +758,36 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
 byId("reset-view-button").addEventListener("click", resetView);
 
 byId("pan-zoom-toggle").addEventListener("click", toggleDragMode);
+
+function selectAdjacentPolygon(step) {
+  const ordered = visiblePolygons(state.before?.polygons || []);
+  if (!ordered.length) return false;
+  const index = ordered.findIndex((polygon) => polygon.id === state.selectedPolygonId);
+  if (index < 0) return false;
+  selectPolygon(ordered[(index + step + ordered.length) % ordered.length].id);
+  return true;
+}
+
+const SHORTCUTS = {
+  f: resetView,
+  z: () => setDragMode("zoom"),
+  p: () => setDragMode("pan"),
+};
+
+document.addEventListener("keydown", (event) => {
+  if (byId("workspace").hidden || event.ctrlKey || event.metaKey || event.altKey) return;
+  const target = event.target;
+  if (target instanceof Element && target.closest("input, select, textarea, [contenteditable='true']")) return;
+  if (event.key === "Tab") {
+    if (state.selectedPolygonId && selectAdjacentPolygon(event.shiftKey ? -1 : 1)) event.preventDefault();
+    return;
+  }
+  const action = SHORTCUTS[event.key.toLowerCase()];
+  if (action) {
+    event.preventDefault();
+    action();
+  }
+});
 
 function svgPoint(svg, clientX, clientY) {
   const screenMatrix = svg.getScreenCTM();

@@ -600,6 +600,14 @@
     "value": 3
   },
   {
+    "id": "13.21",
+    "desc": "Min. Contact width",
+    "layer1": "contact",
+    "layer2": "contact",
+    "type": "width",
+    "value": 2
+  },  
+  {
     "id": "13.2",
     "desc": "Min. Poly2 Contact Spacing",
     "layer1": "contact",

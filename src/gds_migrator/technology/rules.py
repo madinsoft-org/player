@@ -73,8 +73,8 @@ class TechnologyRules:
             identities.
         min_extension: Minimum extension rules keyed by an ordered pair of GDS layer
             identities (layer1 must extend layer2 by at least this amount).
-        min_overlap: Minimum overlap rules keyed by an unordered pair of GDS layer
-            identities.
+        min_overlap: Minimum margins keyed by an ordered pair of GDS layer
+            identities (layer1 must overlap beyond layer2 on same-facing edges).
         rule_id_width: Mapping from layer identity to rule ID for width rules.
         rule_id_spacing: Mapping from spacing key to rule ID for spacing rules.
         rule_id_extension: Mapping from extension key to rule ID for extension rules.
@@ -156,17 +156,16 @@ class TechnologyRules:
         datatype_a: int | None = None,
         datatype_b: int | None = None,
     ) -> int:
-        """Return the minimum overlap rule between two layers, or 0 if unset."""
+        """Return the minimum margin of layer_a beyond layer_b, or 0 if unset."""
         if datatype_a is not None and datatype_b is not None:
-            pair = self._spacing_key((layer_a, datatype_a), (layer_b, datatype_b))
+            pair = ((layer_a, datatype_a), (layer_b, datatype_b))
             if pair in self.min_overlap:
                 return self.min_overlap[pair]
-        
-        pair_with_dt = self._spacing_key((layer_a, 0), (layer_b, 0))
-        if pair_with_dt in self.min_overlap:
-            return self.min_overlap[pair_with_dt]
-        
-        return 0
+        if datatype_a in (None, 0) and datatype_b in (None, 0):
+            pair_with_dt = ((layer_a, 0), (layer_b, 0))
+            if pair_with_dt in self.min_overlap:
+                return self.min_overlap[pair_with_dt]
+        return self.min_overlap.get((layer_a, layer_b), 0)
 
     def rule_id_for_width(self, layer: int, datatype: int | None = None) -> str | None:
         """Return the rule ID for the width rule of a layer, or None if unset."""
@@ -197,12 +196,16 @@ class TechnologyRules:
         datatype_a: int | None = None,
         datatype_b: int | None = None,
     ) -> str | None:
-        """Return the rule ID for the overlap rule between two layers, or None if unset."""
+        """Return the ID for the directional overlap rule, or None if unset."""
         if datatype_a is not None and datatype_b is not None:
-            pair = self._spacing_key((layer_a, datatype_a), (layer_b, datatype_b))
+            pair = ((layer_a, datatype_a), (layer_b, datatype_b))
             if pair in self.rule_id_overlap:
                 return self.rule_id_overlap[pair]
-        return self.rule_id_overlap.get(self._spacing_key(layer_a, layer_b), None)
+        if datatype_a in (None, 0) and datatype_b in (None, 0):
+            pair_with_dt = ((layer_a, 0), (layer_b, 0))
+            if pair_with_dt in self.rule_id_overlap:
+                return self.rule_id_overlap[pair_with_dt]
+        return self.rule_id_overlap.get((layer_a, layer_b))
 
     def rule_id_for_extension(
         self,
@@ -420,9 +423,10 @@ class TechnologyRules:
                 min_extension[key] = max(min_extension.get(key, 0), value)
                 rule_id_extension[key] = rule_id or rule_id_extension.get(key, "")
             elif rule_type == "overlap":
-                key = cls._spacing_key(layer1, layer2)
-                min_overlap[key] = max(min_overlap.get(key, 0), value)
-                rule_id_overlap[key] = rule_id or rule_id_overlap.get(key, "")
+                key = (layer1, layer2)
+                if key not in min_overlap or value >= min_overlap[key]:
+                    min_overlap[key] = value
+                    rule_id_overlap[key] = rule_id
 
         if not min_width and not min_spacing and not min_extension and not min_overlap:
             raise ValueError("Rule catalog contains no width, spacing, extension, or overlap rules")

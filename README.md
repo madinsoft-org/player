@@ -73,6 +73,20 @@ constraint exclusions, zoom and pan, hierarchical migration, before/after
 comparison, and download of the migrated GDSII file. Exclusions are held only
 for the lifetime of the in-memory project session.
 
+Selecting a polygon filters both the constraint list and graph to constraints
+whose source or target is that polygon. Without a polygon selection, all
+constraints for the current cell are shown. Graph visibility and layer
+visibility controls still apply.
+
+Polygons on contact, via, or cut layers (matched by layer name) are drawn above
+other polygons so they remain selectable. Selecting a constraint expands its
+rule group in the constraint tree. Keyboard shortcuts: Tab / Shift+Tab select
+the next/previous visible polygon when one is selected, F resets the view,
+Z enables zoom mode, and P enables pan mode.
+
+Run the frontend regression tests with `node --test tests/test_web_selection.cjs`
+(Node.js 18 or newer, no additional packages required).
+
 The reader and migrated GDS output retain polygon outlines and datatypes.
 The constraint sweep uses polygon boundary segments and their endpoint
 coordinates rather than treating each polygon's bounding rectangle as its
@@ -80,6 +94,12 @@ geometry. Spacing constraints use Manhattan X/Y projections of those
 segments, not Euclidean segment-to-segment distances. Polygon width
 constraints use the exact X/Y extrema of their vertices. The viewer still
 displays axis-aligned bounds for polygons.
+Overlap rules are directional: `layer1` must extend beyond `layer2` by the
+specified margin. They pair local boundaries with the same outward axis
+direction (left/left, right/right, bottom/bottom, top/top), independently of
+polygon winding. The graph displays those measured boundary pairs, not
+opposing edges or polygon bounding-box edges. Only intersecting cross-sections
+generate overlap constraints; conditional rule applicability is not inferred.
 Uploads are limited to 100 MB per file, and the viewer limits flattened cell
 views to 50,000 shapes.
 
@@ -128,6 +148,8 @@ against `gf180mcu.lyp`; the report includes their GDS layer/datatype pairs.
   retain `context.bound = "maximum"`; they are not minimum clearances.
 - `overlap`: layer1 overlaps or extends beyond layer2, preserving the
   manual's terminology, even when KLayout implements it using `enclosed`.
+  The workbench interprets this as a directional margin of layer1 beyond
+  layer2, measured between same-facing boundaries.
 - `enclosure`: layer1 contains layer2. Slot-to-metal internal margins
   (`MSLOT.5`) are classified as enclosure rather than external spacing.
 

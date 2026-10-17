@@ -43,6 +43,23 @@ def test_solve_layout_preserves_compliant_layout() -> None:
     assert by_id["right"].xmin == 20.0
 
 
+@pytest.mark.parametrize("margin", [1, 5])
+def test_solve_layout_enforces_same_facing_overlap_margins(margin: int) -> None:
+    tech = TechnologyRules(
+        name="test", grid=1, min_overlap={((2, 0), (1, 0)): 3},
+    )
+    outer = Rectangle("outer", 2, 0, 20, 0, 20)
+    inner = Rectangle("inner", 1, margin, 20 - margin, margin, 20 - margin)
+    migrated = {rect.id: rect for rect in solve_layout([outer, inner], tech)}
+
+    assert migrated["inner"].xmin - migrated["outer"].xmin >= 3
+    assert migrated["outer"].xmax - migrated["inner"].xmax >= 3
+    assert migrated["inner"].ymin - migrated["outer"].ymin >= 3
+    assert migrated["outer"].ymax - migrated["inner"].ymax >= 3
+    if margin >= 3:
+        assert migrated == {"outer": outer, "inner": inner}
+
+
 def test_solve_simplex_minimal_example() -> None:
     pytest.importorskip("scipy.optimize")
 

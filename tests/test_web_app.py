@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import gdstk
 from fastapi.testclient import TestClient
@@ -121,6 +122,66 @@ def test_layout_endpoint_returns_polygon_vertices_before_and_after_migration(tmp
             )
             assert after.status_code == 200
             assert after.json()["polygons"] == before_data["polygons"]
+        finally:
+            client.delete(f"/api/sessions/{session_id}")
+
+
+def test_overlap_graph_displays_same_facing_polygon_boundaries(tmp_path: Path) -> None:
+    layout_path = tmp_path / "overlap.gds"
+    library = gdstk.Library(unit=1e-9, precision=1e-12)
+    cell = gdstk.Cell("TOP")
+    cell.add(
+        gdstk.rectangle((0, 0), (20, 20), layer=2),
+        gdstk.rectangle((5, 5), (15, 15), layer=1),
+    )
+    library.add(cell)
+    library.write_gds(layout_path)
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/sessions",
+            files={
+                "layout": ("overlap.gds", layout_path.read_bytes(), "application/octet-stream"),
+                "technology": ("technology.json", b'{"name":"test","grid":1}', "application/json"),
+            },
+        )
+        assert response.status_code == 200, response.text
+        session_id = response.json()["id"]
+        try:
+            technology = sessions[session_id].technology
+            technology.min_overlap = {((2, 0), (1, 0)): 3}
+            technology.rule_id_overlap = {((2, 0), (1, 0)): "overlap-rule"}
+            response = client.get(
+                f"/api/sessions/{session_id}/constraints", params={"cell": "TOP"},
+            )
+            assert response.status_code == 200, response.text
+            edges = response.json()["edges"]
+            assert edges
+            for axis in ("x", "y"):
+                axis_edges = [edge for edge in edges if edge["axis"] == axis]
+                assert {
+                    (edge["start"][axis], edge["end"][axis])
+                    for edge in axis_edges
+                } == {(0, 5), (15, 20)}
+                other_axis = "y" if axis == "x" else "x"
+                for edge in axis_edges:
+                    assert edge["start"][other_axis] == edge["end"][other_axis]
+                    assert edge["source_layer"] == 2
+                    assert edge["target_layer"] == 1
+                    assert edge["kind"] == "overlap-rule"
+                    assert edge["value"] == 3
+                    assert edge["type"] == "overlap"
+            edge_id = edges[0]["id"]
+            toggle = client.post(
+                f"/api/sessions/{session_id}/constraints/{edge_id}",
+                json={"cell": "TOP", "excluded": True},
+            )
+            assert toggle.status_code == 200, toggle.text
+            response = client.get(
+                f"/api/sessions/{session_id}/constraints", params={"cell": "TOP"},
+            )
+            assert next(edge for edge in response.json()["edges"]
+                        if edge["id"] == edge_id)["excluded"]
         finally:
             client.delete(f"/api/sessions/{session_id}")
 
