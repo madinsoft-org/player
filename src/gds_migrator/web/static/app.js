@@ -156,6 +156,18 @@ function visiblePolygons(polygons) {
   ];
 }
 
+const CONSTRAINT_TYPE_COLORS = {
+  width: "#ff9e58",
+  spacing: "#56c3bc",
+  overlap: "#c792ea",
+  extension: "#f2d14b",
+};
+const DEFAULT_CONSTRAINT_COLOR = "#cfd8dc";
+
+function constraintColor(type) {
+  return CONSTRAINT_TYPE_COLORS[type] || DEFAULT_CONSTRAINT_COLOR;
+}
+
 function drawLayout(svg, rectangles, polygons = [], edges = []) {
   svg.replaceChildren();
   const projection = layoutProjection(rectangles, polygons);
@@ -212,6 +224,21 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
   }
 
   const edgeGroup = makeSvgElement("g");
+  const selectedEdge = edges.find((item) => item.id === state.selectedEdgeId);
+  for (const segment of selectedEdge ? [selectedEdge.start_segment, selectedEdge.end_segment] : []) {
+    if (!segment) continue;
+    edgeGroup.append(makeSvgElement("line", {
+      x1: x(segment[0].x),
+      y1: y(segment[0].y),
+      x2: x(segment[1].x),
+      y2: y(segment[1].y),
+      stroke: constraintColor(selectedEdge.type),
+      "stroke-width": 4,
+      "vector-effect": "non-scaling-stroke",
+      "pointer-events": "none",
+      class: "constraint-segment-highlight",
+    }));
+  }
   for (const edge of (state.showConstraints ? edges : []).filter((item) =>
     (item.source_layer < 0 || state.enabledLayers.has(item.source_layer))
     && (item.target_layer < 0 || state.enabledLayers.has(item.target_layer)))) {
@@ -220,7 +247,7 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
       y1: y(edge.start.y),
       x2: x(edge.end.x),
       y2: y(edge.end.y),
-      stroke: edge.axis === "x" ? "#ff9e58" : "#56c3bc",
+      stroke: constraintColor(edge.type),
       "stroke-width": 1,
       "stroke-dasharray": "3 3",
       "vector-effect": "non-scaling-stroke",
@@ -439,6 +466,14 @@ function selectEdge(id) {
   if (edge) scrollConstraintIntoView(id);
 }
 
+function clearSelection() {
+  if (state.selectedEdgeId === null && state.selectedPolygonId === null) return;
+  state.selectedEdgeId = null;
+  state.selectedPolygonId = null;
+  renderConstraints();
+  renderViews();
+}
+
 async function loadSelectedCell() {
   if (!state.project || !state.selectedCell) return;
   const cell = state.selectedCell;
@@ -600,20 +635,26 @@ byId("toggle-edge-button").addEventListener("click", async () => {
   }
 });
 
-byId("migrate-button").addEventListener("click", async () => {
-  const button = byId("migrate-button");
-  button.disabled = true;
-  setStatus("Migrating hierarchy…", true);
+async function runMigration(method) {
+  const buttons = [byId("migrate-button"), byId("sweep-button")];
+  for (const button of buttons) button.disabled = true;
+  setStatus(method === "sweep" ? "Sweeping constraint graph…" : "Migrating hierarchy…", true);
   try {
-    const result = await request(`/api/sessions/${state.project.id}/migrate`, { method: "POST" });
+    const result = await request(
+      `/api/sessions/${state.project.id}/migrate?method=${method}`,
+      { method: "POST" },
+    );
     await loadMigratedCell();
-    setStatus(`${result.cells_migrated} cells migrated. ${result.excluded_constraints} constraints excluded.`, true);
+    setStatus(`${result.cells_migrated} cells migrated (${result.method}). ${result.excluded_constraints} constraints excluded.`, true);
   } catch (error) {
     setStatus(error.message, true);
   } finally {
-    button.disabled = false;
+    for (const button of buttons) button.disabled = false;
   }
-});
+}
+
+byId("migrate-button").addEventListener("click", () => runMigration("solve"));
+byId("sweep-button").addEventListener("click", () => runMigration("sweep"));
 
 byId("layers-all").addEventListener("click", () => {
   if (state.enabledLayers.size === state.layers.size) {
@@ -695,6 +736,7 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
     pointerStart = {
       x: event.clientX,
       y: event.clientY,
+      primary: event.button === 0,
       edgeId: event.button === 0 ? edgeTarget?.getAttribute("data-id") : null,
       polygonId: event.button === 0 ? polygonTarget?.getAttribute("data-polygon-id") : null,
     };
@@ -738,11 +780,12 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
       zoomStart = null;
     }
     if (
-      (pointerStart?.edgeId || pointerStart?.polygonId)
+      pointerStart?.primary
       && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) <= 5
     ) {
       if (pointerStart.polygonId) selectPolygon(pointerStart.polygonId);
-      else selectEdge(pointerStart.edgeId);
+      else if (pointerStart.edgeId) selectEdge(pointerStart.edgeId);
+      else clearSelection();
     }
     pointerStart = null;
     dragOrigin = null;

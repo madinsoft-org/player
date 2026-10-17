@@ -13,6 +13,7 @@ translation is propagated to the instance's placement transform.
 from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
+from typing import Callable
 
 from gds_migrator.constraints.plane_sweep import Rectangle
 from gds_migrator.constraints.solver import solve_layout_with_polygons
@@ -20,6 +21,11 @@ from gds_migrator.geometry.transforms import Point
 from gds_migrator.hierarchy.model import Cell, Instance, Polygon
 from gds_migrator.hierarchy.traversal import topological_order
 from gds_migrator.technology.rules import TechnologyRules
+
+#: Signature shared by ``solve_layout_with_polygons`` and
+#: ``sweep_layout_with_polygons``: (rectangles, tech, polygons=...,
+#: rigid_widths=..., rigid_heights=..., excluded_constraint_ids=...).
+LayoutSolver = Callable[..., tuple[list[Rectangle], list[Polygon]]]
 
 #: Sentinel GDSII layer for synthetic instance-boundary rectangles; must not
 #: collide with any real design layer. Its width is always forced via
@@ -48,12 +54,19 @@ def migrate_hierarchy(
     cells: dict[str, Cell],
     tech: TechnologyRules,
     excluded_constraint_ids: set[str] | None = None,
+    layout_solver: LayoutSolver = solve_layout_with_polygons,
 ) -> dict[str, MigratedCell]:
-    """Migrate every cell in ``cells`` to satisfy ``tech``, bottom-up."""
+    """Migrate every cell in ``cells`` to satisfy ``tech``, bottom-up.
+
+    ``layout_solver`` places one cell's shapes; it defaults to the
+    vertex-level longest-path solve.
+    """
     order = topological_order(cells)
     migrated: dict[str, MigratedCell] = {}
     for name in order:
-        migrated[name] = _migrate_cell(cells[name], migrated, tech, excluded_constraint_ids)
+        migrated[name] = _migrate_cell(
+            cells[name], migrated, tech, excluded_constraint_ids, layout_solver,
+        )
     return migrated
 
 
@@ -74,6 +87,7 @@ def _migrate_cell(
     migrated: dict[str, MigratedCell],
     tech: TechnologyRules,
     excluded_constraint_ids: set[str] | None = None,
+    layout_solver: LayoutSolver = solve_layout_with_polygons,
 ) -> MigratedCell:
     own_ids = {rect.id for rect in cell.rectangles}
     own_ids.update(polygon.id for polygon in cell.polygons)
@@ -90,7 +104,7 @@ def _migrate_cell(
     all_rects = [*cell.rectangles, *macro_rects]
     rigid_widths = {rect.id: rect.xmax - rect.xmin for rect in macro_rects}
     rigid_heights = {rect.id: rect.ymax - rect.ymin for rect in macro_rects}
-    migrated_rects, migrated_polygons = solve_layout_with_polygons(
+    migrated_rects, migrated_polygons = layout_solver(
         all_rects,
         tech,
         polygons=cell.polygons,

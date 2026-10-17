@@ -110,3 +110,18 @@ def test_polygon_minimum_width_moves_all_extreme_vertices(tmp_path) -> None:
     points = migrated["TOP"].polygons[0].points
 
     assert {point.x for point in points} == {0, 15}
+
+
+def test_reader_converts_micrometre_libraries_to_nanometres(tmp_path) -> None:
+    source_path = tmp_path / "micrometres.gds"
+    library = gdstk.Library(unit=1e-6, precision=1e-9)
+    cell = gdstk.Cell("TOP")
+    cell.add(gdstk.rectangle((0, 0), (0.18, 0.5), layer=1))
+    library.add(cell)
+    library.write_gds(source_path)
+
+    polygon = read_library(source_path)["TOP"].polygons[0]
+
+    assert sorted((round(point.x), round(point.y)) for point in polygon.points) == [
+        (0, 0), (0, 500), (180, 0), (180, 500),
+    ]

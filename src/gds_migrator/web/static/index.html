@@ -38,7 +38,8 @@
           <button id="merge-button" type="button" class="secondary">Merge polygons</button>
           <button id="reset-view-button" type="button" class="secondary">Reset view</button>
           <button id="pan-zoom-toggle" type="button" class="secondary" aria-pressed="true">Pan mode</button>
-          <button id="migrate-button" type="button">Run migration</button>
+          <button id="migrate-button" type="button" title="Vertex longest-path solve (shapes only grow or move right/up)">Run migration</button>
+          <button id="sweep-button" type="button" title="Place every segment at the maximum of its incoming constraints, repeated until nothing moves">Sweep</button>
           <a id="download-link" class="button secondary" hidden>Download migrated GDS</a>
           <button id="new-project-button" type="button" class="secondary">New project</button>
         </div>
@@ -57,7 +58,7 @@
                 <button id="toggle-constraints-button" type="button" class="text-button" aria-pressed="true">Hide graph</button>
               </div>
             </div>
-            <p class="hint">Select a polygon to show only its constraints in the list and graph. Select an edge to inspect its axis, shapes and required distance. Exclusions apply to this project session only. Shortcuts: Tab / Shift+Tab next/previous polygon, F reset view, Z zoom mode, P pan mode.</p>
+            <p class="hint">Select a polygon to show only its constraints in the list and graph. Select an edge to inspect its axis, shapes and required distance. Click empty space to clear the selection. Exclusions apply to this project session only. Shortcuts: Tab / Shift+Tab next/previous polygon, F reset view, Z zoom mode, P pan mode.</p>
             <div id="constraint-list" class="constraint-list"></div>
             <div id="edge-details" class="edge-details">Select a constraint to see its details.</div>
             <button id="toggle-edge-button" type="button" disabled>Exclude constraint</button>
@@ -67,7 +68,7 @@
             <section class="layout-panel">
               <div class="panel-heading">
                 <div><h2>Before</h2><span id="before-caption" class="caption"></span></div>
-                <span class="legend"><i class="legend-x"></i> X <i class="legend-y"></i> Y constraints</span>
+                <span class="legend"><i class="legend-width"></i> Width <i class="legend-spacing"></i> Spacing <i class="legend-overlap"></i> Overlap <i class="legend-extension"></i> Extension</span>
               </div>
               <svg id="before-view" class="layout-view" role="img" aria-label="Layout before migration"></svg>
               <div id="before-selection" class="zoom-selection-overlay"></div>

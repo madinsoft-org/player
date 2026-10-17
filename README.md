@@ -82,7 +82,42 @@ Polygons on contact, via, or cut layers (matched by layer name) are drawn above
 other polygons so they remain selectable. Selecting a constraint expands its
 rule group in the constraint tree. Keyboard shortcuts: Tab / Shift+Tab select
 the next/previous visible polygon when one is selected, F resets the view,
-Z enables zoom mode, and P enables pan mode.
+Z enables zoom mode, and P enables pan mode. Clicking empty space clears the
+polygon and constraint selection.
+
+Constraint graph lines are colored by type (width, spacing, overlap,
+extension) and run between the midpoints of the two boundary segments they
+constrain. Those segments are the original drawn edges, merged back after the
+sweep splits them at scanline levels, and are highlighted when the constraint
+is selected.
+
+Two migration buttons are available (`POST /api/sessions/{id}/migrate?method=`):
+
+- **Migrate** (`solve`, default): longest-path solve of the vertex constraint
+  graph.
+- **Sweep** (`sweep`): segment-level sweep of the constraint graph
+  (`gds_migrator.constraints.segment_sweep`). Each constraint links the two
+  original boundary segments it was extracted from. Segments without incoming
+  constraints (start segments) keep their position; every other segment is
+  placed at the maximum of `upstream position + rule value` over its incoming
+  constraints. Passes repeat until no segment moves. Consecutive segments of the
+  same shape are linked by an internal edge of at least the layer `min_width`
+  (one grid step when the layer has no width rule), so no edge collapses to
+  zero. X and Y are swept alternately on the updated geometry, re-extracting
+  constraints each time, until the layout stops changing (at most 20 rounds),
+  because moving one axis can create new face-to-face pairs on the other.
+
+Sweep limitations: shapes may move toward lower coordinates (they are compacted
+to the rules); spacing is only extracted for neighbours within the largest rule
+distance, so farther shapes keep their gaps; non-Manhattan vertices follow the
+edge starting at them; exclusions are matched by constraint id and may no longer
+apply once geometry changes in later rounds; runtime is dominated by constraint
+extraction (about 150 s for a ~100-polygon cell with ~200k constraints).
+
+GDSII files are read in nanometre database units (`DATABASE_UNIT = 1e-9`)
+regardless of the file's user unit, consistently with the technology rules,
+grid, and writer. Reading in micrometres previously snapped most coordinates to
+zero.
 
 Run the frontend regression tests with `node --test tests/test_web_selection.cjs`
 (Node.js 18 or newer, no additional packages required).
@@ -91,13 +126,15 @@ The reader and migrated GDS output retain polygon outlines and datatypes.
 The constraint sweep uses polygon boundary segments and their endpoint
 coordinates rather than treating each polygon's bounding rectangle as its
 geometry. Spacing constraints use Manhattan X/Y projections of those
-segments, not Euclidean segment-to-segment distances. Polygon width
+segments, not Euclidean segment-to-segment distances, and only link facing
+segments (outward normals pointing toward each other along the axis); edges
+parallel to the swept axis are ignored. Polygon width
 constraints use the exact X/Y extrema of their vertices. The viewer still
 displays axis-aligned bounds for polygons.
 Overlap rules are directional: `layer1` must extend beyond `layer2` by the
 specified margin. They pair local boundaries with the same outward axis
 direction (left/left, right/right, bottom/bottom, top/top), independently of
-polygon winding. The graph displays those measured boundary pairs, not
+polygon winding. The graph displays those boundary pairs, not
 opposing edges or polygon bounding-box edges. Only intersecting cross-sections
 generate overlap constraints; conditional rule applicability is not inferred.
 Uploads are limited to 100 MB per file, and the viewer limits flattened cell

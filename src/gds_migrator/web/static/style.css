@@ -76,8 +76,11 @@ select { min-width: 150px; border: 1px solid #3a4554; border-radius: 6px; backgr
 .caption { display: block; padding-top: 3px; color: #8795a8; font-size: 10px; }
 .legend { color: #98a6b9; font-size: 10px; display: flex; align-items: center; gap: 5px; }
 .legend i { width: 8px; height: 8px; border-radius: 50%; }
-.legend-x { background: #ff9e58; }
-.legend-y { background: #56c3bc; margin-left: 4px; }
+.legend-width { background: #ff9e58; }
+.legend-spacing { background: #56c3bc; margin-left: 4px; }
+.legend-overlap { background: #c792ea; margin-left: 4px; }
+.legend-extension { background: #f2d14b; margin-left: 4px; }
+.constraint-segment-highlight { stroke-opacity: 0.9; }
 .layout-view { width: 100%; height: 100%; min-height: 450px; flex: 1; background-color: #10151b; border-radius: 5px; }
 .layout-view { touch-action: none; cursor: grab; }
 .layout-view:active { cursor: grabbing; }

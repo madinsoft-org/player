@@ -10,10 +10,18 @@ import gdstk
 from gds_migrator.geometry.transforms import Point, Transform
 from gds_migrator.hierarchy.model import Cell, Instance, Polygon
 
+#: Database unit (meters) of every coordinate handled by the migrator; design
+#: rules and the manufacturing grid are expressed in nanometers.
+DATABASE_UNIT = 1e-9
+
 
 def read_library(path: Path) -> dict[str, Cell]:
-    """Read a GDSII file and return a mapping of cell name to `Cell`."""
-    library = gdstk.read_gds(str(path))
+    """Read a GDSII file and return a mapping of cell name to `Cell`.
+
+    Coordinates are converted to nanometers regardless of the file's user
+    unit, so they share the unit of the technology rules.
+    """
+    library = gdstk.read_gds(str(path), unit=DATABASE_UNIT)
     cells: dict[str, Cell] = {}
     for gdstk_cell in library.cells:
         polygons = [

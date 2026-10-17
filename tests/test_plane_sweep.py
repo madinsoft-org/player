@@ -285,3 +285,79 @@ def test_unidirectional_extension_rule_is_kept_when_source_is_shorter() -> None:
         metadata.get("kind") == "minimum_extension"
         for metadata in graph.edge_metadata
     ) == 2
+
+
+def _segment(metadata: dict, key: str) -> frozenset[tuple[float, float]]:
+    return frozenset((point["x"], point["y"]) for point in metadata[key])
+
+
+def _l_shape(reverse: bool) -> Polygon:
+    points = (
+        Point(0, 0), Point(10, 0), Point(10, 4), Point(4, 4), Point(4, 10), Point(0, 10),
+    )
+    return Polygon(id="l", layer=1, points=points[::-1] if reverse else points)
+
+
+@pytest.mark.parametrize("reverse_winding", [False, True])
+def test_polygon_constraints_anchor_on_segment_midpoints(reverse_winding: bool) -> None:
+    neighbour = Polygon(
+        id="n", layer=1, points=(Point(14, 0), Point(20, 0), Point(20, 10), Point(14, 10)),
+    )
+    graph = generate_axis_constraints(
+        [], _tech(min_spacing=10, min_width=2), "x", polygons=[_l_shape(reverse_winding), neighbour],
+    )
+
+    l_edges = {
+        frozenset({(10, 0), (10, 4)}),
+        frozenset({(4, 4), (4, 10)}),
+    }
+    neighbour_left = frozenset({(14, 0), (14, 10)})
+    spacing = [m for m in graph.edge_metadata if m["kind"] == "minimum_spacing"]
+    assert spacing
+    for metadata in spacing:
+        assert _segment(metadata, "start_segment") in l_edges
+        assert _segment(metadata, "end_segment") == neighbour_left
+        assert metadata["end"] == {"x": 14, "y": 5}
+    assert {_segment(m, "start_segment") for m in spacing} == l_edges
+
+    l_width = [
+        m for m in graph.edge_metadata
+        if m["kind"] == "minimum_width" and m["source_rect"] == "l"
+    ]
+    assert l_width
+    for metadata in l_width:
+        assert _segment(metadata, "start_segment") == frozenset({(0, 0), (0, 10)})
+        assert _segment(metadata, "end_segment") == frozenset({(10, 0), (10, 4)})
+        assert metadata["start"] == {"x": 0, "y": 5}
+        assert metadata["end"] == {"x": 10, "y": 2}
+
+
+def test_spacing_only_links_facing_segments_across_the_gap() -> None:
+    left = Polygon(id="a", layer=1, points=(Point(0, 0), Point(10, 0), Point(10, 10), Point(0, 10)))
+    right = Polygon(id="b", layer=1, points=(Point(12, 0), Point(20, 0), Point(20, 10), Point(12, 10)))
+
+    graph = generate_axis_constraints([], _tech(min_spacing=10), "y", polygons=[left, right])
+    assert not [m for m in graph.edge_metadata if m["kind"] == "minimum_spacing"]
+
+    graph = generate_axis_constraints([], _tech(min_spacing=10), "x", polygons=[left, right])
+    spacing = [m for m in graph.edge_metadata if m["kind"] == "minimum_spacing"]
+    assert spacing
+    assert {(m["start"]["x"], m["end"]["x"]) for m in spacing} == {(10, 12)}
+
+
+def test_rectangle_constraints_anchor_on_side_midpoints() -> None:
+    left = Rectangle(id="left", layer=1, xmin=0.0, xmax=10.0, ymin=0.0, ymax=10.0)
+    right = Rectangle(id="right", layer=1, xmin=12.0, xmax=20.0, ymin=2.0, ymax=6.0)
+
+    graph = generate_axis_constraints([left, right], _tech(min_spacing=10, min_width=2), axis="x")
+
+    by_kind = {
+        (m["kind"], m["source_rect"]): m for m in graph.edge_metadata
+    }
+    spacing = by_kind[("minimum_spacing", "left")]
+    assert spacing["start"] == {"x": 10.0, "y": 5.0}
+    assert spacing["end"] == {"x": 12.0, "y": 4.0}
+    assert _segment(spacing, "end_segment") == frozenset({(12.0, 2.0), (12.0, 6.0)})
+    width = by_kind[("minimum_width", "right")]
+    assert width["start"] == {"x": 12.0, "y": 4.0}
+    assert width["end"] == {"x": 20.0, "y": 4.0}

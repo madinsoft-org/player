@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ElementTree
 from dataclasses import dataclass, field
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -17,13 +17,15 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from gds_migrator.constraints.graph import ConstraintGraph
+from gds_migrator.constraints.graph import ConstraintGraph, InfeasibleConstraintsError
 from gds_migrator.constraints.plane_sweep import Rectangle, generate_axis_constraints
+from gds_migrator.constraints.segment_sweep import sweep_layout_with_polygons
+from gds_migrator.constraints.solver import solve_layout_with_polygons
 from gds_migrator.geometry.transforms import Point, Transform
 from gds_migrator.hierarchy.migrator import MigratedCell, migrate_hierarchy
 from gds_migrator.hierarchy.model import Cell, Polygon
 from gds_migrator.hierarchy.traversal import topological_order
-from gds_migrator.io.gdsii_reader import read_library
+from gds_migrator.io.gdsii_reader import DATABASE_UNIT, read_library
 from gds_migrator.io.gdsii_writer import write_library
 from gds_migrator.technology.rules import TechnologyRules
 
@@ -559,22 +561,6 @@ def _get_layer_name(project: ProjectSession, layer: int) -> str:
 
 def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str, Any]]:
     rectangles, polygons, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name)
-    rectangles_by_id = {rectangle.id: rectangle for rectangle in rectangles}
-    rectangles_by_id.update(
-        {
-            polygon.id: Rectangle(
-                id=polygon.id,
-                layer=polygon.layer,
-                datatype=polygon.datatype,
-                xmin=min(point.x for point in polygon.points),
-                xmax=max(point.x for point in polygon.points),
-                ymin=min(point.y for point in polygon.points),
-                ymax=max(point.y for point in polygon.points),
-            )
-            for polygon in polygons
-            if polygon.points
-        }
-    )
     edges: list[dict[str, Any]] = []
     for axis, rigid_sizes in (("x", rigid_widths), ("y", rigid_heights)):
         graph: ConstraintGraph = generate_axis_constraints(
@@ -597,28 +583,8 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
                 "minimum_overlap": "overlap",
                 "minimum_extension": "extension",
             }[metadata["kind"]]
-            source = rectangles_by_id[metadata["source_rect"]]
-            target = rectangles_by_id[metadata["target_rect"]]
-            if metadata["kind"] == "minimum_overlap":
-                start = (metadata["start"]["x"], metadata["start"]["y"])
-                end = (metadata["end"]["x"], metadata["end"]["y"])
-            elif metadata["kind"] == "minimum_width":
-                start = (
-                    ((source.xmin + source.xmax) / 2, source.ymin)
-                    if axis == "y"
-                    else (source.xmin, (source.ymin + source.ymax) / 2)
-                )
-                end = (
-                    ((source.xmin + source.xmax) / 2, source.ymax)
-                    if axis == "y"
-                    else (source.xmax, (source.ymin + source.ymax) / 2)
-                )
-            elif axis == "x":
-                start = (source.xmax, (source.ymin + source.ymax) / 2)
-                end = (target.xmin, (target.ymin + target.ymax) / 2)
-            else:
-                start = ((source.xmin + source.xmax) / 2, source.ymax)
-                end = ((target.xmin + target.xmax) / 2, target.ymin)
+            if "start_segment" not in metadata:
+                continue
 
             source_layer = metadata["source_layer"]
             target_layer = metadata["target_layer"]
@@ -639,8 +605,10 @@ def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str,
                     "source_layer_name": _get_layer_name(project, source_layer),
                     "target_layer_name": _get_layer_name(project, target_layer),
                     "removable": metadata["kind"] != "fixed_footprint",
-                    "start": {"x": start[0], "y": start[1]},
-                    "end": {"x": end[0], "y": end[1]},
+                    "start": metadata["start"],
+                    "end": metadata["end"],
+                    "start_segment": metadata["start_segment"],
+                    "end_segment": metadata["end_segment"],
                     "excluded": graph.edge_ids[index] in project.excluded_constraint_ids,
                 }
             )
@@ -755,8 +723,8 @@ def merge_layer_polygons(session_id: str, cell: str, layer: int) -> dict[str, An
     if cell not in project.cells:
         raise HTTPException(status_code=404, detail=f"Unknown cell: {cell!r}.")
     
-    # Re-read the GDS file to get actual polygons
-    library = gdstk.read_gds(str(project.source_path))
+    # Re-read the GDS file to get actual polygons, in the same unit as the project cells.
+    library = gdstk.read_gds(str(project.source_path), unit=DATABASE_UNIT)
     
     # Find the cell in the library
     gdstk_cell = next((c for c in library.cells if c.name == cell), None)
@@ -865,22 +833,26 @@ def toggle_constraint(session_id: str, constraint_id: str, toggle: ConstraintTog
 
 
 @app.post("/api/sessions/{session_id}/migrate")
-def migrate_project(session_id: str) -> dict[str, Any]:
+def migrate_project(session_id: str, method: Literal["solve", "sweep"] = "solve") -> dict[str, Any]:
+    """Migrate the project with the vertex solver or the segment sweep."""
     project = _get_session(session_id)
+    layout_solver = sweep_layout_with_polygons if method == "sweep" else solve_layout_with_polygons
     try:
         migrated = migrate_hierarchy(
             project.cells,
             project.technology,
             excluded_constraint_ids=project.excluded_constraint_ids,
+            layout_solver=layout_solver,
         )
         output_path = Path(project.temporary_directory.name) / "migrated.gds"
         write_library(migrated, output_path)
-    except (OSError, ValueError, RuntimeError) as error:
+    except (OSError, ValueError, RuntimeError, InfeasibleConstraintsError) as error:
         raise HTTPException(status_code=422, detail=f"Migration failed: {error}") from error
     project.migrated = migrated
     project.output_path = output_path
     return {
         "cells_migrated": len(migrated),
+        "method": method,
         "technology": project.technology.name,
         "excluded_constraints": len(project.excluded_constraint_ids),
         "download_url": f"/api/sessions/{project.id}/download",

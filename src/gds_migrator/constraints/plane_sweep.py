@@ -11,7 +11,7 @@ import json
 from bisect import bisect_right
 import math
 from dataclasses import dataclass, replace
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from gds_migrator.geometry.transforms import Point
 
@@ -49,6 +49,140 @@ class Segment:
     start_y_node: str
     end_x_node: str
     end_y_node: str
+
+
+SegmentGeometry = tuple[Point, Point]
+Crossing = tuple[float, str, SegmentGeometry]
+Interval = tuple[Crossing, Crossing]
+
+
+def _rectangle_side(rect: Rectangle, axis: str, side: str) -> SegmentGeometry:
+    """Return the rectangle edge bounding ``rect`` on ``side`` of ``axis``."""
+    if axis == "x":
+        x = rect.xmin if side == "lo" else rect.xmax
+        return Point(x, rect.ymin), Point(x, rect.ymax)
+    y = rect.ymin if side == "lo" else rect.ymax
+    return Point(rect.xmin, y), Point(rect.xmax, y)
+
+
+def _measurement(start_segment: SegmentGeometry, end_segment: SegmentGeometry) -> dict[str, Any]:
+    """Describe the boundary segments a constraint connects and their midpoints."""
+
+    def point(value: Point) -> dict[str, float]:
+        return {"x": value.x, "y": value.y}
+
+    def midpoint(segment: SegmentGeometry) -> dict[str, float]:
+        return {
+            "x": (segment[0].x + segment[1].x) / 2,
+            "y": (segment[0].y + segment[1].y) / 2,
+        }
+
+    return {
+        "start_segment": [point(start_segment[0]), point(start_segment[1])],
+        "end_segment": [point(end_segment[0]), point(end_segment[1])],
+        "start": midpoint(start_segment),
+        "end": midpoint(end_segment),
+    }
+
+
+def _boundary_segments(segments: list[Segment]) -> dict[str, SegmentGeometry]:
+    """Map each (possibly split) segment to its original, unsplit boundary edge.
+
+    Sweep preparation splits polygon edges at shared scanline levels; consecutive
+    collinear pieces of one shape are merged back to recover the drawn edge.
+    """
+    by_shape: dict[str, list[Segment]] = {}
+    for segment in segments:
+        by_shape.setdefault(segment.shape_id, []).append(segment)
+    result: dict[str, SegmentGeometry] = {}
+    for shape_segments in by_shape.values():
+        count = len(shape_segments)
+
+        def same_direction(first: Segment, second: Segment) -> bool:
+            first_dx, first_dy = first.end.x - first.start.x, first.end.y - first.start.y
+            second_dx, second_dy = second.end.x - second.start.x, second.end.y - second.start.y
+            cross = first_dx * second_dy - first_dy * second_dx
+            dot = first_dx * second_dx + first_dy * second_dy
+            scale = math.hypot(first_dx, first_dy) * math.hypot(second_dx, second_dy)
+            return dot > 0 and abs(cross) <= 1e-9 * scale
+
+        for index, segment in enumerate(shape_segments):
+            first = last = index
+            for _ in range(count - 1):
+                previous = (first - 1) % count
+                if previous == index or not same_direction(shape_segments[previous], segment):
+                    break
+                first = previous
+            for _ in range(count - 1):
+                following = (last + 1) % count
+                if following == first or not same_direction(segment, shape_segments[following]):
+                    break
+                last = following
+            result[segment.id] = (shape_segments[first].start, shape_segments[last].end)
+    return result
+
+
+def _rectangle_interval(rect: Rectangle, axis: str) -> Interval:
+    low, high = _axis_bounds(rect, axis)
+    return (
+        (low, f"{rect.id}:lo", _rectangle_side(rect, axis, "lo")),
+        (high, f"{rect.id}:hi", _rectangle_side(rect, axis, "hi")),
+    )
+
+
+def _rectangle_node_side(
+    node: str,
+    rectangles: dict[str, Rectangle],
+    axis: str,
+) -> SegmentGeometry | None:
+    rect_id, _, side = node.rpartition(":")
+    rect = rectangles.get(rect_id)
+    if rect is None or side not in ("lo", "hi"):
+        return None
+    return _rectangle_side(rect, axis, side)
+
+
+def _is_parallel_to_axis(segment: Segment, axis: str) -> bool:
+    if axis == "x":
+        return segment.start.y == segment.end.y
+    return segment.start.x == segment.end.x
+
+
+def _shape_orientations(segments: list[Segment]) -> dict[str, float]:
+    """Return +1 for counter-clockwise shapes and -1 for clockwise ones."""
+    areas: dict[str, float] = {}
+    for segment in segments:
+        areas[segment.shape_id] = areas.get(segment.shape_id, 0.0) + (
+            segment.start.x * segment.end.y - segment.end.x * segment.start.y
+        )
+    return {shape_id: 1.0 if area >= 0 else -1.0 for shape_id, area in areas.items()}
+
+
+def _outward_direction(segment: Segment, axis: str, orientations: dict[str, float]) -> float:
+    """Return the sign of the outward normal component along ``axis``."""
+    dx = segment.end.x - segment.start.x
+    dy = segment.end.y - segment.start.y
+    component = dy if axis == "x" else -dx
+    return component * orientations[segment.shape_id]
+
+
+def _extreme_boundary(
+    polygon: Polygon,
+    node: str,
+    axis: str,
+    boundaries: dict[str, SegmentGeometry],
+) -> SegmentGeometry:
+    """Return the boundary edge lying on the polygon extreme at vertex ``node``."""
+    index = int(node.split(":")[-2][1:])
+    count = len(polygon.points)
+    vertex = polygon.points[index]
+    for segment_index in (index, (index - 1) % count):
+        start = polygon.points[segment_index]
+        end = polygon.points[(segment_index + 1) % count]
+        on_extreme = (start.x == end.x) if axis == "x" else (start.y == end.y)
+        if on_extreme and start != end:
+            return boundaries[f"{polygon.id}:segment{segment_index}"]
+    return vertex, vertex
 
 
 def _rectangle_segments(rectangles: list[Rectangle]) -> list[Segment]:
@@ -336,22 +470,10 @@ def generate_axis_constraints(
                     )
                     if overlap <= 0:
                         continue
-                    source_lo, source_hi = _axis_bounds(source, axis)
-                    target_lo, target_hi = _axis_bounds(target, axis)
                     _add_overlap_constraints(
                         graph, axis=axis, source=source, target=target,
-                        source_interval=(
-                            (source_lo, f"{source.id}:lo"),
-                            (source_hi, f"{source.id}:hi"),
-                        ),
-                        target_interval=(
-                            (target_lo, f"{target.id}:lo"),
-                            (target_hi, f"{target.id}:hi"),
-                        ),
-                        orthogonal_coordinate=(
-                            max(ortho_lo, other_ortho_lo)
-                            + min(ortho_hi, other_ortho_hi)
-                        ) / 2,
+                        source_interval=_rectangle_interval(source, axis),
+                        target_interval=_rectangle_interval(target, axis),
                         value=overlap,
                         rule_id=tech.rule_id_for_overlap(
                             source.layer, target.layer,
@@ -502,6 +624,7 @@ def generate_axis_constraints(
                 graph.add_node(node)
             width = tech.min_width_for(polygon.layer, polygon.datatype)
             if width > 0:
+                polygon_boundaries = _boundary_segments(_polygon_segments([polygon]))
                 for low_node in low_nodes:
                     for high_node in high_nodes:
                         graph.add_constraint(
@@ -525,10 +648,16 @@ def generate_axis_constraints(
                                 "target_datatype": polygon.datatype,
                                 "rule_value": width,
                                 "rule_id": tech.rule_id_for_width(polygon.layer, polygon.datatype),
+                                **_measurement(
+                                    _extreme_boundary(polygon, low_node, axis, polygon_boundaries),
+                                    _extreme_boundary(polygon, high_node, axis, polygon_boundaries),
+                                ),
                             },
                         )
 
         segments = [*_rectangle_segments(rectangles), *_polygon_segments(polygons)]
+        boundaries = _boundary_segments(segments)
+        orientations = _shape_orientations(segments)
         shape_segments: dict[str, Segment] = {}
         for segment in segments:
             shape_segments.setdefault(segment.shape_id, segment)
@@ -538,6 +667,7 @@ def generate_axis_constraints(
                 segments,
                 axis,
                 orthogonal_coordinate,
+                boundaries,
             )
             shape_ids = sorted(cross_sections)
             for first_index, first_id in enumerate(shape_ids):
@@ -566,7 +696,6 @@ def generate_axis_constraints(
                                     axis=axis,
                                     source_interval=source_interval,
                                     target_interval=target_interval,
-                                    orthogonal_coordinate=orthogonal_coordinate,
                                     value=overlap,
                                     source=source_shape,
                                     target=target_shape,
@@ -623,6 +752,8 @@ def generate_axis_constraints(
                                     value=0,
                                     source=source_shape,
                                     target=target_shape,
+                                    start_segment=source_interval[0][2],
+                                    end_segment=target_interval[0][2],
                                     rule_id=tech.rule_id_for_extension(
                                         source_shape.layer,
                                         target_shape.layer,
@@ -639,6 +770,8 @@ def generate_axis_constraints(
                                     value=extension,
                                     source=source_shape,
                                     target=target_shape,
+                                    start_segment=target_interval[1][2],
+                                    end_segment=source_interval[1][2],
                                     rule_id=tech.rule_id_for_extension(
                                         source_shape.layer,
                                         target_shape.layer,
@@ -648,8 +781,10 @@ def generate_axis_constraints(
                                 )
 
         max_spacing = max(tech.min_spacing.values(), default=0)
+        # Segments parallel to the axis have no extent to measure across; their
+        # endpoints are covered by the adjacent non-parallel segments.
         ordered_segments = sorted(
-            segments,
+            (segment for segment in segments if not _is_parallel_to_axis(segment, axis)),
             key=lambda segment: min(
                 segment.start.x if axis == "x" else segment.start.y,
                 segment.end.x if axis == "x" else segment.end.y,
@@ -707,6 +842,11 @@ def generate_axis_constraints(
                     )
                 else:
                     continue
+                if not (
+                    _outward_direction(source, axis, orientations) > 0
+                    and _outward_direction(target, axis, orientations) < 0
+                ):
+                    continue
                 for upstream, downstream in node_pairs:
                     endpoint_pair = (upstream, downstream)
                     if endpoint_pair in added_constraints:
@@ -739,10 +879,19 @@ def generate_axis_constraints(
                                 source.datatype,
                                 target.datatype,
                             ),
+                            **_measurement(boundaries[source.id], boundaries[target.id]),
                         },
                     )
             active_segments.append(segment)
 
+    rectangles_by_id = {rect.id: rect for rect in rectangles}
+    for (upstream, downstream, _), metadata in zip(graph.edges, graph.edge_metadata):
+        if "start_segment" in metadata:
+            continue
+        start_segment = _rectangle_node_side(upstream, rectangles_by_id, axis)
+        end_segment = _rectangle_node_side(downstream, rectangles_by_id, axis)
+        if start_segment is not None and end_segment is not None:
+            metadata.update(_measurement(start_segment, end_segment))
     return graph
 
 
@@ -790,8 +939,9 @@ def _cross_section_intervals(
     segments: list[Segment],
     axis: str,
     orthogonal_coordinate: float,
-) -> dict[str, list[tuple[tuple[float, str], tuple[float, str]]]]:
-    crossings: dict[str, list[tuple[float, str]]] = {}
+    boundaries: dict[str, SegmentGeometry],
+) -> dict[str, list[Interval]]:
+    crossings: dict[str, list[Crossing]] = {}
     for segment in segments:
         start_orth, end_orth = (
             (segment.start.y, segment.end.y)
@@ -804,16 +954,18 @@ def _cross_section_intervals(
             continue
         crossing = _segment_at_orthogonal(segment, axis, orthogonal_coordinate)
         if crossing is not None:
-            crossings.setdefault(segment.shape_id, []).append(crossing)
+            crossings.setdefault(segment.shape_id, []).append(
+                (crossing[0], crossing[1], boundaries[segment.id])
+            )
 
     intervals = {}
     for shape_id, shape_crossings in crossings.items():
-        ordered = sorted(shape_crossings)
-        unique = []
-        for value, node in ordered:
-            if unique and math.isclose(value, unique[-1][0], abs_tol=1e-9):
+        ordered = sorted(shape_crossings, key=lambda item: (item[0], item[1]))
+        unique: list[Crossing] = []
+        for item in ordered:
+            if unique and math.isclose(item[0], unique[-1][0], abs_tol=1e-9):
                 continue
-            unique.append((value, node))
+            unique.append(item)
         intervals[shape_id] = [
             (unique[index], unique[index + 1])
             for index in range(0, len(unique) - 1, 2)
@@ -827,9 +979,8 @@ def _add_overlap_constraints(
     axis: str,
     source: Rectangle | Segment,
     target: Rectangle | Segment,
-    source_interval: tuple[tuple[float, str], tuple[float, str]],
-    target_interval: tuple[tuple[float, str], tuple[float, str]],
-    orthogonal_coordinate: float,
+    source_interval: Interval,
+    target_interval: Interval,
     value: float,
     rule_id: str | None,
 ) -> None:
@@ -838,16 +989,11 @@ def _add_overlap_constraints(
         (source_interval[0], target_interval[0]),
         (target_interval[1], source_interval[1]),
     ):
-        points = tuple(
-            Point(coordinate, orthogonal_coordinate)
-            if axis == "x" else Point(orthogonal_coordinate, coordinate)
-            for coordinate, _ in (upstream, downstream)
-        )
         _add_segment_constraint(
             graph, axis=axis, kind="minimum_overlap",
             upstream=upstream[1], downstream=downstream[1], value=value,
             source=source, target=target, rule_id=rule_id,
-            measurement=(points[0], points[1]),
+            start_segment=upstream[2], end_segment=downstream[2],
         )
 
 
@@ -862,7 +1008,8 @@ def _add_segment_constraint(
     source: Rectangle | Segment,
     target: Rectangle | Segment,
     rule_id: str | None,
-    measurement: tuple[Point, Point] | None = None,
+    start_segment: SegmentGeometry,
+    end_segment: SegmentGeometry,
 ) -> None:
     graph.add_constraint(
         upstream,
@@ -880,9 +1027,6 @@ def _add_segment_constraint(
             "target_datatype": target.datatype,
             "rule_value": value,
             "rule_id": rule_id,
-            **({
-                "start": {"x": measurement[0].x, "y": measurement[0].y},
-                "end": {"x": measurement[1].x, "y": measurement[1].y},
-            } if measurement is not None else {}),
+            **_measurement(start_segment, end_segment),
         },
     )

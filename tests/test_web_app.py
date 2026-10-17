@@ -165,7 +165,12 @@ def test_overlap_graph_displays_same_facing_polygon_boundaries(tmp_path: Path) -
                 } == {(0, 5), (15, 20)}
                 other_axis = "y" if axis == "x" else "x"
                 for edge in axis_edges:
-                    assert edge["start"][other_axis] == edge["end"][other_axis]
+                    for key, segment_key in (("start", "start_segment"), ("end", "end_segment")):
+                        segment = edge[segment_key]
+                        assert segment[0][axis] == segment[1][axis] == edge[key][axis]
+                        assert edge[key][other_axis] == (
+                            segment[0][other_axis] + segment[1][other_axis]
+                        ) / 2
                     assert edge["source_layer"] == 2
                     assert edge["target_layer"] == 1
                     assert edge["kind"] == "overlap-rule"
@@ -449,3 +454,28 @@ def test_merge_layer_polygons(tmp_path):
         finally:
             client.delete(f"/api/sessions/{project['id']}")
             sessions.pop(project["id"], None)
+
+
+def test_sweep_migration_method_and_invalid_method(tmp_path):
+    with TestClient(app) as client:
+        session_id = _create_project(client, tmp_path)["id"]
+        try:
+            response = client.post(f"/api/sessions/{session_id}/migrate", params={"method": "sweep"})
+            assert response.status_code == 200, response.text
+            assert response.json()["method"] == "sweep"
+
+            after = client.get(
+                f"/api/sessions/{session_id}/layout",
+                params={"cell": "TOP", "version": "after"},
+            )
+            polygons = sorted(
+                after.json()["polygons"],
+                key=lambda item: min(point["x"] for point in item["points"]),
+            )
+            assert min(point["x"] for point in polygons[1]["points"]) == 11
+
+            invalid = client.post(f"/api/sessions/{session_id}/migrate", params={"method": "magic"})
+            assert invalid.status_code == 422
+        finally:
+            client.delete(f"/api/sessions/{session_id}")
+            sessions.pop(session_id, None)

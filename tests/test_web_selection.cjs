@@ -9,12 +9,20 @@ class Element {
     this.children = [];
     this.attributes = {};
     this.style = {};
+    this.listeners = {};
   }
 
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.children = children; }
   setAttribute(name, value) { this.attributes[name] = String(value); }
-  addEventListener() {}
+  getAttribute(name) { return this.attributes[name] ?? null; }
+  addEventListener(type, listener) { this.listeners[type] = listener; }
+  setPointerCapture() {}
+  closest(selector) {
+    const classes = selector.split(",").map((item) => item.trim().replace(/^\./, ""));
+    const own = (this.attributes.class || "").split(" ");
+    return classes.some((name) => own.includes(name)) ? this : null;
+  }
   querySelector() { return null; }
   get classList() {
     const attributes = this.attributes;
@@ -32,7 +40,7 @@ function workbench() {
   const listeners = {};
   const document = {
     getElementById(id) {
-      if (!elements.has(id)) elements.set(id, new Element());
+      if (!elements.has(id)) elements.set(id, Object.assign(new Element(), { id }));
       return elements.get(id);
     },
     createElement: () => new Element(),
@@ -71,6 +79,8 @@ function workbench() {
       ...edge, axis: "x", kind: "minimum_" + edge.type, value: 5,
       source_layer: 1, target_layer: 1, removable: true, excluded: false,
       start: { x: 0, y: 0 }, end: { x: 5, y: 0 },
+      start_segment: [{ x: 0, y: -1 }, { x: 0, y: 1 }],
+      end_segment: [{ x: 5, y: -1 }, { x: 5, y: 1 }],
     }));
   `, context);
   return {
@@ -84,6 +94,12 @@ function workbench() {
         preventDefault: () => { prevented = true; },
       });
       return prevented;
+    },
+    click: (target) => {
+      const svg = document.getElementById("before-view");
+      const event = { button: 0, clientX: 10, clientY: 10, pointerId: 1, target: target || svg };
+      svg.listeners.pointerdown(event);
+      svg.listeners.pointerup(event);
     },
   };
 }
@@ -221,4 +237,57 @@ test("F, Z and P shortcuts reset view and switch drag mode", () => {
   );
   assert.equal(app.press("z", { ctrlKey: true }), false);
   assert.equal(app.run("state.dragMode"), "pan");
+});
+
+function edgeLines(app) {
+  return descendants(app.element("before-view"))
+    .filter((element) => element.attributes?.class?.split(" ").includes("constraint-line"));
+}
+
+test("constraint lines are colored by constraint type", () => {
+  const app = workbench();
+  app.run("renderViews();");
+  const colors = Object.fromEntries(edgeLines(app).map((line) => [line.attributes["data-id"], line.attributes.stroke]));
+  assert.notEqual(colors["width-0"], colors.spacing);
+  assert.equal(colors["width-0"], colors["width-1"]);
+  assert.equal(colors.spacing, app.run('constraintColor("spacing")'));
+  assert.equal(app.run('constraintColor("unknown")'), app.run("DEFAULT_CONSTRAINT_COLOR"));
+});
+
+test("selecting a constraint highlights its start and end segments", () => {
+  const app = workbench();
+  app.run("renderViews();");
+  assert.equal(highlights(app).length, 0);
+  app.run('selectEdge("spacing");');
+  const segments = highlights(app).map((line) => [line.attributes.x1, line.attributes.x2]);
+  assert.equal(segments.length, 2);
+  assert.notDeepEqual(segments[0], segments[1]);
+  assert.ok(segments.every(([x1, x2]) => x1 === x2));
+});
+
+function highlights(app) {
+  return descendants(app.element("before-view"))
+    .filter((element) => element.attributes?.class === "constraint-segment-highlight");
+}
+
+test("clicking empty space clears polygon and constraint selection", () => {
+  const app = workbench();
+  app.run('selectPolygon("TOP/p0"); state.selectedEdgeId = "spacing"; renderViews();');
+  app.click();
+  assert.equal(app.run("state.selectedPolygonId"), null);
+  assert.equal(app.run("state.selectedEdgeId"), null);
+  assertConstraints(app, ["width-0", "spacing", "width-1", "width-10"]);
+  assert.equal(highlights(app).length, 0);
+});
+
+test("clicking a polygon or a constraint still selects it", () => {
+  const app = workbench();
+  app.run("renderViews();");
+  const polygon = descendants(app.element("before-view"))
+    .find((element) => element.attributes?.["data-polygon-id"] === "TOP/p1");
+  app.click(polygon);
+  assert.equal(app.run("state.selectedPolygonId"), "TOP/p1");
+  const line = edgeLines(app).find((element) => element.attributes["data-id"] === "spacing");
+  app.click(line);
+  assert.equal(app.run("state.selectedEdgeId"), "spacing");
 });
