@@ -132,10 +132,9 @@ def test_sweep_keeps_polygon_edges_at_least_min_width(reverse_winding: bool) -> 
     assert min(point.x for point in swept["n"].points) == 14
 
 
-def test_sweep_repeats_axes_when_shapes_become_face_to_face() -> None:
+def test_sweep_stacks_shapes_without_violations_on_both_axes() -> None:
     anchor = Rectangle(id="anchor", layer=1, xmin=0, xmax=10, ymin=0, ymax=10)
     floor = Rectangle(id="floor", layer=2, xmin=12, xmax=22, ymin=0, ymax=10)
-    # Not facing the anchor until the Y sweep pulls it down onto the floor.
     mover = Rectangle(id="mover", layer=1, xmin=12, xmax=22, ymin=13, ymax=23)
     tech = _tech(min_width={1: 4, 2: 4}, min_spacing={(1, 1): 10, (1, 2): 3})
 
@@ -145,8 +144,9 @@ def test_sweep_repeats_axes_when_shapes_become_face_to_face() -> None:
     )
 
     by_id = {rect.id: rect for rect in rectangles}
-    assert by_id["mover"].ymin < by_id["anchor"].ymax
-    assert by_id["mover"].xmin - by_id["anchor"].xmax >= 10
+    # The mover no longer faces anything on X, so it slides to the left edge
+    # and is then stacked above the anchor at the spacing rule.
+    assert (by_id["mover"].xmin, by_id["mover"].ymin) == (0, 20)
     assert not _violations(rectangles, [], tech)
 
 
@@ -165,7 +165,7 @@ def test_excluded_constraints_are_ignored() -> None:
         [left, right], tech, excluded_constraint_ids=spacing_ids,
     )
 
-    assert {rect.id: rect.xmin for rect in rectangles}["right"] == 15
+    assert {rect.id: rect.xmin for rect in rectangles}["right"] == 5
 
 
 def test_hierarchy_migration_accepts_the_sweep_solver() -> None:
@@ -178,3 +178,53 @@ def test_hierarchy_migration_accepts_the_sweep_solver() -> None:
 
     rect = migrated["child"].rectangles[0]
     assert (rect.xmin, rect.xmax, rect.ymin, rect.ymax) == (0, 4, 0, 4)
+
+
+def test_sweep_compacts_shapes_farther_apart_than_any_rule() -> None:
+    left = Rectangle(id="left", layer=1, xmin=0, xmax=10, ymin=0, ymax=10)
+    right = Rectangle(id="right", layer=1, xmin=500, xmax=510, ymin=0, ymax=10)
+    tech = _tech(min_width={1: 4}, min_spacing={(1, 1): 10})
+
+    rectangles, _ = sweep_layout_with_polygons([left, right], tech)
+
+    assert {rect.id: rect.xmin for rect in rectangles}["right"] == 14
+
+
+def test_sweep_keeps_enclosed_shapes_inside_without_rules() -> None:
+    metal = Rectangle(id="metal", layer=1, xmin=0, xmax=100, ymin=0, ymax=100)
+    contact = Rectangle(id="contact", layer=2, xmin=40, xmax=60, ymin=40, ymax=60)
+    tech = _tech(min_width={1: 4, 2: 2})
+
+    rectangles, _ = sweep_layout_with_polygons([metal, contact], tech)
+
+    by_id = {rect.id: rect for rect in rectangles}
+    outer, inner = by_id["metal"], by_id["contact"]
+    assert outer.xmin < inner.xmin < inner.xmax < outer.xmax
+    assert outer.ymin < inner.ymin < inner.ymax < outer.ymax
+
+
+def test_sweep_does_not_let_growing_shapes_cross_other_layers() -> None:
+    wide = Rectangle(id="wide", layer=1, xmin=0, xmax=10, ymin=0, ymax=10)
+    other = Rectangle(id="other", layer=2, xmin=12, xmax=22, ymin=0, ymax=10)
+    tech = _tech(min_width={1: 30})
+
+    rectangles, _ = sweep_layout_with_polygons([wide, other], tech)
+
+    by_id = {rect.id: rect for rect in rectangles}
+    assert by_id["wide"].xmax - by_id["wide"].xmin == 30
+    assert by_id["other"].xmin > by_id["wide"].xmax
+
+
+def test_sweep_keeps_polygon_notches_open() -> None:
+    u_shape = Polygon(id="u", layer=1, points=(
+        Point(0, 0), Point(50, 0), Point(50, 40), Point(40, 40),
+        Point(40, 10), Point(10, 10), Point(10, 40), Point(0, 40),
+    ))
+    tech = _tech(min_width={1: 4})
+
+    _, [polygon] = sweep_layout_with_polygons([], tech, polygons=[u_shape])
+
+    xs = sorted({point.x for point in polygon.points})
+    assert len(xs) == 4
+    assert min(_segment_lengths(polygon)) >= 4
+    assert not _violations([], [polygon], tech)

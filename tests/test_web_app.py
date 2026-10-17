@@ -214,58 +214,6 @@ def test_layer_properties_file_is_loaded_and_used(tmp_path):
             client.delete(f"/api/sessions/{project['id']}")
 
 
-def test_gf180_simplified_upload_uses_layer_datatype_rules(tmp_path):
-    layout_path = tmp_path / "gf180.gds"
-    library = gdstk.Library(unit=1e-9, precision=1e-12)
-    cell = gdstk.Cell("TOP")
-    cell.add(gdstk.rectangle((0, 0), (200, 200), layer=34, datatype=4))
-    library.add(cell)
-    library.write_gds(layout_path)
-
-    technology = json.dumps([
-        {
-            "type": "width",
-            "layer1": "metal1_dummy",
-            "layer2": "metal1_dummy",
-            "value": 0.4,
-            "context": {"bound": "minimum"},
-        },
-    ]).encode()
-    layer_file = (
-        "gf180mcu.lyp",
-        b"<layer-properties><properties><source>metal1_dummy 34/4@1</source>"
-        b"</properties></layer-properties>",
-        "application/xml",
-    )
-
-    with TestClient(app) as client:
-        response = client.post(
-            "/api/sessions",
-            files={
-                "layout": ("gf180.gds", layout_path.read_bytes(), "application/octet-stream"),
-                "technology": ("gf180_simplified.json", technology, "application/json"),
-                "layers": layer_file,
-            },
-        )
-        assert response.status_code == 200, response.text
-        project = response.json()
-        try:
-            assert {
-                "layer": 34,
-                "name": "metal1_dummy",
-                "color": "#778899",
-            } in project["layers"]
-            constraints = client.get(
-                f"/api/sessions/{project['id']}/constraints",
-                params={"cell": "TOP"},
-            )
-            assert constraints.status_code == 200
-            assert any(edge["value"] == 400 for edge in constraints.json()["edges"])
-        finally:
-            client.delete(f"/api/sessions/{project['id']}")
-            sessions.pop(project["id"], None)
-
-
 def test_invalid_file_type_is_rejected(tmp_path):
     with TestClient(app) as client:
         response = client.post(

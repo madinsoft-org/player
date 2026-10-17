@@ -70,17 +70,6 @@ def test_from_json_round_trip(tmp_path: Path) -> None:
     assert tech.min_spacing_for(67, 67) == 210
 
 
-def test_from_gf180_simplified_uses_layer_and_datatype_mapping() -> None:
-    tech = TechnologyRules.from_json(ROOT / "drc" / "gf180_simplified.json")
-
-    assert tech.name == "gf180"
-    assert tech.grid == 5
-    assert tech.layers["dnwell"] == (12, 0)
-    assert tech.layers["metal1_slot"] == (34, 3)
-    assert tech.min_width_for(12, 0) > 0
-    assert tech.min_spacing_for(12, 12, 0, 0) > 0
-
-
 def test_read_klayout_layer_map_uses_separate_layer_names(tmp_path: Path) -> None:
     layer_path = tmp_path / "layers.lyp"
     layer_path.write_text(

@@ -9,9 +9,15 @@ coordinate, the sweep moves whole boundary segments. For each axis:
 2. Consecutive segments of one shape are linked by an internal constraint so
    the edge joining them keeps at least the layer minimum width (or one grid
    step when the layer has no width rule); shapes never collapse or fold.
-3. Start segments -- those without any incoming constraint -- keep their
-   original position.
-4. Every other segment is placed at the maximum of ``position[upstream] +
+3. Facing segments of all shapes and layers keep their original order (see
+   :func:`_ordering_edges`): no boundary crosses another, so polygons keep
+   their shape, overlapping shapes stay overlapping and separate shapes stay
+   separate. Same-layer facing segments keep the spacing rule at any
+   distance.
+4. Start segments -- those without any incoming constraint -- are placed at
+   the lowest original coordinate, so the layout is compacted as much as the
+   constraints allow.
+5. Every other segment is placed at the maximum of ``position[upstream] +
    value`` over its incoming constraints. Passes are repeated until no
    segment moves.
 
@@ -23,7 +29,7 @@ may distort non-Manhattan geometry.
 from __future__ import annotations
 
 import re
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING
 
 from gds_migrator.constraints.graph import InfeasibleConstraintsError
@@ -148,26 +154,37 @@ def _sweep_axis(
         rectangles, tech, axis, rigid_sizes=rigid_sizes, polygons=polygons,
     )
     edges: list[SweepEdge] = []
+    excluded_pairs: set[frozenset[SegmentKey]] = set()
     for (upstream, downstream, value), constraint_id, metadata in zip(
         graph.edges, graph.edge_ids, graph.edge_metadata,
     ):
-        if constraint_id in excluded or "start_segment" not in metadata:
+        if "start_segment" not in metadata:
             continue
-        edges.append((
+        edge = (
             _segment_key(_node_shape(upstream), _points(metadata["start_segment"])),
             _segment_key(_node_shape(downstream), _points(metadata["end_segment"])),
             value,
-        ))
+        )
+        if constraint_id in excluded:
+            excluded_pairs.add(frozenset(edge[:2]))
+        else:
+            edges.append(edge)
     rigid = set(rigid_sizes or {})
     for shape_id, (layer, datatype, segments) in shape_segments.items():
         if shape_id not in rigid:
             edges.extend(_internal_edges(shape_id, segments, axis, tech, layer, datatype))
-    original = {
-        key: _axis_position(key, axis)
+    boundaries = _perpendicular_boundaries(rectangles, polygons, shape_segments, axis)
+    edges.extend(_ordering_edges(boundaries, edges, tech, excluded_pairs))
+    original = {boundary.key: boundary.position for boundary in boundaries}
+    original.update(
+        (key, _axis_position(key, axis))
         for edge in edges
         for key in edge[:2]
-    }
-    positions = sweep_segments(original, edges)
+        if key not in original
+    )
+    if not original:
+        return {}
+    positions = sweep_segments(original, edges, source_position=min(original.values()))
     return {
         key: positions[key] - original[key]
         for key in positions
@@ -178,17 +195,22 @@ def _sweep_axis(
 def sweep_segments(
     original_positions: dict[SegmentKey, float],
     edges: list[SweepEdge],
+    source_position: float | None = None,
 ) -> dict[SegmentKey, float]:
     """Place segments at the maximum of their incoming constraints.
 
-    Segments without incoming constraints keep ``original_positions``; all
-    others are recomputed each pass, in original-position order, until a
+    Segments without incoming constraints (start segments) are placed at
+    ``source_position``, or keep ``original_positions`` when it is ``None``;
+    all others are recomputed each pass, in original-position order, until a
     pass moves nothing.
     """
     incoming: dict[SegmentKey, list[tuple[SegmentKey, float]]] = {}
     for upstream, downstream, value in edges:
         incoming.setdefault(downstream, []).append((upstream, value))
-    positions = dict(original_positions)
+    positions = {
+        key: position if key in incoming or source_position is None else source_position
+        for key, position in original_positions.items()
+    }
     order = sorted(incoming, key=lambda key: original_positions[key])
     for _ in range(len(positions) + 1):
         changed = False
@@ -202,6 +224,152 @@ def sweep_segments(
     raise InfeasibleConstraintsError(
         "segment sweep did not converge: the constraints contain a positive-weight cycle"
     )
+
+
+@dataclass(frozen=True)
+class _Boundary:
+    """A boundary segment perpendicular to the swept axis."""
+
+    key: SegmentKey
+    layer: int
+    datatype: int
+    position: float
+    lo: float
+    hi: float
+    #: +1 when the shape interior lies below ``position``, -1 when above.
+    outward: int
+
+
+def _perpendicular_boundaries(
+    rectangles: list[Rectangle],
+    polygons: list[Polygon],
+    shape_segments: dict[str, tuple[int, int, list[tuple[Point, Point]]]],
+    axis: str,
+) -> list[_Boundary]:
+    """Return every shape edge perpendicular to ``axis`` with its outward side."""
+    orientations = {rect.id: 1.0 for rect in rectangles}
+    orientations.update((polygon.id, _orientation(polygon.points)) for polygon in polygons)
+    boundaries = []
+    for shape_id, (layer, datatype, segments) in shape_segments.items():
+        orientation = orientations.get(shape_id, 0.0)
+        if orientation == 0.0:
+            continue
+        for start, end in segments:
+            if _coordinate(start, axis) != _coordinate(end, axis):
+                continue
+            run = _orthogonal(end, axis) - _orthogonal(start, axis)
+            if run == 0:
+                continue
+            # For a counter-clockwise boundary the interior lies to the left of
+            # the drawing direction, so a vertical edge drawn upward faces +x
+            # and a horizontal edge drawn rightward faces -y.
+            facing = (1 if run > 0 else -1) * (1 if orientation > 0 else -1)
+            boundaries.append(_Boundary(
+                key=_segment_key(shape_id, (start, end)),
+                layer=layer,
+                datatype=datatype,
+                position=_coordinate(start, axis),
+                lo=min(_orthogonal(start, axis), _orthogonal(end, axis)),
+                hi=max(_orthogonal(start, axis), _orthogonal(end, axis)),
+                outward=facing if axis == "x" else -facing,
+            ))
+    return boundaries
+
+
+def _ordering_edges(
+    boundaries: list[_Boundary],
+    rule_edges: list[SweepEdge],
+    tech: TechnologyRules,
+    excluded_pairs: set[frozenset[SegmentKey]] | None = None,
+) -> list[SweepEdge]:
+    """Keep the original order of facing boundaries so no edge crosses another.
+
+    Boundaries are scanned in axis order; a skyline over the orthogonal axis
+    keeps, for each orthogonal coordinate, the last boundary seen. Each new
+    boundary is linked to the boundaries it sees, across all layers (no
+    crossing) and within its own layer (spacing at any distance). Facing
+    boundaries separated by empty space keep the spacing rule unless the user
+    excluded that constraint; boundaries originally apart stay at least one
+    grid step apart; coincident ones stay coincident unless a design rule
+    orders them.
+    """
+    ruled_pairs = {frozenset((upstream, downstream)) for upstream, downstream, _ in rule_edges}
+    excluded_pairs = excluded_pairs or set()
+    # Outward-positive boundaries first on ties: they end the shape before
+    # the touching shape that starts at the same coordinate.
+    ordered = sorted(boundaries, key=lambda boundary: (boundary.position, -boundary.outward))
+    global_skyline: list[tuple[float, float, _Boundary]] = []
+    layer_skylines: dict[tuple[int, int], list[tuple[float, float, _Boundary]]] = {}
+    edges: list[SweepEdge] = []
+    seen: set[tuple[SegmentKey, SegmentKey]] = set()
+    for boundary in ordered:
+        layer_skyline = layer_skylines.setdefault((boundary.layer, boundary.datatype), [])
+        visible = _skyline_insert(global_skyline, boundary) + _skyline_insert(layer_skyline, boundary)
+        for previous in visible:
+            pair = (previous.key, boundary.key)
+            if pair in seen or previous.key == boundary.key:
+                continue
+            seen.add(pair)
+            edges.extend(_ordering_pair(previous, boundary, ruled_pairs, excluded_pairs, tech))
+    return edges
+
+
+def _ordering_pair(
+    first: _Boundary,
+    second: _Boundary,
+    ruled_pairs: set[frozenset[SegmentKey]],
+    excluded_pairs: set[frozenset[SegmentKey]],
+    tech: TechnologyRules,
+) -> list[SweepEdge]:
+    """Return the order constraints between two facing boundaries."""
+    pair = frozenset((first.key, second.key))
+    ruled = pair in ruled_pairs
+    distance = second.position - first.position
+    if distance == 0 and first.outward == second.outward:
+        return [] if ruled else [(first.key, second.key, 0.0), (second.key, first.key, 0.0)]
+    if ruled:
+        # The design rule already orders this pair, possibly reversing an
+        # original layout that violates it.
+        return []
+    value = tech.grid if distance > 0 else 0.0
+    if first.outward > 0 > second.outward and distance > 0 and pair not in excluded_pairs:
+        value = max(value, tech.min_spacing_for(
+            first.layer, second.layer, first.datatype, second.datatype,
+        ))
+    return [(first.key, second.key, value)]
+
+
+def _skyline_insert(
+    skyline: list[tuple[float, float, _Boundary]],
+    boundary: _Boundary,
+) -> list[_Boundary]:
+    """Cover ``boundary``'s orthogonal span and return the boundaries it hides."""
+    visible: list[_Boundary] = []
+    kept: list[tuple[float, float, _Boundary]] = []
+    for lo, hi, other in skyline:
+        if hi <= boundary.lo or lo >= boundary.hi:
+            kept.append((lo, hi, other))
+            continue
+        if other not in visible:
+            visible.append(other)
+        if lo < boundary.lo:
+            kept.append((lo, boundary.lo, other))
+        if hi > boundary.hi:
+            kept.append((boundary.hi, hi, other))
+    kept.append((boundary.lo, boundary.hi, boundary))
+    kept.sort(key=lambda item: item[0])
+    skyline[:] = kept
+    return visible
+
+
+def _orientation(points: tuple[Point, ...]) -> float:
+    """Return the signed area (positive for counter-clockwise outlines)."""
+    count = len(points)
+    return sum(
+        points[index].x * points[(index + 1) % count].y
+        - points[(index + 1) % count].x * points[index].y
+        for index in range(count)
+    ) / 2
 
 
 def _internal_edges(
