@@ -327,9 +327,12 @@ def test_polygon_constraints_anchor_on_segment_midpoints(reverse_winding: bool) 
     assert l_width
     for metadata in l_width:
         assert _segment(metadata, "start_segment") == frozenset({(0, 0), (0, 10)})
-        assert _segment(metadata, "end_segment") == frozenset({(10, 0), (10, 4)})
-        assert metadata["start"] == {"x": 0, "y": 5}
-        assert metadata["end"] == {"x": 10, "y": 2}
+    end_segments = {_segment(m, "end_segment") for m in l_width}
+    assert frozenset({(10, 0), (10, 4)}) in end_segments
+    assert frozenset({(4, 4), (4, 10)}) in end_segments
+    foot_meta = next(m for m in l_width if _segment(m, "end_segment") == frozenset({(10, 0), (10, 4)}))
+    assert foot_meta["start"] == {"x": 0, "y": 5}
+    assert foot_meta["end"] == {"x": 10, "y": 2}
 
 
 def test_spacing_only_links_facing_segments_across_the_gap() -> None:

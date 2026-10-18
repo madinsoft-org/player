@@ -262,21 +262,30 @@ class TechnologyRules:
                 data_dir = path.parent / "data"
                 root_dir = path.parent.parent
                 stem = path.stem
-                
+                stem_lower = stem.lower()
+                stem_clean = re.sub(r"(_mistral|_gemini|_simplified|_compact|_rules|_subm|_mosis)", "", stem)
+
+                candidate_stems = [stem, stem_clean]
+                if "scmos" in stem_lower:
+                    candidate_stems.extend(["scmos_180nm_mosis", "scmos_180nm"])
+                elif "gf180" in stem_lower:
+                    candidate_stems.extend(["gf180mcu", "gf180"])
+                elif "sky130" in stem_lower:
+                    candidate_stems.extend(["sky130A", "sky130"])
+                candidate_stems.extend(["gf180mcu", "scmos_180nm_mosis", "scmos_180nm", "sky130A"])
+
+                seen_stems: set[str] = set()
                 possible_lyp_files = []
-                for base_name in [
-                    stem,
-                    stem.replace("_gemini", "").replace("_simplified", ""),
-                    "gf180mcu",
-                    "scmos_180nm",
-                    "sky130A",
-                ]:
+                for base_name in candidate_stems:
+                    if base_name in seen_stems:
+                        continue
+                    seen_stems.add(base_name)
                     possible_lyp_files.extend([
                         parent_dir / (base_name + ".lyp"),
                         data_dir / (base_name + ".lyp"),
                         root_dir / "data" / (base_name + ".lyp"),
                     ])
-                
+
                 for candidate in possible_lyp_files:
                     if candidate.exists():
                         layer_properties_path = candidate
@@ -381,7 +390,7 @@ class TechnologyRules:
             if not isinstance(layer1_value, str):
                 raise ValueError(f"Rule {index} must have a string 'layer1'")
             layer1_name = layer1_value.lower()
-            mapped_layer1_name = layer_name_mapping.get(layer1_name, layer1_name)
+            mapped_layer1_name = layer1_name if layer1_name in layers else layer_name_mapping.get(layer1_name, layer1_name)
             if mapped_layer1_name not in layers:
                 continue
             layer1 = layers[mapped_layer1_name]
@@ -409,7 +418,7 @@ class TechnologyRules:
             if not isinstance(layer2_value, str):
                 raise ValueError(f"Rule {index} ({rule_type}) must have a string 'layer2'")
             layer2_name = layer2_value.lower()
-            mapped_layer2_name = layer_name_mapping.get(layer2_name, layer2_name)
+            mapped_layer2_name = layer2_name if layer2_name in layers else layer_name_mapping.get(layer2_name, layer2_name)
             if mapped_layer2_name not in layers:
                 continue
             layer2 = layers[mapped_layer2_name]

@@ -6,6 +6,7 @@ const state = {
   before: null,
   after: null,
   edges: [],
+  afterEdges: [],
   selectedEdgeId: null,
   selectedPolygonId: null,
   constraintGraphLoading: false,
@@ -301,21 +302,21 @@ function renderLayers() {
   }
 }
 
-function polygonConstraints() {
-  const selectedPolygon = (state.before?.polygons || []).find(
+function polygonConstraints(edges = state.edges, layout = state.before) {
+  const selectedPolygon = (layout?.polygons || []).find(
     (polygon) => polygon.id === state.selectedPolygonId,
   );
   const polygonShapeId = selectedPolygon?.id.startsWith(`${state.selectedCell}/`)
     ? selectedPolygon.id.slice(state.selectedCell.length + 1)
     : selectedPolygon?.id;
   return selectedPolygon
-    ? state.edges.filter(
+    ? edges.filter(
         (edge) => edge.source_rect === polygonShapeId
           || edge.target_rect === polygonShapeId
           || edge.source_rect === selectedPolygon.id
           || edge.target_rect === selectedPolygon.id,
       )
-    : state.edges;
+    : edges;
 }
 
 function renderConstraints() {
@@ -411,14 +412,16 @@ function renderConstraints() {
 
 function renderViews() {
   if (!state.before) return;
-  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], polygonConstraints());
-  if (state.after) drawLayout(byId("after-view"), state.after.rectangles, state.after.polygons || []);
+  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], polygonConstraints(state.edges, state.before));
+  if (state.after) drawLayout(byId("after-view"), state.after.rectangles, state.after.polygons || [], polygonConstraints(state.afterEdges || [], state.after));
   else byId("after-view").replaceChildren();
 }
 
 function zoomToEdge(edge) {
-  if (!edge || !state.before || !edge.start || !edge.end) return;
-  const { x, y } = layoutProjection(state.before.rectangles, state.before.polygons || []);
+  if (!edge || !edge.start || !edge.end) return;
+  const layout = (state.afterEdges || []).includes(edge) ? (state.after || state.before) : (state.before || state.after);
+  if (!layout) return;
+  const { x, y } = layoutProjection(layout.rectangles, layout.polygons || []);
   const startX = x(edge.start.x);
   const endX = x(edge.end.x);
   const startY = y(edge.start.y);
@@ -459,7 +462,7 @@ function selectPolygon(id) {
 
 function selectEdge(id) {
   state.selectedEdgeId = id;
-  const edge = state.edges.find((item) => item.id === id);
+  const edge = state.edges.find((item) => item.id === id) || (state.afterEdges || []).find((item) => item.id === id);
   if (edge) zoomToEdge(edge);
   renderConstraints();
   renderViews();

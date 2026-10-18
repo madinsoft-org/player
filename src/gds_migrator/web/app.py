@@ -506,14 +506,20 @@ def _flatten_polygons(
 def _cell_constraint_rectangles(
     project: ProjectSession,
     cell_name: str,
+    version: str = "before",
 ) -> tuple[list[Rectangle], list[Polygon], dict[str, float], dict[str, float]]:
-    cell = project.cells[cell_name]
+    cells_dict: dict[str, Cell] | dict[str, MigratedCell] = (
+        project.migrated
+        if version == "after" and project.migrated is not None
+        else project.cells
+    )
+    cell = cells_dict[cell_name]
     rectangles = list(cell.rectangles)
     polygons = list(cell.polygons)
     rigid_widths: dict[str, float] = {}
     rigid_heights: dict[str, float] = {}
     for instance in cell.instances:
-        child_bounds = _project_cell_bounds(project.cells, instance.cell_name)
+        child_bounds = _project_cell_bounds(cells_dict, instance.cell_name)
         corners = [
             instance.transform.apply(Point(x, y))
             for x, y in (
@@ -559,8 +565,8 @@ def _get_layer_name(project: ProjectSession, layer: int) -> str:
     return f"Layer {layer}"
 
 
-def _constraint_edges(project: ProjectSession, cell_name: str) -> list[dict[str, Any]]:
-    rectangles, polygons, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name)
+def _constraint_edges(project: ProjectSession, cell_name: str, version: str = "before") -> list[dict[str, Any]]:
+    rectangles, polygons, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name, version=version)
     edges: list[dict[str, Any]] = []
     for axis, rigid_sizes in (("x", rigid_widths), ("y", rigid_heights)):
         graph: ConstraintGraph = generate_axis_constraints(
@@ -804,11 +810,19 @@ def get_layout(session_id: str, cell: str, version: str = "before") -> dict[str,
 
 
 @app.get("/api/sessions/{session_id}/constraints")
-def get_constraints(session_id: str, cell: str) -> dict[str, Any]:
+def get_constraints(session_id: str, cell: str, version: str = "before") -> dict[str, Any]:
     project = _get_session(session_id)
+    if version not in {"before", "after"}:
+        raise HTTPException(status_code=422, detail="Version must be 'before' or 'after'.")
+    if version == "after":
+        if project.migrated is None:
+            raise HTTPException(status_code=409, detail="Run the migration before requesting the migrated constraints.")
+        if cell not in project.migrated:
+            raise HTTPException(status_code=404, detail=f"Unknown cell: {cell!r}.")
+        return {"cell": cell, "version": version, "edges": _constraint_edges(project, cell, version="after")}
     if cell not in project.cells:
         raise HTTPException(status_code=404, detail=f"Unknown cell: {cell!r}.")
-    return {"cell": cell, "edges": _constraint_edges(project, cell)}
+    return {"cell": cell, "version": version, "edges": _constraint_edges(project, cell, version="before")}
 
 
 @app.post("/api/sessions/{session_id}/constraints/{constraint_id}")

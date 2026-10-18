@@ -634,8 +634,8 @@ def generate_axis_constraints(
                             constraint_id=_constraint_id(
                                 axis,
                                 "minimum_width",
-                                polygon.id,
-                                polygon.id,
+                                low_node,
+                                high_node,
                             ),
                             metadata={
                                 "kind": "minimum_width",
@@ -662,6 +662,48 @@ def generate_axis_constraints(
         for segment in segments:
             shape_segments.setdefault(segment.shape_id, segment)
         sweep_levels = polygon_sweep_levels or []
+        seen_polygon_width_pairs: set[tuple[str, frozenset[tuple[float, float]], frozenset[tuple[float, float]]]] = set()
+
+        for orthogonal_coordinate in sweep_levels:
+            cross_sections = _cross_section_intervals(
+                segments,
+                axis,
+                orthogonal_coordinate,
+                boundaries,
+            )
+            shape_ids = sorted(cross_sections)
+            for shape_id in shape_ids:
+                shape = shape_segments[shape_id]
+                width = tech.min_width_for(shape.layer, shape.datatype)
+                if width <= 0:
+                    continue
+                for interval in cross_sections[shape_id]:
+                    seg1_coords = frozenset((
+                        (interval[0][2][0].x, interval[0][2][0].y),
+                        (interval[0][2][1].x, interval[0][2][1].y),
+                    ))
+                    seg2_coords = frozenset((
+                        (interval[1][2][0].x, interval[1][2][0].y),
+                        (interval[1][2][1].x, interval[1][2][1].y),
+                    ))
+                    pair_key = (shape_id, seg1_coords, seg2_coords)
+                    if pair_key in seen_polygon_width_pairs:
+                        continue
+                    seen_polygon_width_pairs.add(pair_key)
+                    _add_segment_constraint(
+                        graph,
+                        axis=axis,
+                        kind="minimum_width",
+                        upstream=interval[0][1],
+                        downstream=interval[1][1],
+                        value=width,
+                        source=shape,
+                        target=shape,
+                        rule_id=tech.rule_id_for_width(shape.layer, shape.datatype),
+                        start_segment=interval[0][2],
+                        end_segment=interval[1][2],
+                    )
+
         for orthogonal_coordinate in sweep_levels:
             cross_sections = _cross_section_intervals(
                 segments,
