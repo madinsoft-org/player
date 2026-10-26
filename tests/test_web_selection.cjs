@@ -175,7 +175,7 @@ test("graph visibility and layer visibility still apply to filtered edges", () =
 
 function polygonOrder(app) {
   return descendants(app.element("before-view"))
-    .filter((element) => element.attributes?.["data-polygon-id"])
+    .filter((element) => element.attributes?.class?.split(" ").includes("layout-polygon"))
     .map((element) => element.attributes["data-polygon-id"]);
 }
 
@@ -243,6 +243,76 @@ function edgeLines(app) {
   return descendants(app.element("before-view"))
     .filter((element) => element.attributes?.class?.split(" ").includes("constraint-line"));
 }
+
+function constraintLines(app, viewId) {
+  return descendants(app.element(viewId))
+    .filter((element) => element.attributes?.class?.split(" ").includes("constraint-line"));
+}
+
+test("selecting a polygon segment filters its graph to constraints touching that segment", () => {
+  const app = workbench();
+  app.run(`
+    state.edges.forEach((edge) => {
+      edge.start_segment = [{ x: 100, y: 100 }, { x: 101, y: 100 }];
+      edge.end_segment = [{ x: 100, y: 101 }, { x: 101, y: 101 }];
+    });
+    state.edges[0].start_segment = [{ x: 0, y: 0 }, { x: 5, y: 0 }];
+    renderViews();
+  `);
+  const segment = descendants(app.element("before-view"))
+    .find((element) => element.attributes?.class === "layout-segment-hit-area"
+      && element.attributes["data-shape-id"] === "TOP/p0"
+      && element.attributes["data-segment-index"] === "0");
+  app.click(segment);
+  assert.equal(app.run("state.selectedPolygonId"), "TOP/p0");
+  assert.equal(app.run("state.selectedSegment.index"), 0);
+  assertConstraints(app, ["width-0"]);
+  assert.equal(
+    descendants(app.element("before-view"))
+      .filter((element) => element.attributes?.class === "layout-segment-selected").length,
+    1,
+  );
+});
+
+test("rectangle segments can be selected to filter their constraints", () => {
+  const app = workbench();
+  app.run(`
+    state.before.rectangles = [{
+      id: "TOP/r0", layer: 1, datatype: 0, xmin: 0, ymin: 0, xmax: 5, ymax: 5,
+    }];
+    state.edges = [{
+      ...state.edges[0],
+      source_rect: "r0",
+      target_rect: "r0",
+      start_segment: [{ x: 0, y: 0 }, { x: 5, y: 0 }],
+    }];
+    renderViews();
+  `);
+  const segment = descendants(app.element("before-view"))
+    .find((element) => element.attributes?.class === "layout-segment-hit-area"
+      && element.attributes["data-shape-id"] === "TOP/r0"
+      && element.attributes["data-segment-index"] === "0");
+  app.click(segment);
+  assert.equal(app.run("state.selectedSegment.shapeId"), "TOP/r0");
+  assertConstraints(app, ["width-0"]);
+});
+
+test("selecting a constraint in the before view highlights its counterpart after migration", () => {
+  const app = workbench();
+  app.run(`
+    state.after = state.before;
+    state.afterEdges = state.edges.map((edge) => ({ ...edge }));
+    renderViews();
+  `);
+  const line = edgeLines(app).find((element) => element.attributes["data-id"] === "spacing");
+  app.click(line);
+  for (const viewId of ["before-view", "after-view"]) {
+    const selected = constraintLines(app, viewId)
+      .find((element) => element.attributes["data-id"] === "spacing");
+    assert.ok(selected);
+    assert.ok(selected.attributes.class.includes("selected"));
+  }
+});
 
 test("constraint lines are colored by constraint type", () => {
   const app = workbench();

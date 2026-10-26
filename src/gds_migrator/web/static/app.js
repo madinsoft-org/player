@@ -9,6 +9,7 @@ const state = {
   afterEdges: [],
   selectedEdgeId: null,
   selectedPolygonId: null,
+  selectedSegment: null,
   constraintGraphLoading: false,
   cellLoadId: 0,
   showConstraints: true,
@@ -169,6 +170,39 @@ function constraintColor(type) {
   return CONSTRAINT_TYPE_COLORS[type] || DEFAULT_CONSTRAINT_COLOR;
 }
 
+function drawSelectableSegments(svg, shapeId, points, x, y) {
+  for (let index = 0; index < points.length; index += 1) {
+    const start = points[index];
+    const end = points[(index + 1) % points.length];
+    if (state.selectedSegment?.shapeId === shapeId && state.selectedSegment.index === index) {
+      svg.append(makeSvgElement("line", {
+        x1: x(start.x),
+        y1: y(start.y),
+        x2: x(end.x),
+        y2: y(end.y),
+        stroke: "#ffffff",
+        "stroke-width": 3,
+        "vector-effect": "non-scaling-stroke",
+        "pointer-events": "none",
+        class: "layout-segment-selected",
+      }));
+    }
+    svg.append(makeSvgElement("line", {
+      x1: x(start.x),
+      y1: y(start.y),
+      x2: x(end.x),
+      y2: y(end.y),
+      stroke: "transparent",
+      "stroke-width": 10,
+      "vector-effect": "non-scaling-stroke",
+      "pointer-events": "stroke",
+      class: "layout-segment-hit-area",
+      "data-shape-id": shapeId,
+      "data-segment-index": index,
+    }));
+  }
+}
+
 function drawLayout(svg, rectangles, polygons = [], edges = []) {
   svg.replaceChildren();
   const projection = layoutProjection(rectangles, polygons);
@@ -198,6 +232,12 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
     title.textContent = `${rectangle.id} · layer ${rectangle.layer}`;
     shape.append(title);
     svg.append(shape);
+    drawSelectableSegments(svg, rectangle.id, [
+      { x: rectangle.xmin, y: rectangle.ymin },
+      { x: rectangle.xmax, y: rectangle.ymin },
+      { x: rectangle.xmax, y: rectangle.ymax },
+      { x: rectangle.xmin, y: rectangle.ymax },
+    ], x, y);
   }
 
   for (const polygon of visiblePolygons(polygons)) {
@@ -222,6 +262,7 @@ function drawLayout(svg, rectangles, polygons = [], edges = []) {
     title.textContent = `${polygon.id} · layer ${polygon.layer}`;
     shape.append(title);
     svg.append(shape);
+    drawSelectableSegments(svg, polygon.id, polygon.points, x, y);
   }
 
   const edgeGroup = makeSvgElement("g");
@@ -319,10 +360,59 @@ function polygonConstraints(edges = state.edges, layout = state.before) {
     : edges;
 }
 
+function segmentsOverlap(first, second) {
+  if (!first || !second || first.length !== 2 || second.length !== 2) return false;
+  const [a, b] = first;
+  const [c, d] = second;
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const length = Math.hypot(dx, dy);
+  const otherLength = Math.hypot(d.x - c.x, d.y - c.y);
+  if (length === 0 || otherLength === 0) return false;
+  const tolerance = 1e-6 * Math.max(length, otherLength, 1);
+  const cross = (point) => dx * (point.y - a.y) - dy * (point.x - a.x);
+  if (Math.abs(cross(c)) > tolerance * length || Math.abs(cross(d)) > tolerance * length) return false;
+  const project = (point) => ((point.x - a.x) * dx + (point.y - a.y) * dy) / length;
+  const overlap = Math.min(length, project(d)) - Math.max(0, project(c));
+  return overlap > tolerance;
+}
+
+function segmentConstraints(edges = state.edges, layout = state.before) {
+  const selected = state.selectedSegment;
+  if (!selected) return polygonConstraints(edges, layout);
+  const polygon = (layout?.polygons || []).find((item) => item.id === selected.shapeId);
+  const rectangle = (layout?.rectangles || []).find((item) => item.id === selected.shapeId);
+  const shape = polygon || rectangle;
+  if (!shape) return [];
+  const points = polygon
+    ? polygon.points
+    : [
+        { x: rectangle.xmin, y: rectangle.ymin },
+        { x: rectangle.xmax, y: rectangle.ymin },
+        { x: rectangle.xmax, y: rectangle.ymax },
+        { x: rectangle.xmin, y: rectangle.ymax },
+      ];
+  if (selected.index < 0 || selected.index >= points.length) return [];
+  const start = points[selected.index];
+  const end = points[(selected.index + 1) % points.length];
+  const segment = [start, end];
+  const shortShapeId = shape.id.startsWith(`${state.selectedCell}/`)
+    ? shape.id.slice(state.selectedCell.length + 1)
+    : shape.id;
+  const shapeEdges = edges.filter((edge) =>
+    edge.source_rect === shape.id
+    || edge.target_rect === shape.id
+    || edge.source_rect === shortShapeId
+    || edge.target_rect === shortShapeId);
+  return shapeEdges.filter((edge) =>
+    segmentsOverlap(edge.start_segment, segment)
+    || segmentsOverlap(edge.end_segment, segment));
+}
+
 function renderConstraints() {
   const list = byId("constraint-list");
   list.replaceChildren();
-  const filteredEdges = polygonConstraints();
+  const filteredEdges = segmentConstraints();
   byId("constraint-count").textContent = String(filteredEdges.length);
   const visibilityButton = byId("toggle-constraints-button");
   visibilityButton.textContent = state.showConstraints ? "Hide graph" : "Show graph";
@@ -412,8 +502,8 @@ function renderConstraints() {
 
 function renderViews() {
   if (!state.before) return;
-  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], polygonConstraints(state.edges, state.before));
-  if (state.after) drawLayout(byId("after-view"), state.after.rectangles, state.after.polygons || [], polygonConstraints(state.afterEdges || [], state.after));
+  drawLayout(byId("before-view"), state.before.rectangles, state.before.polygons || [], segmentConstraints(state.edges, state.before));
+  if (state.after) drawLayout(byId("after-view"), state.after.rectangles, state.after.polygons || [], segmentConstraints(state.afterEdges, state.after));
   else byId("after-view").replaceChildren();
 }
 
@@ -455,6 +545,16 @@ function scrollConstraintIntoView(id) {
 
 function selectPolygon(id) {
   state.selectedPolygonId = id;
+  state.selectedSegment = null;
+  state.selectedEdgeId = null;
+  renderConstraints();
+  renderViews();
+}
+
+function selectSegment(polygonId, index) {
+  state.selectedPolygonId = (state.before?.polygons || [])
+    .some((polygon) => polygon.id === polygonId) ? polygonId : null;
+  state.selectedSegment = { shapeId: polygonId, index };
   state.selectedEdgeId = null;
   renderConstraints();
   renderViews();
@@ -470,9 +570,10 @@ function selectEdge(id) {
 }
 
 function clearSelection() {
-  if (state.selectedEdgeId === null && state.selectedPolygonId === null) return;
+  if (state.selectedEdgeId === null && state.selectedPolygonId === null && state.selectedSegment === null) return;
   state.selectedEdgeId = null;
   state.selectedPolygonId = null;
+  state.selectedSegment = null;
   renderConstraints();
   renderViews();
 }
@@ -483,6 +584,7 @@ async function loadSelectedCell() {
   const projectId = state.project.id;
   const loadId = ++state.cellLoadId;
   state.selectedPolygonId = null;
+  state.selectedSegment = null;
   const layout = await request(
     `/api/sessions/${projectId}/layout?cell=${encodeURIComponent(cell)}&version=before`,
   );
@@ -491,6 +593,7 @@ async function loadSelectedCell() {
   state.mergedPolygons = [];
   state.showMerged = false;
   state.edges = [];
+  state.afterEdges = [];
   state.selectedEdgeId = null;
   updateZoomSelection(null, null, null, null);
   state.after = null;
@@ -518,7 +621,13 @@ async function loadSelectedCell() {
 
 async function loadMigratedCell() {
   if (!state.project) return;
-  state.after = await request(`/api/sessions/${state.project.id}/layout?cell=${encodeURIComponent(state.selectedCell)}&version=after`);
+  const cell = encodeURIComponent(state.selectedCell);
+  const [layout, constraints] = await Promise.all([
+    request(`/api/sessions/${state.project.id}/layout?cell=${cell}&version=after`),
+    request(`/api/sessions/${state.project.id}/constraints?cell=${cell}&version=after`),
+  ]);
+  state.after = layout;
+  state.afterEdges = constraints.edges;
   byId("after-caption").textContent = `${state.selectedCell} · migrated`;
   byId("download-link").href = `/api/sessions/${state.project.id}/download`;
   byId("download-link").hidden = false;
@@ -541,6 +650,7 @@ function populateProject(project) {
   updateLayersToggleButton();
   state.selectedCell = project.root_cells[0] || project.cells[project.cells.length - 1];
   state.after = null;
+  state.afterEdges = [];
   state.mergedPolygons = [];
   state.showMerged = false;
   
@@ -736,12 +846,15 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
     const polygonTarget = svg.id === "before-view" && target
       ? target.closest(".layout-polygon")
       : null;
+    const segmentTarget = target ? target.closest(".layout-segment-hit-area") : null;
     pointerStart = {
       x: event.clientX,
       y: event.clientY,
       primary: event.button === 0,
       edgeId: event.button === 0 ? edgeTarget?.getAttribute("data-id") : null,
       polygonId: event.button === 0 ? polygonTarget?.getAttribute("data-polygon-id") : null,
+      segmentShapeId: event.button === 0 ? segmentTarget?.getAttribute("data-shape-id") : null,
+      segmentIndex: event.button === 0 ? Number(segmentTarget?.getAttribute("data-segment-index")) : null,
     };
     if (state.dragMode === "zoom") {
       zoomStart = { x: event.clientX, y: event.clientY };
@@ -786,7 +899,9 @@ for (const svg of [byId("before-view"), byId("after-view")]) {
       pointerStart?.primary
       && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) <= 5
     ) {
-      if (pointerStart.polygonId) selectPolygon(pointerStart.polygonId);
+      if (pointerStart.segmentShapeId) {
+        selectSegment(pointerStart.segmentShapeId, pointerStart.segmentIndex);
+      } else if (pointerStart.polygonId) selectPolygon(pointerStart.polygonId);
       else if (pointerStart.edgeId) selectEdge(pointerStart.edgeId);
       else clearSelection();
     }

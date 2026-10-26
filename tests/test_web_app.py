@@ -412,6 +412,26 @@ def test_sweep_migration_method_and_invalid_method(tmp_path):
             assert response.status_code == 200, response.text
             assert response.json()["method"] == "sweep"
 
+            before_constraints = client.get(
+                f"/api/sessions/{session_id}/constraints",
+                params={"cell": "TOP", "version": "before"},
+            )
+            after_constraints = client.get(
+                f"/api/sessions/{session_id}/constraints",
+                params={"cell": "TOP", "version": "after"},
+            )
+            assert before_constraints.status_code == 200
+            assert after_constraints.status_code == 200
+            before_spacing = {
+                edge["id"] for edge in before_constraints.json()["edges"]
+                if edge["type"] == "spacing"
+            }
+            after_spacing = {
+                edge["id"] for edge in after_constraints.json()["edges"]
+                if edge["type"] == "spacing"
+            }
+            assert before_spacing & after_spacing
+
             after = client.get(
                 f"/api/sessions/{session_id}/layout",
                 params={"cell": "TOP", "version": "after"},
