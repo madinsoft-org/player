@@ -9,6 +9,7 @@ description = "Migrate hierarchical GDSII layouts from one process technology to
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "anyio>=4.4",
     "fastapi>=0.115",
     "gdstk>=0.9.42",
     "numpy>=1.24",
@@ -23,6 +24,12 @@ dev = [
 ]
 simplex = [
     "scipy>=1.11",
+]
+notebooks = [
+    "ipython>=8.0",
+    "ipykernel>=6.29",
+    "nbclient>=0.10",
+    "nbformat>=5.10",
 ]
 
 [project.scripts]

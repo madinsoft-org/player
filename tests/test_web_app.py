@@ -4,6 +4,8 @@ from pathlib import Path
 import gdstk
 from fastapi.testclient import TestClient
 
+from gds_migrator.geometry.transforms import Point
+from gds_migrator.hierarchy.model import Polygon
 from gds_migrator.web.app import app, sessions
 
 
@@ -122,6 +124,35 @@ def test_layout_endpoint_returns_polygon_vertices_before_and_after_migration(tmp
             )
             assert after.status_code == 200
             assert after.json()["polygons"] == before_data["polygons"]
+        finally:
+            client.delete(f"/api/sessions/{session_id}")
+
+
+def test_worker_migration_reports_infeasible_constraints(tmp_path: Path) -> None:
+    with TestClient(app) as client:
+        session_id = _create_project(client, tmp_path)["id"]
+        try:
+            project = sessions[session_id]
+            project.cells["TOP"].polygons = [
+                Polygon("outer", 1, (
+                    Point(0, 0), Point(20, 0), Point(20, 20), Point(0, 20),
+                )),
+                Polygon("inner", 2, (
+                    Point(5, 5), Point(15, 5), Point(15, 15), Point(5, 15),
+                )),
+            ]
+            project.technology.min_overlap = {
+                ((1, 0), (2, 0)): 3,
+                ((2, 0), (1, 0)): 3,
+            }
+
+            response = client.post(f"/api/sessions/{session_id}/migrate")
+
+            assert response.status_code == 422
+            assert "positive-weight cycle" in response.json()["detail"]
+            assert project.migrated is None
+            assert project.output_path is None
+            assert client.get(f"/api/sessions/{session_id}/download").status_code == 409
         finally:
             client.delete(f"/api/sessions/{session_id}")
 

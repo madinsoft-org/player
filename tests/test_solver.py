@@ -1,7 +1,14 @@
 import pytest
 
 from gds_migrator.constraints.plane_sweep import Rectangle
-from gds_migrator.constraints.solver import LinearConstraint, solve_layout, solve_simplex
+from gds_migrator.constraints.solver import (
+    LinearConstraint,
+    solve_layout,
+    solve_layout_with_polygons,
+    solve_simplex,
+)
+from gds_migrator.geometry.transforms import Point
+from gds_migrator.hierarchy.model import Polygon
 from gds_migrator.technology.rules import TechnologyRules
 
 
@@ -41,6 +48,52 @@ def test_solve_layout_preserves_compliant_layout() -> None:
     by_id = {rect.id: rect for rect in migrated}
 
     assert by_id["right"].xmin == 20.0
+
+
+@pytest.mark.parametrize("axis", ["x", "y"])
+@pytest.mark.parametrize("reverse_winding", [False, True])
+def test_polygon_solver_preserves_manhattan_boundaries(
+    axis: str, reverse_winding: bool,
+) -> None:
+    def point(x: float, y: float) -> Point:
+        return Point(x, y) if axis == "x" else Point(y, x)
+
+    polygons = [
+        Polygon("left", 1, tuple(point(x, y) for x, y in (
+            (0, 2), (10, 2), (10, 8), (0, 8),
+        ))),
+        Polygon("right", 1, tuple(point(x, y) for x, y in (
+            (12, 0), (22, 0), (22, 10), (12, 10),
+        ))),
+    ]
+    if reverse_winding:
+        polygons = [
+            Polygon(polygon.id, polygon.layer, tuple(reversed(polygon.points)))
+            for polygon in polygons
+        ]
+    tech = TechnologyRules(name="test", grid=1, min_spacing={(1, 1): 10})
+
+    _, migrated = solve_layout_with_polygons([], tech, polygons)
+
+    assert [len(polygon.points) for polygon in migrated] == [4, 4]
+    for polygon in migrated:
+        for start, end in zip(polygon.points, (*polygon.points[1:], polygon.points[0])):
+            assert start.x == end.x or start.y == end.y
+    left, right = migrated
+    assert min(getattr(p, axis) for p in right.points) - max(
+        getattr(p, axis) for p in left.points
+    ) >= 10
+
+
+def test_polygon_solver_keeps_compliant_boundaries_unchanged() -> None:
+    polygon = Polygon("shape", 1, (
+        Point(0, 0), Point(10, 0), Point(10, 10), Point(0, 10),
+    ))
+    tech = TechnologyRules(name="test", grid=1, min_width={1: 5})
+
+    _, migrated = solve_layout_with_polygons([], tech, [polygon])
+
+    assert migrated == [polygon]
 
 
 @pytest.mark.parametrize("margin", [1, 5])

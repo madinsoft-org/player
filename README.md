@@ -56,6 +56,31 @@ pytest
 gds-migrate input.gds --technology target_tech.json --output output.gds
 ```
 
+### Cell constraint notebook
+
+Install the notebook dependencies with `pip install -e ".[notebooks]"`, then
+open [cell_constraints.ipynb](notebooks/cell_constraints.ipynb) and run all cells
+using that Python environment. The example creates a `Cell` with a synthetic
+cellbox and contact, metal1 and poly rectangles, loads the SCMOS rules and
+extracts the X/Y constraint graphs. It displays an SVG layout with numbered
+arrows and a clickable inspection tree grouped by axis, constraint kind and
+rule ID. The cellbox uses explicit zero-margin containment constraints; it is
+not a dedicated field of `Cell` or a foundry rule. No plotting library or
+Graphviz executable is required.
+
+Additional cells run sweep and longest-path migration independently from the
+original physical cell, then export `contact_stack_before.gds`,
+`contact_stack_after_sweep.gds` and `contact_stack_after_migration.gds` to
+`notebooks/exports`. The synthetic cellbox is omitted; contact, metal1 and poly
+retain their SCMOS layer/datatype pairs (25/0, 49/0 and 46/0). Exports use
+nanometre coordinates and verify geometry by reading each GDS back. Rerunning
+the export cell overwrites those files. The already feasible example is
+unchanged by migration, while sweep compacts its footprint.
+
+Run its regression checks with
+`pytest tests/test_cell_constraints_notebook.py` after installing the
+`dev` and `notebooks` extras.
+
 ### Web layout workbench
 
 Start the local FastAPI application with:
@@ -94,7 +119,8 @@ is selected.
 Two migration buttons are available (`POST /api/sessions/{id}/migrate?method=`):
 
 - **Migrate** (`solve`, default): longest-path solve of the vertex constraint
-  graph.
+  graph. Vertices on the same horizontal or vertical boundary are linked so
+  split edges remain aligned rather than turning into diagonal fragments.
 - **Sweep** (`sweep`): segment-level sweep of the constraint graph
   (`gds_migrator.constraints.segment_sweep`). Each constraint links the two
   original boundary segments it was extracted from. Segments without incoming
@@ -106,6 +132,12 @@ Two migration buttons are available (`POST /api/sessions/{id}/migrate?method=`):
   zero. X and Y are swept alternately on the updated geometry, re-extracting
   constraints each time, until the layout stops changing (at most 20 rounds),
   because moving one axis can create new face-to-face pairs on the other.
+
+Web migrations and constraint extraction run in cancellable worker processes.
+When stopping `gds-migrator-web` with Ctrl+C, active requests have two seconds
+to finish before their calculations are cancelled and workers are terminated.
+If starting Uvicorn directly, set `--timeout-graceful-shutdown 2` for the same
+shutdown behavior.
 
 Sweep limitations: shapes may move toward lower coordinates (they are compacted
 to the rules); spacing is only extracted for neighbours within the largest rule

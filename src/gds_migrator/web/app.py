@@ -12,6 +12,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, Literal
 from uuid import uuid4
 
+from anyio.to_process import run_sync
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -31,6 +32,7 @@ from gds_migrator.technology.rules import TechnologyRules
 
 MAX_UPLOAD_BYTES = 100 * 1024 * 1024
 MAX_RENDER_SHAPES = 50_000
+SHUTDOWN_GRACE_SECONDS = 2
 _LAYER_SOURCE = re.compile(r"^\s*(?:(.*?)\s+)?(-?\d+)\s*/\s*(\d+)(?:@\d+)?\s*$")
 _COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
 
@@ -565,13 +567,39 @@ def _get_layer_name(project: ProjectSession, layer: int) -> str:
     return f"Layer {layer}"
 
 
-def _constraint_edges(project: ProjectSession, cell_name: str, version: str = "before") -> list[dict[str, Any]]:
+async def _constraint_edges(
+    project: ProjectSession, cell_name: str, version: str = "before",
+) -> list[dict[str, Any]]:
     rectangles, polygons, rigid_widths, rigid_heights = _cell_constraint_rectangles(project, cell_name, version=version)
+    layer_numbers = {shape.layer for shape in [*rectangles, *polygons]}
+    layer_names = {layer: _get_layer_name(project, layer) for layer in layer_numbers}
+    return await run_sync(
+        _build_constraint_edges,
+        rectangles,
+        polygons,
+        rigid_widths,
+        rigid_heights,
+        project.technology,
+        layer_names,
+        set(project.excluded_constraint_ids),
+        cancellable=True,
+    )
+
+
+def _build_constraint_edges(
+    rectangles: list[Rectangle],
+    polygons: list[Polygon],
+    rigid_widths: dict[str, float],
+    rigid_heights: dict[str, float],
+    technology: TechnologyRules,
+    layer_names: dict[int, str],
+    excluded_constraint_ids: set[str],
+) -> list[dict[str, Any]]:
     edges: list[dict[str, Any]] = []
     for axis, rigid_sizes in (("x", rigid_widths), ("y", rigid_heights)):
         graph: ConstraintGraph = generate_axis_constraints(
             rectangles,
-            project.technology,
+            technology,
             axis,
             rigid_sizes=rigid_sizes,
             polygons=polygons,
@@ -608,14 +636,14 @@ def _constraint_edges(project: ProjectSession, cell_name: str, version: str = "b
                     "target_rect": metadata["target_rect"],
                     "source_layer": source_layer,
                     "target_layer": target_layer,
-                    "source_layer_name": _get_layer_name(project, source_layer),
-                    "target_layer_name": _get_layer_name(project, target_layer),
+                    "source_layer_name": layer_names[source_layer],
+                    "target_layer_name": layer_names[target_layer],
                     "removable": metadata["kind"] != "fixed_footprint",
                     "start": metadata["start"],
                     "end": metadata["end"],
                     "start_segment": metadata["start_segment"],
                     "end_segment": metadata["end_segment"],
-                    "excluded": graph.edge_ids[index] in project.excluded_constraint_ids,
+                    "excluded": graph.edge_ids[index] in excluded_constraint_ids,
                 }
             )
     return edges
@@ -810,7 +838,7 @@ def get_layout(session_id: str, cell: str, version: str = "before") -> dict[str,
 
 
 @app.get("/api/sessions/{session_id}/constraints")
-def get_constraints(session_id: str, cell: str, version: str = "before") -> dict[str, Any]:
+async def get_constraints(session_id: str, cell: str, version: str = "before") -> dict[str, Any]:
     project = _get_session(session_id)
     if version not in {"before", "after"}:
         raise HTTPException(status_code=422, detail="Version must be 'before' or 'after'.")
@@ -819,18 +847,18 @@ def get_constraints(session_id: str, cell: str, version: str = "before") -> dict
             raise HTTPException(status_code=409, detail="Run the migration before requesting the migrated constraints.")
         if cell not in project.migrated:
             raise HTTPException(status_code=404, detail=f"Unknown cell: {cell!r}.")
-        return {"cell": cell, "version": version, "edges": _constraint_edges(project, cell, version="after")}
+        return {"cell": cell, "version": version, "edges": await _constraint_edges(project, cell, version="after")}
     if cell not in project.cells:
         raise HTTPException(status_code=404, detail=f"Unknown cell: {cell!r}.")
-    return {"cell": cell, "version": version, "edges": _constraint_edges(project, cell, version="before")}
+    return {"cell": cell, "version": version, "edges": await _constraint_edges(project, cell, version="before")}
 
 
 @app.post("/api/sessions/{session_id}/constraints/{constraint_id}")
-def toggle_constraint(session_id: str, constraint_id: str, toggle: ConstraintToggle) -> dict[str, Any]:
+async def toggle_constraint(session_id: str, constraint_id: str, toggle: ConstraintToggle) -> dict[str, Any]:
     project = _get_session(session_id)
     if toggle.cell not in project.cells:
         raise HTTPException(status_code=404, detail=f"Unknown cell: {toggle.cell!r}.")
-    edges = _constraint_edges(project, toggle.cell)
+    edges = await _constraint_edges(project, toggle.cell)
     edge_by_id = {edge["id"]: edge for edge in edges}
     if constraint_id not in edge_by_id:
         raise HTTPException(status_code=404, detail="Constraint does not belong to the selected cell.")
@@ -847,16 +875,18 @@ def toggle_constraint(session_id: str, constraint_id: str, toggle: ConstraintTog
 
 
 @app.post("/api/sessions/{session_id}/migrate")
-def migrate_project(session_id: str, method: Literal["solve", "sweep"] = "solve") -> dict[str, Any]:
+async def migrate_project(session_id: str, method: Literal["solve", "sweep"] = "solve") -> dict[str, Any]:
     """Migrate the project with the vertex solver or the segment sweep."""
     project = _get_session(session_id)
     layout_solver = sweep_layout_with_polygons if method == "sweep" else solve_layout_with_polygons
     try:
-        migrated = migrate_hierarchy(
+        migrated = await run_sync(
+            migrate_hierarchy,
             project.cells,
             project.technology,
-            excluded_constraint_ids=project.excluded_constraint_ids,
-            layout_solver=layout_solver,
+            set(project.excluded_constraint_ids),
+            layout_solver,
+            cancellable=True,
         )
         output_path = Path(project.temporary_directory.name) / "migrated.gds"
         write_library(migrated, output_path)
@@ -894,4 +924,9 @@ def run() -> None:
     """Run the development server."""
     import uvicorn
 
-    uvicorn.run("gds_migrator.web.app:app", host="127.0.0.1", port=8000)
+    uvicorn.run(
+        "gds_migrator.web.app:app",
+        host="127.0.0.1",
+        port=8000,
+        timeout_graceful_shutdown=SHUTDOWN_GRACE_SECONDS,
+    )

@@ -144,6 +144,14 @@ def _solve_axis(
         for index, point in enumerate(polygon.points):
             initial_positions[f"{polygon.id}:p{index}:x"] = point.x
             initial_positions[f"{polygon.id}:p{index}:y"] = point.y
+            next_index = (index + 1) % len(polygon.points)
+            following = polygon.points[next_index]
+            if getattr(point, axis) == getattr(following, axis):
+                # Split vertices on one Manhattan boundary must move together.
+                upstream = f"{polygon.id}:p{index}:{axis}"
+                downstream = f"{polygon.id}:p{next_index}:{axis}"
+                graph.add_constraint(upstream, downstream, 0.0)
+                graph.add_constraint(downstream, upstream, 0.0)
     return graph.solve(initial_positions, excluded_constraint_ids=excluded_constraint_ids)
 
 
